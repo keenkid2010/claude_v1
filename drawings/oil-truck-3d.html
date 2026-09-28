@@ -105,13 +105,9 @@ ul.plain b{color:var(--ink);font-weight:500}
     <div>
       <div class="eyebrow">Delphi Power Equipment · Upfit RFQ · 箱体净空 4100 × 2400 mm</div>
       <h1>移动式变压器滤油车 · 三维布置</h1>
-      <p class="sub">方案 1、2 按 RFQ 平面图尺寸建模，方案 3 是按“吨桶可更换”要求做的优化布置。模型包括柴油发电机组、真空滤油机和 IBC 吨桶三台业主设备，以及工具板、油箱、侧门、爬梯等配套件。拖动旋转，滚轮或双指缩放，点击设备查看参数。</p>
+      <p class="sub">按 RFQ 设备尺寸和业主反馈确定的布置：吨桶在车尾，叉车从后门更换；滤油机操作面朝通道；发电机间在车头，两端和隔墙都能检修。拖动旋转，滚轮或双指缩放，点击设备查看参数。</p>
     </div>
-    <div class="seg big" role="group" aria-label="布置方案">
-      <button id="opt1" type="button" aria-pressed="true">方案 1 · 发电机在后</button>
-      <button id="opt2" type="button" aria-pressed="false">方案 2 · 发电机在前</button>
-      <button id="opt3" type="button" aria-pressed="false">方案 3 · 优化</button>
-    </div>
+    <div class="eyebrow" style="text-align:right">布置方案 · 最终稿</div>
   </header>
 
   <div class="main">
@@ -156,20 +152,18 @@ ul.plain b{color:var(--ink);font-weight:500}
       <div class="checks" id="checks"></div>
     </section>
     <section class="card">
-      <h2>载荷重心对比</h2>
-      <p class="note" style="margin:0">三台业主设备（合计 2,450 kg）的平面重心，从箱体后墙量起。车桥位置 RFQ 未给出，所以这里不推算轴荷。</p>
+      <h2>载荷重心</h2>
+      <p class="note" style="margin:0">平面重心从箱体后墙量起。车桥位置未给出，这里不推算轴荷。</p>
       <p class="note">底盘是 2024 Ford E-Series Cutaway（7.3L V8，GVWR 14,500 lb）。标签上的 8,980 lb 最大载荷是裸底盘的数字，要先扣掉货箱自重。业主已确认整车重量在额定范围内。</p>
       <div class="cmp" id="cmp"></div>
       <h2 style="margin-top:16px">建模假设</h2>
       <ul class="plain">
-        <li><b>箱内净高按 2,100 mm</b>，RFQ 未给出。滤油机高 1,700 mm，加底座后顶部约 1,800 mm。</li>
-        <li><b>设备都放在 100 mm 高的槽钢底座上</b>（RFQ 安全条款要求），吨桶和滤油机底座外围有 2 in 边沿的接油盘。</li>
-        <li><b>发电机间防火隔墙按 50 mm 厚</b>，紧贴发电机一侧布置。平面图上没画这道墙。</li>
-        <li><b>柴油箱、排气箱、电控柜</b>在图上画在箱体墙线外侧，这里分别做成车底鞍座油箱、车外排气罩和外侧检修柜。</li>
-        <li><b>驾驶室、底盘和车轮</b>只是示意外形，不代表实际车型尺寸。</li>
-        <li><b>方案 2 图上没有工具车和电缆盘</b>，所以模型里也没放。方案 3 建议把电缆盘放进车外侧的独立舱，模型里没画。</li>
-        <li><b>方案 3 的后门</b>按接近全宽的开口处理（业主确认）。设备尺寸按 RFQ 表格。</li>
-        <li><b>方案 3 的重心包含估算重量</b>：路边侧工具架连工具和标准件约 200 kg，满油柴油箱约 200 kg。其他方案只算三台设备。</li>
+        <li><b>设备尺寸按 RFQ 表格</b>：发电机 2,050 × 980 × 1,390，滤油机 1,300 × 1,100 × 1,700（转 90° 放置），吨桶 1,200 × 1,200 × 1,200。</li>
+        <li><b>箱内净高按 2,100 mm</b>，RFQ 未给出。滤油机加底座后顶部约 1,800 mm，吊耳装车后切掉。</li>
+        <li><b>设备都放在 100 mm 高的槽钢底座上</b>，滤油机拆掉脚轮后螺栓固定；吨桶和滤油机外围有 2 in 边沿的接油盘。</li>
+        <li><b>后门为接近全宽的开口</b>（箱体内宽减外壳厚度，业主确认）。侧门位置业主已认可。</li>
+        <li><b>重心含估算重量</b>：工具架连工具和标准件约 200 kg，满油柴油箱约 200 kg。</li>
+        <li><b>驾驶室、底盘和车轮</b>只是示意外形。电缆盘建议放车外独立舱，模型里没画。</li>
       </ul>
     </section>
   </div>
@@ -234,20 +228,20 @@ const OPTS={
     ]
   },
   opt3:{
-    title:'方案 3（最终稿）：吨桶在后门口可叉车更换，滤油机靠驾驶侧，发电机间在前（两端百叶门、隔墙检修门、280 mm 检修间隙），路边侧一条宽通道',
-    ibc:{x0:50,x1:1250,y0:200,y1:1400,outFace:'x1',outY:700},
-    pur:{x0:1370,x1:2670,y0:150,y1:1250,panel:[1800,2240],ports:'x0',portY:[610,790]},
+    title:'吨桶在车尾（叉车从后门更换），滤油机转 90° 靠驾驶侧、操作面朝通道，发电机间在车头（两端百叶门、隔墙检修门、400 mm 检修间隙），配电柜和滤油系统外接箱都在驾驶侧车外',
+    ibc:{x0:50,x1:1250,y0:200,y1:1400,outFace:'x1',outY:400},
+    pur:{x0:1370,x1:2470,y0:150,y1:1450,panel:[1500,2150],ports:'x0',portY:[250,400],rot:true},
     gen:{x0:3070,x1:4050,y0:175,y1:2225},
-    partition:[2740,2790], partDoor:[1450,2250],
+    partition:[2620,2670], partDoor:[1550,2350],
     toolPanel:[250,1340], rack:{d:280}, tank:[1550,2550], tankSide:'curb',
     extra:[{kg:200,x:795,y:2260,h:900,n:'工具架及工具、标准件（估）'},{kg:200,x:2050,y:2140,h:-330,n:'柴油箱满油（估）'}],
-    exhaustRoof:{x:3560,y:1075}, elecCurb:[1400,1800], genDoor:[3150,3950], genDoorBoth:true,
-    door:[1850,2650], ext:[[2690,2330],[130,2330],[3100,2320]],
+    exhaustRoof:{x:3560,y:1075}, elecDrvExt:[150,600], extBox:[1400,2000], genDoor:[3150,3950], genDoorBoth:true,
+    door:[1850,2650], ext:[[2570,2330],[130,2330],[3100,2320]],
     cart:false, louverX:[3150,3950], fanX:2250,
-    pipe:[[1330,1000,120],[1330,1000,-150],[1330,2300,-150],[1800,2300,-150]], extPorts:[1450,1620,1790], portH:-150,
+    pipe:[[1330,325,120],[1330,325,-200],[1330,-120,-200],[1450,-120,-200]], extPorts:[1550,1700,1850], portH:-200, portSide:'drv',
     forklift:true,
     aisles:[
-      {r:[1310,2740,1310,2400],w:1090,lbl:'路边侧主通道',at:[2050,1860]},
+      {r:[1310,2620,1510,2400],w:890,lbl:'路边侧主通道',at:[1950,1950]},
       {r:[0,1310,1460,2120],w:660,lbl:'车尾段·吨桶旁',at:[650,1790]}
     ]
   }
@@ -257,10 +251,10 @@ OPTS.opt2.pipe=[[40,972,120],[40,2300,120],[2025,2300,120],[2025,1880,120]]; OPT
 const NEED=610; // ≥ 24 in
 const statusOf=w=>w>=NEED?'ok':(w>=NEED-20?'warn':'bad');
 
-function cgOf(o){
+function cgOf(o,noExtra){
   let m=0,sx=0,sy=0;
   for(const k of ['gen','pur','ibc']){const e=o[k],kg=EQUIP[k].kg;m+=kg;sx+=kg*(e.x0+e.x1)/2;sy+=kg*(e.y0+e.y1)/2;}
-  for(const a of (o.extra||[])){m+=a.kg;sx+=a.kg*a.x;sy+=a.kg*a.y;}
+  if(!noExtra) for(const a of (o.extra||[])){m+=a.kg;sx+=a.kg*a.x;sy+=a.kg*a.y;}
   return {x:sx/m,y:sy/m,m};
 }
 function cgZ(o){
@@ -274,18 +268,18 @@ function cgZ(o){
 function checksFor(key){
   const o=OPTS[key], a=o.aisles, r=[];
   if(key==='opt3'){
-    const cg=cgOf(o), c1=cgOf(OPTS.opt1), off=Math.round(W/2-cg.y);
-    r.push({s:'ok',t:'吨桶更换',v:'后门直通',d:'吨桶靠驾驶侧墙，叉车从后门直接叉取。后门是接近全宽的开口（箱体内宽减外壳厚度，业主确认）。吨桶用快换接头和软管连接滤油机，用定位挡块和棘轮绑带固定。'});
-    r.push({s:statusOf(a[0].w),t:'路边侧主通道',v:`${a[0].w.toLocaleString()} mm · ${IN(a[0].w)} in`,d:'滤油机靠驾驶侧墙放，路边侧留出一条宽通道，从后门一直通到发电机间隔墙，侧门也开在这条通道上。'});
-    r.push({s:statusOf(a[1].w),t:'车尾段 · 吨桶旁',v:`${a[1].w} mm · ${IN(a[1].w)} in`,d:'吨桶靠驾驶侧墙，对面是深 280 mm 的工具架。已扣除接油盘边沿，满足 24 in。'});
-    r.push({s:'ok',t:'滤油机接管',v:'油口朝吨桶',d:'进出油口朝车尾，离吨桶出油阀不到 200 mm，软管最短。去变压器的主管从地板下走到路边侧外接口，不横穿通道。'});
-    r.push({s:'ok',t:'发电机排气',v:'车顶竖排',d:'排气管从发电机间顶部穿出车顶，加防雨帽，远离驾驶室车窗、作业通道和油口。'});
-    r.push({s:'ok',t:'侧门位置',v:`距后墙 ${o.door[0].toLocaleString()} mm`,d:'开在发电机间后面、主通道上，向外开，下挂折叠铝梯。业主已认可。'});
-    r.push({s:'ok',t:'发电机检修',v:'两端门 + 隔墙门',d:'两端各开一扇百叶检修门：路边侧对控制箱和发电机头，驾驶侧对散热器，同时作进出风口。保养面朝隔墙，留 280 mm 间隙，隔墙对着主通道开防火检修门，蹲在通道里就能换滤芯、看机油尺。'});
-    r.push({s:'warn',t:'远置保养点',v:'待机组厂确认',d:'机油放油管引到车外放油阀，机油滤芯和油水分离器改远置支座，装在检修门旁。散热器朝哪一端，要按机组实际保养点位置最后确定。'});
+    const cg=cgOf(o), off=Math.round(W/2-cg.y), gap=o.gen.x0-o.partition[1];
+    r.push({s:'ok',t:'吨桶更换',v:'后门直通',d:'吨桶靠驾驶侧墙，叉车从全宽后门直接叉取。出油阀朝滤油机，用快换接头和软管连接；定位挡块加棘轮绑带固定。'});
+    r.push({s:statusOf(a[0].w),t:'路边侧主通道',v:`${a[0].w} mm · ${IN(a[0].w)} in`,d:'滤油机转 90° 后占宽 1,300，通道从 1,090 缩到 890，仍满足 24 in。从后门通到隔墙，侧门开在这条通道上。'});
+    r.push({s:statusOf(a[1].w),t:'车尾段 · 吨桶旁',v:`${a[1].w} mm · ${IN(a[1].w)} in`,d:'吨桶靠驾驶侧墙，对面是深 280 mm 的工具架。已扣除接油盘边沿。'});
+    r.push({s:'ok',t:'滤油机朝向',v:'操作面朝通道',d:'1,100 宽的正面（操作柜、罗茨泵、真空泵）朝路边侧通道。左侧（精滤器、进出油阀口）朝吨桶，右侧（油位视镜、调节阀、出油泵）朝隔墙，后面（加热器）靠驾驶侧墙。装车后切掉顶部吊耳。'});
+    r.push({s:'warn',t:'油位视镜',v:'离隔墙 150 mm',d:'运行油位视镜在右侧，正对隔墙，只能从通道斜着看。液位由液位开关自动控制，面板有报警；如需直视，可在隔墙对应位置开观察窗，或加装远传液位计。'});
+    r.push({s:'ok',t:'发电机检修',v:`间隙 ${gap} mm`,d:'两端各一扇百叶检修门（路边侧对控制箱，驾驶侧对散热器），兼作进出风口。保养面朝隔墙，隔墙对着通道开对开防火门，蹲在通道里换滤芯、看机油尺。'});
+    r.push({s:'ok',t:'配电柜 + 外接箱',v:'都在驾驶侧车外',d:'滤油系统外接箱（3 个 DN32 接口 + 接地螺栓）挂在滤油机下方、地板以下，管路从滤油机左后角直接下穿，最短。配电柜 IP54 在车尾驾驶侧外墙，底边贴地板高度，站在地面就能操作。建议侧门内侧加一个急停按钮。'});
+    r.push({s:'ok',t:'发电机排气',v:'车顶竖排',d:'按机组手册 3.3：离可燃物 ≥ 9 in，穿顶加防火套管，不锈钢波纹管，冷凝水排放口，防雨帽，满载实测背压。真空泵排气也要接管排到车外。'});
+    r.push({s:'warn',t:'远置保养点',v:'待机组厂确认',d:'机油放油管引到车外放油阀，机油滤芯和油水分离器改远置支座。散热器朝哪一端，按机组实际保养点最后确定。'});
     r.push({s:'warn',t:'发电机功率',v:'需 ≥ 20 kW',d:'滤油机 DZL-30A 加热 12 kW、泵 3.3 kW、控制约 0.7 kW，合计约 16 kW，三相。再加照明和风扇，发电机功率需要核对铭牌。'});
-    r.push({s:'info',t:'滤油机安装',v:'DN32 · 拆脚轮',d:'原机脚轮拆掉，用螺栓固定在槽钢底座上。车载管路和外接口按 DN32。环境温度要求低于 40 °C，厢内通风量要算够。控制面板和表计朝通道。'});
-    r.push({s:off>150?'warn':'info',t:'载荷重心',v:`距后墙 ${Math.round(cg.x).toLocaleString()} mm`,d:`含三台设备、工具架（约 200 kg）和满油柴油箱（约 200 kg），后两项是估算值。横向偏驾驶侧 ${off} mm：吨桶和滤油机都靠驾驶侧，路边侧的工具架和柴油箱把重心拉回来一部分。吨桶在后轴附近，满桶和空桶时前轴载荷变化较大，要按实车轴距核算。`});
+    r.push({s:off>150?'warn':'info',t:'载荷重心',v:`距后墙 ${Math.round(cg.x).toLocaleString()} mm`,d:`含三台设备、工具架（约 200 kg）和满油柴油箱（约 200 kg），后两项为估算。横向偏驾驶侧 ${off} mm。`});
     return r;
   }
   const tp=o.toolPanel;
@@ -549,6 +543,16 @@ function accessories(g,o){
     cyl(55,700,'y',(e0+e1)/2,-155,2200,M.ss,g,14);
     tag(g,(e0+e1)/2,-260,2350,'<b>排气罩</b>','tag minor');
   }
+  if(o.elecDrvExt){ // IP54 配电柜（驾驶侧车外，车尾附近）
+    const [c0,c1]=o.elecDrvExt;
+    box(c0,c1,-230,-50,20,780,M.panel,g);
+    tag(g,(c0+c1)/2,-240,900,'<b>配电柜</b><small>IP54 · 驾驶侧车外</small>','tag minor');
+  }
+  if(o.extBox){ // 滤油系统外接箱（驾驶侧车外，地板以下）
+    const [e0,e1]=o.extBox;
+    box(e0,e1,-260,-50,-420,-20,M.panel,g);
+    tag(g,(e0+e1)/2,-280,-560,'<b>滤油系统外接箱</b><small>3 × DN32 · 接地螺栓</small>','tag minor');
+  }
   if(o.elecCurb){ // IP54 配电柜（路边侧内墙、侧门旁）
     const [c0,c1]=o.elecCurb;
     box(c0,c1,W-200,W,900,1700,M.panel,g);
@@ -557,7 +561,7 @@ function accessories(g,o){
     const [c0,c1]=o.elecInside, px=o.partition[0];
     box(px-200,px,c0,c1,900,1700,M.panel,g);
     tag(g,px-100,(c0+c1)/2,1800,'<b>配电柜</b><small>IP54 · 侧门旁</small>','tag minor');
-  }else{ // IP54 配电柜（车外路边侧）
+  }else if(o.elec){ // IP54 配电柜（车外路边侧）
     const [c0,c1]=o.elec;
     box(c0,c1,W+50,W+230,900,1600,M.panel,g);
     tag(g,(c0+c1)/2,W+240,1700,'<b>配电柜</b><small>IP54</small>','tag minor');
@@ -602,8 +606,9 @@ function accessories(g,o){
     cyl(22,len,axis,(ax+bx)/2,(ay+by)/2,(ah+bh)/2,M.ss,g,10);
   }
   const ph=o.portH!=null?o.portH:300;
-  for(const px of o.extPorts) cyl(30,90,'z',px,W+85,ph,M.ss,g,12); // 三个外接口
-  tag(g,o.extPorts[1],W+120,ph+150,'外接油口 ×3','tag minor');
+  const pz=o.portSide==='drv'?-305:W+85;
+  for(const px of o.extPorts) cyl(30,90,'z',px,pz,ph,M.ss,g,12); // 三个外接口
+  if(o.portSide!=='drv') tag(g,o.extPorts[1],W+120,ph+150,'外接油口 ×3','tag minor');
 }
 
 function walkways(g,o){
@@ -691,7 +696,7 @@ function buildLegend(){
     li.innerHTML=`<button class="item" type="button" data-key="${k}"><span class="sw" style="background:${q.color}"></span><span>${q.name}</span><span class="num">${q.kg.toLocaleString()} kg</span></button>`;
     legend.appendChild(li);
   }
-  const extra=[['#B85C38','防火隔墙（假设）'],['#F2C94C','通道（黄色地面）'],['#6C7A89','工具板 / 工具架'],['#C3C9CC','柴油箱 / 爬梯'],['#E0621B','载荷重心']];
+  const extra=[['#B85C38','防火隔墙'],['#F2C94C','通道（黄色地面）'],['#6C7A89','工具板 / 工具架'],['#C3C9CC','柴油箱 / 爬梯'],['#E0621B','载荷重心']];
   for(const [c,n] of extra){const li=document.createElement('li');li.innerHTML=`<div class="item" style="cursor:default"><span class="sw" style="background:${c}"></span><span>${n}</span><span></span></div>`;legend.appendChild(li);}
   legend.querySelectorAll('button.item').forEach(b=>b.addEventListener('click',()=>select(state.sel===b.dataset.key?null:b.dataset.key)));
 }
@@ -712,12 +717,12 @@ renderer.domElement.addEventListener('pointerup',e=>{
 const STXT={ok:'满足',warn:'临界',bad:'不满足',info:'参考'};
 function renderChecks(){
   const NAMES={opt1:'方案 1',opt2:'方案 2',opt3:'方案 3（优化）'};
-  document.getElementById('chkTitle').textContent=(state.opt==='opt3'?'布置核对 · ':'图纸核对 · ')+NAMES[state.opt];
+  document.getElementById('chkTitle').textContent='布置核对';
   document.getElementById('optDesc').textContent=OPTS[state.opt].title+'。';
   document.getElementById('checks').innerHTML=checksFor(state.opt).map(c=>
     `<div class="row"><span class="pill ${c.s}">${STXT[c.s]}</span><span class="t">${c.t}</span><span class="v">${c.v}</span><span class="d">${c.d}</span></div>`).join('');
-  document.getElementById('cmp').innerHTML=['opt1','opt2','opt3'].map(k=>{const c=cgOf(OPTS[k]);
-    return `<div class="${k===state.opt?'cur':''}"><span>${NAMES[k]} · 距后墙</span><strong>${Math.round(c.x).toLocaleString()} mm</strong><span>距驾驶侧墙 ${Math.round(c.y).toLocaleString()} mm</span></div>`;}).join('');
+  document.getElementById('cmp').innerHTML=[['只算三台设备',true],['含工具架和柴油箱（估）',false]].map(([n,ne])=>{const c=cgOf(OPTS[state.opt],ne);
+    return `<div class="${ne?'':'cur'}"><span>${n} · 距后墙</span><strong>${Math.round(c.x).toLocaleString()} mm</strong><span>距驾驶侧墙 ${Math.round(c.y).toLocaleString()} mm</span></div>`;}).join('');
 }
 
 /* ---------- 视角 ---------- */
@@ -746,15 +751,10 @@ toggle('tCg',on=>{cgOn=on;if(cgGroup){cgGroup.visible=on;cgGroup.traverse(m=>{if
 
 function setOpt(k){
   state.opt=k;
-  for(const id of ['opt1','opt2','opt3']) document.getElementById(id).setAttribute('aria-pressed',id===k?'true':'false');
   build(k); renderChecks();
   const dimsOn=document.getElementById('tDims').getAttribute('aria-pressed')==='true';
   if(!dimsOn) layout.traverse(m=>{if(m.material===M.walk)m.visible=false;});
-  try{history.replaceState(null,'','#'+k);}catch(e){}
 }
-document.getElementById('opt1').addEventListener('click',()=>setOpt('opt1'));
-document.getElementById('opt2').addEventListener('click',()=>setOpt('opt2'));
-document.getElementById('opt3').addEventListener('click',()=>setOpt('opt3'));
 
 /* ---------- 主题 ---------- */
 function applyTheme(){
@@ -789,7 +789,7 @@ function loop(now){
 buildLegend();
 applyTheme();
 const h0=(location.hash||'').replace('#','');
-setOpt(OPTS[h0]?h0:'opt1');
+setOpt('opt3');
 goView('iso',true);
 resize();
 requestAnimationFrame(loop);
