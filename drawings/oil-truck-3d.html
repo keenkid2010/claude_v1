@@ -1,0 +1,797 @@
+<title>Delphi 滤油车三维布置</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#EDEFEC; --panel:#F8F9F7; --ink:#1B2226; --muted:#5B676C; --line:#CDD3D0;
+  --accent:#B3620E; --accent-soft:#F3E3CF; --scene:#E3E7E4;
+  --ok:#2E7A4D; --ok-soft:#DCEFE3; --warn:#9A6A00; --warn-soft:#F6EBC8; --bad:#B42318; --bad-soft:#F8DEDA;
+  --info:#3F5E73; --info-soft:#DDE7EE;
+  --display:"Barlow Condensed","PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",sans-serif;
+  --body:"IBM Plex Sans","PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",sans-serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#111618; --panel:#192023; --ink:#E2E7E5; --muted:#95A2A6; --line:#2C3639;
+    --accent:#E39A45; --accent-soft:#3A2A17; --scene:#161C1F;
+    --ok:#62C08A; --ok-soft:#173226; --warn:#E3B341; --warn-soft:#352C12; --bad:#F2856F; --bad-soft:#3B1C17;
+    --info:#8FB4CC; --info-soft:#1C2A33;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111618; --panel:#192023; --ink:#E2E7E5; --muted:#95A2A6; --line:#2C3639;
+  --accent:#E39A45; --accent-soft:#3A2A17; --scene:#161C1F;
+  --ok:#62C08A; --ok-soft:#173226; --warn:#E3B341; --warn-soft:#352C12; --bad:#F2856F; --bad-soft:#3B1C17;
+  --info:#8FB4CC; --info-soft:#1C2A33;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.55;padding-inline:16px;padding-block:20px 40px}
+.wrap{max-width:1320px;margin:0 auto;display:grid;gap:18px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(26px,3.4vw,38px);line-height:1.05;margin:4px 0 6px;text-wrap:balance;letter-spacing:.005em}
+.sub{color:var(--muted);margin:0;max-width:68ch}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:3px;gap:3px;flex-wrap:wrap}
+.seg button{font:inherit;border:0;background:transparent;color:var(--muted);padding:7px 12px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg button:focus-visible,.chip:focus-visible,.item:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.seg.big button{font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:.02em;padding:8px 16px}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:start}
+@media (max-width:900px){.main{grid-template-columns:1fr}}
+.viewer{position:relative;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--scene);height:clamp(380px,64vh,720px)}
+#stage{position:absolute;inset:0}
+#stage canvas{display:block}
+#labels{position:absolute;inset:0;pointer-events:none}
+.bar{position:absolute;left:10px;right:10px;display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;pointer-events:none}
+.bar>*{pointer-events:auto}
+.bar.top{top:10px}.bar.bottom{bottom:10px;align-items:flex-end}
+.toggles{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:12.5px;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:5px 11px;cursor:pointer}
+.chip[aria-pressed="true"]{color:var(--ink);border-color:var(--ink)}
+.hint{font-size:12px;color:var(--muted);background:color-mix(in srgb,var(--panel) 85%,transparent);padding:4px 9px;border-radius:6px}
+.tag{font-family:var(--body);font-size:12px;line-height:1.3;color:#1B2226;background:rgba(255,255,255,.92);border:1px solid rgba(27,34,38,.18);border-radius:5px;padding:3px 7px;white-space:nowrap;transform:translateY(-4px);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.tag b{font-weight:600}
+.tag small{display:block;font-family:var(--mono);font-size:10.5px;color:#5B676C}
+.tag.minor{font-size:11px;padding:2px 6px;background:rgba(255,255,255,.8)}
+.dim{font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:4px;white-space:nowrap;border:1px solid}
+.dim.ok{color:#1E5E39;background:#DCEFE3;border-color:#9CCDB0}
+.dim.warn{color:#6E4C00;background:#F6EBC8;border-color:#DCC27A}
+.dim.bad{color:#8E1B12;background:#F8DEDA;border-color:#E6A59B}
+.hide-tags .tag,.hide-dims .dim{display:none}
+aside{display:grid;gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.card h2{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:.02em;margin:0 0 8px}
+.card p{margin:0}
+.list{display:grid;gap:2px;margin:0;padding:0;list-style:none}
+.item{display:grid;grid-template-columns:14px 1fr auto;align-items:center;gap:10px;padding:7px 8px;border-radius:6px;cursor:pointer;border:1px solid transparent;background:none;font:inherit;color:inherit;text-align:left;width:100%}
+.item:hover{background:var(--bg)}
+.item[aria-current="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.sw{width:14px;height:14px;border-radius:3px;border:1px solid rgba(0,0,0,.2)}
+.num{font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+dl.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:8px 0 0}
+dl.kv dt{color:var(--muted);font-size:12.5px}
+dl.kv dd{margin:0;font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums}
+.note{font-size:12.5px;color:var(--muted);margin-top:8px}
+.lower{display:grid;grid-template-columns:1.35fr 1fr;gap:18px;align-items:start}
+@media (max-width:900px){.lower{grid-template-columns:1fr}}
+.checks{display:grid;gap:0}
+.row{display:grid;grid-template-columns:78px minmax(0,1fr) auto;gap:4px 12px;padding:10px 0;border-top:1px solid var(--line);align-items:baseline}
+.row:first-child{border-top:0;padding-top:2px}
+.pill{font-size:11.5px;font-weight:600;border-radius:999px;padding:2px 8px;text-align:center;white-space:nowrap;justify-self:start}
+.pill.ok{color:var(--ok);background:var(--ok-soft)}
+.pill.warn{color:var(--warn);background:var(--warn-soft)}
+.pill.bad{color:var(--bad);background:var(--bad-soft)}
+.pill.info{color:var(--info);background:var(--info-soft)}
+.row .t{font-weight:500}
+.row .d{grid-column:2 / 4;color:var(--muted);font-size:12.5px}
+.row .v{font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:480px){.row{grid-template-columns:70px minmax(0,1fr)}.row .v{grid-column:2}.row .d{grid-column:1 / 3}}
+ul.plain{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--muted);font-size:13px}
+ul.plain b{color:var(--ink);font-weight:500}
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:10px}
+.cmp div{border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.cmp span{display:block;font-size:12px;color:var(--muted)}
+.cmp strong{font-family:var(--mono);font-weight:500;font-size:14px;font-variant-numeric:tabular-nums}
+.cmp .cur{border-color:var(--accent)}
+.err{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:var(--muted)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Delphi Power Equipment · Upfit RFQ · 箱体净空 4100 × 2400 mm</div>
+      <h1>移动式变压器滤油车 · 三维布置</h1>
+      <p class="sub">方案 1、2 按 RFQ 平面图尺寸建模，方案 3 是按“吨桶可更换”要求做的优化布置。模型包括柴油发电机组、真空滤油机和 IBC 吨桶三台业主设备，以及工具板、油箱、侧门、爬梯等配套件。拖动旋转，滚轮或双指缩放，点击设备查看参数。</p>
+    </div>
+    <div class="seg big" role="group" aria-label="布置方案">
+      <button id="opt1" type="button" aria-pressed="true">方案 1 · 发电机在后</button>
+      <button id="opt2" type="button" aria-pressed="false">方案 2 · 发电机在前</button>
+      <button id="opt3" type="button" aria-pressed="false">方案 3 · 优化</button>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="viewer" id="viewer">
+      <div id="stage"></div>
+      <div id="labels"></div>
+      <div class="bar top">
+        <div class="seg" role="group" aria-label="视角">
+          <button type="button" data-view="iso" aria-pressed="true">轴测</button>
+          <button type="button" data-view="top" aria-pressed="false">俯视</button>
+          <button type="button" data-view="side" aria-pressed="false">路边侧</button>
+          <button type="button" data-view="rear" aria-pressed="false">车尾</button>
+        </div>
+        <div class="toggles">
+          <button class="chip" type="button" id="tShell" aria-pressed="false">完整外壳</button>
+          <button class="chip" type="button" id="tTags" aria-pressed="true">设备标注</button>
+          <button class="chip" type="button" id="tDims" aria-pressed="true">通道宽度</button>
+          <button class="chip" type="button" id="tCg" aria-pressed="true">载荷重心</button>
+        </div>
+      </div>
+      <div class="bar bottom">
+        <span class="hint">驾驶室在右（+X），路边侧朝向镜头。黄色地面 = 通道</span>
+      </div>
+    </div>
+
+    <aside>
+      <section class="card" id="sel">
+        <h2>选中设备</h2>
+        <p class="note" style="margin:0">点击模型或下方清单中的设备，查看尺寸、重量和位置。</p>
+      </section>
+      <section class="card">
+        <h2>设备清单</h2>
+        <ul class="list" id="legend"></ul>
+      </section>
+    </aside>
+  </div>
+
+  <div class="lower">
+    <section class="card">
+      <h2 id="chkTitle">图纸核对</h2>
+      <p class="note" id="optDesc" style="margin:0 0 10px"></p>
+      <div class="checks" id="checks"></div>
+    </section>
+    <section class="card">
+      <h2>载荷重心对比</h2>
+      <p class="note" style="margin:0">三台业主设备（合计 2,450 kg）的平面重心，从箱体后墙量起。车桥位置 RFQ 未给出，所以这里不推算轴荷。</p>
+      <p class="note">底盘是 2024 Ford E-Series Cutaway（7.3L V8，GVWR 14,500 lb）。标签上的 8,980 lb 最大载荷是裸底盘的数字，要先扣掉货箱自重。业主已确认整车重量在额定范围内。</p>
+      <div class="cmp" id="cmp"></div>
+      <h2 style="margin-top:16px">建模假设</h2>
+      <ul class="plain">
+        <li><b>箱内净高按 2,100 mm</b>，RFQ 未给出。滤油机高 1,700 mm，加底座后顶部约 1,800 mm。</li>
+        <li><b>设备都放在 100 mm 高的槽钢底座上</b>（RFQ 安全条款要求），吨桶和滤油机底座外围有 2 in 边沿的接油盘。</li>
+        <li><b>发电机间防火隔墙按 50 mm 厚</b>，紧贴发电机一侧布置。平面图上没画这道墙。</li>
+        <li><b>柴油箱、排气箱、电控柜</b>在图上画在箱体墙线外侧，这里分别做成车底鞍座油箱、车外排气罩和外侧检修柜。</li>
+        <li><b>驾驶室、底盘和车轮</b>只是示意外形，不代表实际车型尺寸。</li>
+        <li><b>方案 2 图上没有工具车和电缆盘</b>，所以模型里也没放。方案 3 建议把电缆盘放进车外侧的独立舱，模型里没画。</li>
+        <li><b>方案 3 的后门</b>按接近全宽的开口处理（业主确认）。设备尺寸按 RFQ 表格。</li>
+        <li><b>方案 3 的重心包含估算重量</b>：路边侧工具架连工具和标准件约 200 kg，满油柴油箱约 200 kg。其他方案只算三台设备。</li>
+      </ul>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/renderers/CSS2DRenderer.js"></script>
+<script>
+(function(){
+'use strict';
+const viewer=document.getElementById('viewer');
+if(!window.THREE||!THREE.OrbitControls||!THREE.CSS2DRenderer){
+  viewer.insertAdjacentHTML('beforeend','<div class="err">三维库没有加载成功。请检查网络后刷新页面。</div>');
+  return;
+}
+
+/* ---------- 基本尺寸（mm） ---------- */
+const L=4100, W=2400, H=2100, FLOOR=900; // 箱长、箱宽、净高（假设）、地板离地（示意）
+const BASE=100; // 槽钢底座
+const S=0.001;
+const X=x=>x*S-L*S/2, Z=y=>y*S-W*S/2, Y=h=>h*S;
+const IN=mm=>(mm/25.4).toFixed(1);
+
+/* ---------- 设备与配套件数据（按平面图量取） ---------- */
+const EQUIP={
+  gen:{name:'柴油发电机组',en:'Diesel generator set',fp:'2,050 × 980',h:1390,kg:800,color:'#2B2F33'},
+  pur:{name:'真空滤油机',en:'Vacuum oil purifier',fp:'1,300 × 1,100',h:1700,kg:650,color:'#4F8F5E'},
+  ibc:{name:'IBC 吨桶（满）',en:'Insulating oil IBC tote',fp:'1,200 × 1,200',h:1200,kg:1000,color:'#E9ECE8'}
+};
+const OPTS={
+  opt1:{
+    title:'方案 1：发电机在车尾，滤油机居中，吨桶靠驾驶室',
+    gen:{x0:97,x1:1077,y0:175,y1:2225},
+    pur:{x0:1577,x1:2877,y0:600,y1:1700,panel:[2010,2450],ports:'x0'},
+    ibc:{x0:2900,x1:4100,y0:600,y1:1800,out:3500},
+    partition:[1077,1127],
+    toolPanel:[1400,2900], tank:[1550,2550], exhaust:[0,1000], elec:[340,830],
+    door:[3330,4030], ext:[[3180,2330],[1250,2330],[1250,80]],
+    cart:true, louverX:[300,900], fanX:3000,
+    aisles:[
+      {r:[1127,3500,0,600],w:600,lbl:'驾驶侧',at:[2300,300]},
+      {r:[1127,2900,1700,2400],w:700,lbl:'路边侧·滤油机旁',at:[1900,2050]},
+      {r:[2900,4100,1800,2400],w:600,lbl:'路边侧·吨桶旁',at:[3100,2100]},
+      {r:[1127,1577,600,1700],w:450,lbl:'横向',at:[1352,1150]}
+    ]
+  },
+  opt2:{
+    title:'方案 2：滤油机在车尾，吨桶居中，发电机靠驾驶室',
+    gen:{x0:3120,x1:4100,y0:175,y1:2225},
+    pur:{x0:100,x1:1400,y0:600,y1:1700,panel:[540,970],ports:'x0'},
+    ibc:{x0:1425,x1:2625,y0:600,y1:1800,out:2025},
+    partition:[3070,3120],
+    toolPanel:[1300,2800], tank:[1550,2550], exhaust:[3100,4050], elec:[3360,3860],
+    door:[2100,2900], ext:[[1970,2330],[2980,2330],[500,80]],
+    cart:false, louverX:[3350,3900], fanX:500,
+    aisles:[
+      {r:[0,3070,0,600],w:600,lbl:'驾驶侧',at:[2000,300]},
+      {r:[0,1425,1700,2400],w:700,lbl:'路边侧·滤油机旁',at:[700,2050]},
+      {r:[1425,3070,1800,2400],w:600,lbl:'路边侧·吨桶旁',at:[2300,2100]},
+      {r:[2625,3070,600,1800],w:445,lbl:'横向',at:[2847,1200]}
+    ]
+  },
+  opt3:{
+    title:'方案 3（最终稿）：吨桶在后门口可叉车更换，滤油机靠驾驶侧，发电机间在前（两端百叶门、隔墙检修门、280 mm 检修间隙），路边侧一条宽通道',
+    ibc:{x0:50,x1:1250,y0:200,y1:1400,outFace:'x1',outY:700},
+    pur:{x0:1370,x1:2670,y0:150,y1:1250,panel:[1800,2240],ports:'x0',portY:[610,790]},
+    gen:{x0:3070,x1:4050,y0:175,y1:2225},
+    partition:[2740,2790], partDoor:[1450,2250],
+    toolPanel:[250,1340], rack:{d:280}, tank:[1550,2550], tankSide:'curb',
+    extra:[{kg:200,x:795,y:2260,h:900,n:'工具架及工具、标准件（估）'},{kg:200,x:2050,y:2140,h:-330,n:'柴油箱满油（估）'}],
+    exhaustRoof:{x:3560,y:1075}, elecCurb:[1400,1800], genDoor:[3150,3950], genDoorBoth:true,
+    door:[1850,2650], ext:[[2690,2330],[130,2330],[3100,2320]],
+    cart:false, louverX:[3150,3950], fanX:2250,
+    pipe:[[1330,1000,120],[1330,1000,-150],[1330,2300,-150],[1800,2300,-150]], extPorts:[1450,1620,1790], portH:-150,
+    forklift:true,
+    aisles:[
+      {r:[1310,2740,1310,2400],w:1090,lbl:'路边侧主通道',at:[2050,1860]},
+      {r:[0,1310,1460,2120],w:660,lbl:'车尾段·吨桶旁',at:[650,1790]}
+    ]
+  }
+};
+OPTS.opt1.pipe=[[1497,972,120],[1497,2300,120],[3500,2300,120],[3500,1880,120]]; OPTS.opt1.extPorts=[1797,2017,2237];
+OPTS.opt2.pipe=[[40,972,120],[40,2300,120],[2025,2300,120],[2025,1880,120]]; OPTS.opt2.extPorts=[340,560,780];
+const NEED=610; // ≥ 24 in
+const statusOf=w=>w>=NEED?'ok':(w>=NEED-20?'warn':'bad');
+
+function cgOf(o){
+  let m=0,sx=0,sy=0;
+  for(const k of ['gen','pur','ibc']){const e=o[k],kg=EQUIP[k].kg;m+=kg;sx+=kg*(e.x0+e.x1)/2;sy+=kg*(e.y0+e.y1)/2;}
+  for(const a of (o.extra||[])){m+=a.kg;sx+=a.kg*a.x;sy+=a.kg*a.y;}
+  return {x:sx/m,y:sy/m,m};
+}
+function cgZ(o){
+  let m=0,s=0;
+  for(const k of ['gen','pur','ibc']){const kg=EQUIP[k].kg;m+=kg;s+=kg*(BASE+EQUIP[k].h/2);}
+  for(const a of (o.extra||[])){m+=a.kg;s+=a.kg*a.h;}
+  return s/m;
+}
+
+/* ---------- 核对清单（由几何数据生成） ---------- */
+function checksFor(key){
+  const o=OPTS[key], a=o.aisles, r=[];
+  if(key==='opt3'){
+    const cg=cgOf(o), c1=cgOf(OPTS.opt1), off=Math.round(W/2-cg.y);
+    r.push({s:'ok',t:'吨桶更换',v:'后门直通',d:'吨桶靠驾驶侧墙，叉车从后门直接叉取。后门是接近全宽的开口（箱体内宽减外壳厚度，业主确认）。吨桶用快换接头和软管连接滤油机，用定位挡块和棘轮绑带固定。'});
+    r.push({s:statusOf(a[0].w),t:'路边侧主通道',v:`${a[0].w.toLocaleString()} mm · ${IN(a[0].w)} in`,d:'滤油机靠驾驶侧墙放，路边侧留出一条宽通道，从后门一直通到发电机间隔墙，侧门也开在这条通道上。'});
+    r.push({s:statusOf(a[1].w),t:'车尾段 · 吨桶旁',v:`${a[1].w} mm · ${IN(a[1].w)} in`,d:'吨桶靠驾驶侧墙，对面是深 280 mm 的工具架。已扣除接油盘边沿，满足 24 in。'});
+    r.push({s:'ok',t:'滤油机接管',v:'油口朝吨桶',d:'进出油口朝车尾，离吨桶出油阀不到 200 mm，软管最短。去变压器的主管从地板下走到路边侧外接口，不横穿通道。'});
+    r.push({s:'ok',t:'发电机排气',v:'车顶竖排',d:'排气管从发电机间顶部穿出车顶，加防雨帽，远离驾驶室车窗、作业通道和油口。'});
+    r.push({s:'ok',t:'侧门位置',v:`距后墙 ${o.door[0].toLocaleString()} mm`,d:'开在发电机间后面、主通道上，向外开，下挂折叠铝梯。业主已认可。'});
+    r.push({s:'ok',t:'发电机检修',v:'两端门 + 隔墙门',d:'两端各开一扇百叶检修门：路边侧对控制箱和发电机头，驾驶侧对散热器，同时作进出风口。保养面朝隔墙，留 280 mm 间隙，隔墙对着主通道开防火检修门，蹲在通道里就能换滤芯、看机油尺。'});
+    r.push({s:'warn',t:'远置保养点',v:'待机组厂确认',d:'机油放油管引到车外放油阀，机油滤芯和油水分离器改远置支座，装在检修门旁。散热器朝哪一端，要按机组实际保养点位置最后确定。'});
+    r.push({s:'warn',t:'发电机功率',v:'需 ≥ 20 kW',d:'滤油机 DZL-30A 加热 12 kW、泵 3.3 kW、控制约 0.7 kW，合计约 16 kW，三相。再加照明和风扇，发电机功率需要核对铭牌。'});
+    r.push({s:'info',t:'滤油机安装',v:'DN32 · 拆脚轮',d:'原机脚轮拆掉，用螺栓固定在槽钢底座上。车载管路和外接口按 DN32。环境温度要求低于 40 °C，厢内通风量要算够。控制面板和表计朝通道。'});
+    r.push({s:off>150?'warn':'info',t:'载荷重心',v:`距后墙 ${Math.round(cg.x).toLocaleString()} mm`,d:`含三台设备、工具架（约 200 kg）和满油柴油箱（约 200 kg），后两项是估算值。横向偏驾驶侧 ${off} mm：吨桶和滤油机都靠驾驶侧，路边侧的工具架和柴油箱把重心拉回来一部分。吨桶在后轴附近，满桶和空桶时前轴载荷变化较大，要按实车轴距核算。`});
+    return r;
+  }
+  const tp=o.toolPanel;
+  r.push({s:statusOf(a[0].w),t:'驾驶侧纵向通道',v:`${a[0].w} mm · ${IN(a[0].w)} in`,d:`RFQ 要求 ≥ 24 in（610 mm）。图上是 600 mm，差约 10 mm。`});
+  r.push({s:'bad',t:'驾驶侧 · 工具板处',v:`≈ 500 mm · ${IN(500)} in`,d:`工具板（X ${tp[0]}–${tp[1]}）挂在驾驶侧墙上，图上厚约 100 mm，会把通道再压窄。按图估算。`});
+  r.push({s:statusOf(a[2].w),t:'路边侧 · 吨桶旁',v:`${a[2].w} mm · ${IN(a[2].w)} in`,d:'同样比 24 in 少约 10 mm。吨桶外围再加接油盘边沿，实际会更窄。'});
+  r.push({s:statusOf(a[1].w),t:'路边侧 · 滤油机旁',v:`${a[1].w} mm · ${IN(a[1].w)} in`,d:'满足要求。滤油机控制面板朝这一侧，操作空间够。'});
+  if(key==='opt1'){
+    r.push({s:'bad',t:'横向通道（隔墙后）',v:`≈ 450 mm · ${IN(450)} in`,d:'图上发电机与滤油机之间 500 mm，但 RFQ 要求的发电机间防火隔墙没有画。加 50 mm 隔墙后剩约 450 mm，而且滤油机进出油口正对这条通道。'});
+    r.push({s:'ok',t:'侧门位置',v:'靠驾驶室端',d:'符合 RFQ “侧门靠近驾驶室端” 的要求。发电机间可以从车尾后门检修。'});
+  }else{
+    r.push({s:'bad',t:'横向通道（隔墙后）',v:`≈ 445 mm · ${IN(445)} in`,d:'图上吨桶与发电机之间约 490 mm，再扣掉 50 mm 隔墙，剩约 445 mm。'});
+    r.push({s:'warn',t:'侧门位置',v:'箱体中部',d:'RFQ 要求侧门靠近驾驶室端，但这一端被发电机间占了，所以门只能放在中部。需要和业主确认。'});
+    r.push({s:'warn',t:'发电机排气',v:'靠近驾驶室',d:'排气罩在驾驶侧、紧挨驾驶室后方。RFQ 要求排气远离进风口，要确认驾驶室空调进风位置。'});
+  }
+  const cg=cgOf(o);
+  r.push({s:'info',t:'载荷重心',v:`距后墙 ${Math.round(cg.x).toLocaleString()} mm`,d:`横向偏驾驶侧 ${Math.round(W/2-cg.y)} mm，基本居中。`});
+  return r;
+}
+
+/* ---------- three.js 场景 ---------- */
+const stage=document.getElementById('stage'), labelsEl=document.getElementById('labels');
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding;
+stage.appendChild(renderer.domElement);
+const labelR=new THREE.CSS2DRenderer();
+labelsEl.appendChild(labelR.domElement);
+labelR.domElement.style.position='absolute';labelR.domElement.style.inset='0';
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(38,1,0.05,100);
+const controls=new THREE.OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true; controls.dampingFactor=0.08;
+controls.maxPolarAngle=Math.PI*0.495; controls.minDistance=1.5; controls.maxDistance=22;
+
+scene.add(new THREE.HemisphereLight(0xffffff,0x8a8f88,0.75));
+const sun=new THREE.DirectionalLight(0xffffff,0.85);
+sun.position.set(-3,8,6); sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera,{left:-6,right:6,top:6,bottom:-6,near:1,far:25});
+sun.shadow.bias=-0.0005;
+scene.add(sun);
+const fill=new THREE.DirectionalLight(0xffffff,0.25); fill.position.set(5,4,-6); scene.add(fill);
+
+function mat(color,opt){return new THREE.MeshStandardMaterial(Object.assign({color,roughness:.7,metalness:.05},opt||{}));}
+function box(x0,x1,y0,y1,h0,h1,m,parent){
+  const g=new THREE.BoxGeometry(Math.max((x1-x0)*S,1e-4),Math.max((h1-h0)*S,1e-4),Math.max((y1-y0)*S,1e-4));
+  const me=new THREE.Mesh(g,m);
+  me.position.set(X((x0+x1)/2),Y((h0+h1)/2),Z((y0+y1)/2));
+  me.castShadow=!m.transparent; me.receiveShadow=true;
+  (parent||scene).add(me); return me;
+}
+function cyl(r,len,axis,cx,cy,h,m,parent,seg){
+  const g=new THREE.CylinderGeometry(r*S,r*S,len*S,seg||24);
+  const me=new THREE.Mesh(g,m);
+  if(axis==='x')me.rotation.z=Math.PI/2; if(axis==='z')me.rotation.x=Math.PI/2;
+  me.position.set(X(cx),Y(h),Z(cy)); me.castShadow=true; me.receiveShadow=true;
+  parent.add(me); return me;
+}
+function tag(parent,x,y,h,html,cls){
+  const d=document.createElement('div'); d.className=cls||'tag'; d.innerHTML=html;
+  const o=new THREE.CSS2DObject(d); o.position.set(X(x),Y(h),Z(y)); parent.add(o); return o;
+}
+
+/* 共享材质 */
+const M={
+  floor:mat('#34393C',{roughness:.95}), wall:mat('#DDE1DF',{roughness:.8}),
+  wallT:mat('#DDE1DF',{transparent:true,opacity:.14,depthWrite:false}),
+  wallDrv:mat('#CFD5D3',{roughness:.85,transparent:true,opacity:.55,depthWrite:false}),
+  roof:mat('#E6E9E7',{transparent:true,opacity:.95}),
+  steel:mat('#9EA6AA',{metalness:.6,roughness:.35}), dark:mat('#23272A',{roughness:.6}),
+  black:mat('#16191B',{roughness:.5}), red:mat('#C62828',{roughness:.45}),
+  genBody:mat('#2B2F33',{roughness:.55}), genRad:mat('#1D2124'), genAcc:mat('#B83227'),
+  purFrame:mat('#4F8F5E',{roughness:.55}), purTank:mat('#6FA37A',{roughness:.5}), purBox:mat('#E4E6E3'),
+  ibcTank:mat('#F3F4EF',{transparent:true,opacity:.82,roughness:.4}), ibcOil:mat('#C9A227',{transparent:true,opacity:.55,roughness:.2}),
+  pallet:mat('#5B6064'), channel:mat('#3E4A52',{metalness:.4,roughness:.5}),
+  pan:mat('#B4BBBE',{metalness:.55,roughness:.35}), fire:mat('#B85C38',{transparent:true,opacity:.6,roughness:.8,depthWrite:false}),
+  tool:mat('#6C7A89',{roughness:.8}), alu:mat('#C3C9CC',{metalness:.7,roughness:.3}), ss:mat('#D2D6D8',{metalness:.8,roughness:.25}),
+  panel:mat('#D5D9DA'), walk:new THREE.MeshBasicMaterial({color:'#F2C94C',transparent:true,opacity:.42,depthWrite:false}),
+  cab:mat('#F1F2EF',{roughness:.45,metalness:.1}), glass:mat('#2C3A44',{roughness:.1,metalness:.3,transparent:true,opacity:.75}),
+  tire:mat('#1A1A1A',{roughness:.9}), rim:mat('#B9BEC1',{metalness:.7,roughness:.3}),
+  louver:mat('#8C9599',{metalness:.5,roughness:.4}), cart:mat('#C0392B',{roughness:.5}), cable:mat('#1F1F1F',{roughness:.8}),
+  cg:new THREE.MeshBasicMaterial({color:'#E0621B'}), cgLine:new THREE.LineBasicMaterial({color:'#E0621B'})
+};
+
+/* ---------- 地面、底盘、驾驶室（静态） ---------- */
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.ShadowMaterial({opacity:.18}));
+ground.rotation.x=-Math.PI/2; ground.position.y=-FLOOR*S; ground.receiveShadow=true; scene.add(ground);
+const grid=new THREE.GridHelper(20,40,0x8f9793,0x8f9793); grid.position.y=-FLOOR*S+0.001;
+grid.material.transparent=true; grid.material.opacity=.18; scene.add(grid);
+
+const truck=new THREE.Group(); scene.add(truck);
+// 车架纵梁
+for(const yy of [W/2-480,W/2+380]) box(-300,6300,yy,yy+100,-FLOOR+330,-FLOOR+560,M.black,truck);
+// 箱体底横梁
+for(let x=100;x<L;x+=500) box(x,x+60,0,W,-180,-80,M.dark,truck);
+// 车轮
+function wheel(cx,side,dual){
+  const zs=side<0?[ -20 ]:[W+20];
+  const offs=dual?[0,260]:[0];
+  for(const off of offs){
+    const zc=side<0?(-off+180):(W-180+off);
+    const t=cyl(380,230,'z',cx,zc,-FLOOR+380,M.tire,truck,32);
+    const r=cyl(220,240,'z',cx,zc,-FLOOR+380,M.rim,truck,20);
+  }
+}
+wheel(900,-1,true); wheel(900,1,true); wheel(5550,-1,false); wheel(5550,1,false);
+// 驾驶室
+box(L+60,L+1150,150,W-150,-FLOOR+560,1350,M.cab,truck);
+box(L+1150,L+2050,250,W-250,-FLOOR+560,280,M.cab,truck);
+box(L+1150,L+1500,300,W-300,280,1150,M.cab,truck);
+const ws=box(L+1180,L+1200,320,W-320,300,1120,M.glass,truck); ws.rotation.z=0.35;
+for(const yy of [148,W-150]) box(L+450,L+1100,yy,yy+2,450,1150,M.glass,truck);
+box(L+2040,L+2090,300,W-300,-FLOOR+420,-50,M.dark,truck); // 保险杠
+tag(truck,L+700,W/2,1500,'<b>驾驶室</b>','tag minor');
+
+/* ---------- 可切换的布置 ---------- */
+let layout=null, pickables=[], state={opt:'opt1',sel:null};
+const toRemove=g=>{g.traverse(o=>{if(o.isCSS2DObject&&o.element.parentNode)o.element.parentNode.removeChild(o.element);});};
+
+function shell(g,o){
+  box(0,L,0,W,-80,0,M.floor,g);                       // 地板（防滑橡胶垫）
+  box(0,L,-50,0,0,H,M.wallDrv,g).userData.shell='drv';  // 驾驶侧墙
+  box(L,L+50,-50,W+50,0,H,M.wallDrv,g).userData.shell='front';
+  box(-50,0,-50,W+50,0,H,M.wallT,g).userData.shell='rear';
+  // 路边侧墙（开侧门洞）
+  const [d0,d1]=o.door, DH=1900;
+  box(0,d0,W,W+50,0,H,M.wallT,g).userData.shell='curb';
+  box(d1,L,W,W+50,0,H,M.wallT,g).userData.shell='curb';
+  box(d0,d1,W,W+50,DH,H,M.wallT,g).userData.shell='curb';
+  const roof=box(-50,L+50,-50,W+50,H,H+60,M.roof,g); roof.userData.shell='roof';
+  // 侧门框
+  const fr=M.steel;
+  box(d0-40,d0,W-10,W+60,0,DH,fr,g); box(d1,d1+40,W-10,W+60,0,DH,fr,g); box(d0-40,d1+40,W-10,W+60,DH,DH+40,fr,g);
+  tag(g,(d0+d1)/2,W+60,DH+140,'<b>侧门</b>','tag minor');
+  // 后门（卷帘）轮廓
+  for(let hh=150;hh<H-100;hh+=150) box(-58,-52,150,W-150,hh,hh+12,M.louver,g).userData.shell='rear';
+  // 折叠铝梯（车外）
+  // 铰点在门槛外沿，梯子向外下方展开到地面
+  const lw=Math.min(d1-d0,700), lx0=(d0+d1)/2-lw/2, LEN=1250;
+  const pivot=new THREE.Group(); pivot.position.set(0,0,Z(W+50)); g.add(pivot);
+  const lbox=(x0,x1,z0,z1,h0,h1)=>{const m=new THREE.Mesh(new THREE.BoxGeometry((x1-x0)*S,(h1-h0)*S,(z1-z0)*S),M.alu);m.position.set(X((x0+x1)/2),Y((h0+h1)/2),(z0+z1)/2*S);m.castShadow=true;pivot.add(m);};
+  for(const xx of [lx0,lx0+lw-40]) lbox(xx,xx+40,0,LEN,-40,0);
+  for(let zz=180;zz<LEN;zz+=260) lbox(lx0,lx0+lw,zz,zz+70,-45,-10);
+  pivot.rotation.x=Math.asin(FLOOR/LEN);
+  tag(g,(d0+d1)/2,W+650,-520,'<b>折叠爬梯</b>','tag minor');
+}
+
+function base(g,e,pan){
+  const m=60;
+  if(pan){ // 接油盘：底板 + 2 in 边沿 + 1 in 排油阀
+    box(e.x0-m,e.x1+m,e.y0-m,e.y1+m,0,4,M.pan,g);
+    box(e.x0-m,e.x1+m,e.y0-m,e.y0-m+4,0,51,M.pan,g); box(e.x0-m,e.x1+m,e.y1+m-4,e.y1+m,0,51,M.pan,g);
+    box(e.x0-m,e.x0-m+4,e.y0-m,e.y1+m,0,51,M.pan,g); box(e.x1+m-4,e.x1+m,e.y0-m,e.y1+m,0,51,M.pan,g);
+    cyl(18,70,'z',e.x1+m-60,e.y1+m+30,30,M.ss,g,12);
+  }
+  // 槽钢底座 + 减振垫
+  const t=80;
+  box(e.x0,e.x1,e.y0,e.y0+t,4,BASE,M.channel,g); box(e.x0,e.x1,e.y1-t,e.y1,4,BASE,M.channel,g);
+  box(e.x0,e.x0+t,e.y0,e.y1,4,BASE,M.channel,g); box(e.x1-t,e.x1,e.y0,e.y1,4,BASE,M.channel,g);
+}
+
+function buildGen(e){
+  const g=new THREE.Group(); g.userData.key='gen';
+  base(g,e,false);
+  const b=BASE, x0=e.x0,x1=e.x1,y0=e.y0,y1=e.y1;
+  box(x0,x1,y0,y1,b,b+140,M.genBody,g);                         // 底架
+  box(x0+40,x1-40,y0+20,y0+260,b+140,b+1390,M.genRad,g);        // 散热器
+  box(x0+120,x1-120,y0+300,y1-700,b+140,b+1050,M.genBody,g);    // 发动机
+  cyl(90,380,'z',(x0+x1)/2,y0+520,b+1180,M.genAcc,g,16);         // 进气/管路
+  box(x0+100,x1-100,y1-660,y1-40,b+140,b+900,M.genBody,g);      // 发电机
+  box(x0+180,x1-180,y1-560,y1-160,b+900,b+1390,M.panel,g);      // 控制箱
+  cyl(55,700,'y',(x0+x1)/2,y0+900,b+1400,M.ss,g,14);            // 排气管
+  return g;
+}
+function buildPur(e){
+  const g=new THREE.Group(); g.userData.key='pur';
+  base(g,e,true);
+  const b=BASE, x0=e.x0,x1=e.x1,y0=e.y0,y1=e.y1, T=50, top=b+1700;
+  for(const [xx,yy] of [[x0,y0],[x1-T,y0],[x0,y1-T],[x1-T,y1-T]]) box(xx,xx+T,yy,yy+T,b,top,M.purFrame,g);
+  for(const hh of [b,top-T]){box(x0,x1,y0,y0+T,hh,hh+T,M.purFrame,g);box(x0,x1,y1-T,y1,hh,hh+T,M.purFrame,g);box(x0,x0+T,y0,y1,hh,hh+T,M.purFrame,g);box(x1-T,x1,y0,y1,hh,hh+T,M.purFrame,g);}
+  box(x0+T,x1-T,y0+T,y1-T,b+T,b+T+20,M.purFrame,g);
+  cyl(280,1050,'y',x0+420,(y0+y1)/2-60,b+700,M.purTank,g,28);    // 真空罐
+  cyl(200,700,'y',x1-330,y0+300,b+500,M.purTank,g,24);           // 加热罐
+  box(x1-520,x1-120,y1-420,y1-120,b+70,b+420,M.genRad,g);        // 真空泵
+  box(x0+700,x1-200,y0+150,y0+450,b+70,b+300,M.dark,g);          // 油泵
+  const [p0,p1]=e.panel;                                         // 控制面板（朝路边侧）
+  box(p0,p1,y1-20,y1+70,b+850,b+1550,M.purBox,g);
+  for(let i=0;i<4;i++) cyl(14,20,'z',p0+80+i*90,y1+80,b+1150,i%2?M.red:M.purFrame,g,10);
+  const py=e.portY||[885,1060];
+  for(const yy of py){ cyl(24,160,'x',x0-80,yy,b+420,M.ss,g,12); }  // 进/出油口
+  tag(g,x0-120,(py[0]+py[1])/2,b+820,'进出油口','tag minor');
+  return g;
+}
+function buildIbc(e){
+  const g=new THREE.Group(); g.userData.key='ibc';
+  base(g,e,true);
+  const b=BASE, x0=e.x0,x1=e.x1,y0=e.y0,y1=e.y1;
+  box(x0,x1,y0,y1,b,b+150,M.pallet,g);
+  box(x0+30,x1-30,y0+30,y1-30,b+160,b+1150,M.ibcTank,g);
+  box(x0+45,x1-45,y0+45,y1-45,b+165,b+1000,M.ibcOil,g);
+  // 镀锌格栅
+  const pts=[], xa=S, H0=b+150, H1=b+1170;
+  const addL=(ax,ay,ah,bx,by,bh)=>{pts.push(new THREE.Vector3(X(ax),Y(ah),Z(ay)),new THREE.Vector3(X(bx),Y(bh),Z(by)));};
+  for(let i=0;i<=8;i++){const t=i/8, xx=x0+t*(x1-x0), yy=y0+t*(y1-y0);
+    addL(xx,y0,H0,xx,y0,H1); addL(xx,y1,H0,xx,y1,H1); addL(x0,yy,H0,x0,yy,H1); addL(x1,yy,H0,x1,yy,H1);}
+  for(const hh of [H0,H0+340,H0+680,H1]){addL(x0,y0,hh,x1,y0,hh);addL(x0,y1,hh,x1,y1,hh);addL(x0,y0,hh,x0,y1,hh);addL(x1,y0,hh,x1,y1,hh);}
+  for(let i=0;i<=4;i++){const t=i/4;addL(x0+t*(x1-x0),y0,H1,x0+t*(x1-x0),y1,H1);}
+  const cage=new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:0x7d8589}));
+  g.add(cage);
+  cyl(150,60,'y',(x0+x1)/2,(y0+y1)/2,H1+30,M.ibcTank,g,24);
+  if(e.outFace==='x1'){ cyl(40,140,'x',x1+40,e.outY,b+230,M.ss,g,12); tag(g,x1+80,e.outY,b+380,'出油阀','tag minor'); }
+  else { cyl(40,140,'z',e.out,y1+40,b+230,M.ss,g,12); tag(g,e.out,y1+80,b+380,'出油口','tag minor'); }
+  return g;
+}
+
+function accessories(g,o){
+  // 发电机间防火隔墙
+  const [p0,p1]=o.partition;
+  box(p0,p1,0,W,0,H,M.fire,g);
+  tag(g,(p0+p1)/2,150,H+120,'<b>防火隔墙</b><small>'+(o.forklift?'':'图上未画 · ')+'50 mm</small>','tag minor');
+  // 发电机间百叶 + 排风扇（两侧墙）
+  const [l0,l1]=o.louverX;
+  for(const [ya,yb] of [[-58,-50],[W+50,W+58]]) for(let hh=1250;hh<1850;hh+=70) box(l0,l1,ya,yb,hh,hh+30,M.louver,g);
+  cyl(220,60,'z',(l0+l1)/2,-80,1000,M.louver,g,24);
+  // 油区防爆排风扇（驾驶侧墙高处）
+  cyl(180,60,'z',o.fanX+150,-30,1850,M.louver,g,24);
+  tag(g,o.fanX+150,-60,2080,'防爆排风扇','tag minor');
+  // 工具板（驾驶侧内墙）
+  const [t0,t1]=o.toolPanel;
+  if(o.rack){ // 路边侧封闭工具架：工具、标准件、常用配件
+    const y0=W-o.rack.d;
+    for(const xx of [t0,t1-40]) box(xx,xx+40,y0,W,0,1900,M.tool,g);
+    box(t0,t1,W-20,W,0,1900,M.tool,g);
+    for(const hh of [0,350,750,1150,1500,1860]) box(t0,t1,y0,W,hh,hh+30,M.tool,g);
+    const bins=['#D9A21B','#2F6FB0','#C0392B','#3E8E5E'];
+    for(let i=0;i<8;i++) box(t0+60+i*((t1-t0-120)/8),t0+50+(i+1)*((t1-t0-120)/8),y0+40,W-40,1180,1330,mat(bins[i%4]),g);
+    for(let i=0;i<3;i++) box(t0+80+i*360,t0+400+i*360,y0+30,W-30,380,700,M.dark,g);
+    tag(g,(t0+t1)/2,y0,2020,'<b>工具架</b><small>工具 · 标准件 · 常用配件</small>','tag minor');
+  }else{
+    box(t0,t1,0,100,600,1800,M.tool,g);
+    tag(g,(t0+t1)/2,60,1900,'<b>工具板</b>','tag minor');
+  }
+  // 车底鞍座柴油箱（驾驶侧）
+  const [d0,d1]=o.tank;
+  const tyc=o.tankSide==='curb'?W-260:260;
+  cyl(220,d1-d0,'x',(d0+d1)/2,tyc,-330,M.alu,g,28);
+  for(const xx of [d0+120,d1-160]) box(xx,xx+40,tyc-140,tyc+160,-120,-40,M.dark,g);
+  tag(g,(d0+d1)/2,o.tankSide==='curb'?W+80:-80,-420,'<b>柴油箱</b><small>车底鞍座'+(o.tankSide==='curb'?'（路边侧）':'')+' · 带锁加油口</small>','tag minor');
+  // 发电机排气罩（车外驾驶侧）+ 不锈钢排气管
+  if(o.exhaustRoof){
+    const ex=o.exhaustRoof, top=BASE+1390+350;
+    cyl(60,H+700-top,'y',ex.x,ex.y,(top+H+700)/2,M.ss,g,14);
+    box(ex.x-110,ex.x+110,ex.y-110,ex.y+110,H+700,H+730,M.ss,g);
+    tag(g,ex.x,ex.y,H+880,'<b>排气管</b><small>穿车顶 · 防雨帽</small>','tag minor');
+  }else{
+    const [e0,e1]=o.exhaust;
+    box(e0,e1,-260,-50,1350,1850,M.ss,g);
+    cyl(55,700,'y',(e0+e1)/2,-155,2200,M.ss,g,14);
+    tag(g,(e0+e1)/2,-260,2350,'<b>排气罩</b>','tag minor');
+  }
+  if(o.elecCurb){ // IP54 配电柜（路边侧内墙、侧门旁）
+    const [c0,c1]=o.elecCurb;
+    box(c0,c1,W-200,W,900,1700,M.panel,g);
+    tag(g,(c0+c1)/2,W-100,1800,'<b>配电柜</b><small>IP54 · 侧门旁</small>','tag minor');
+  }else if(o.elecInside){ // IP54 配电柜（隔墙内侧、侧门旁）
+    const [c0,c1]=o.elecInside, px=o.partition[0];
+    box(px-200,px,c0,c1,900,1700,M.panel,g);
+    tag(g,px-100,(c0+c1)/2,1800,'<b>配电柜</b><small>IP54 · 侧门旁</small>','tag minor');
+  }else{ // IP54 配电柜（车外路边侧）
+    const [c0,c1]=o.elec;
+    box(c0,c1,W+50,W+230,900,1600,M.panel,g);
+    tag(g,(c0+c1)/2,W+240,1700,'<b>配电柜</b><small>IP54</small>','tag minor');
+  }
+  if(o.genDoor){ // 发电机间路边侧外检修门
+    const [g0,g1]=o.genDoor;
+    box(g0-30,g0,W+50,W+70,150,1950,M.steel,g); box(g1,g1+30,W+50,W+70,150,1950,M.steel,g);
+    box(g0-30,g1+30,W+50,W+70,1950,1980,M.steel,g); box(g0-30,g1+30,W+50,W+70,150,180,M.steel,g);
+    tag(g,(g0+g1)/2,W+80,2150,'<b>发电机检修门</b><small>百叶 · 控制箱端</small>','tag minor');
+    if(o.genDoorBoth){
+      box(g0-30,g0,-70,-50,150,1950,M.steel,g); box(g1,g1+30,-70,-50,150,1950,M.steel,g);
+      box(g0-30,g1+30,-70,-50,1950,1980,M.steel,g); box(g0-30,g1+30,-70,-50,150,180,M.steel,g);
+      tag(g,(g0+g1)/2,-80,2150,'<b>发电机检修门</b><small>百叶 · 散热器端</small>','tag minor');
+    }
+  }
+  if(o.partDoor){ // 隔墙防火检修门（对开，朝主通道）
+    const [d0,d1]=o.partDoor, px=o.partition[0];
+    box(px-10,px,d0-30,d0,0,1800,M.steel,g); box(px-10,px,d1,d1+30,0,1800,M.steel,g); box(px-10,px,d0-30,d1+30,1800,1830,M.steel,g);
+    box(px-6,px,(d0+d1)/2-3,(d0+d1)/2+3,0,1800,M.steel,g);
+    tag(g,px-20,(d0+d1)/2,1950,'<b>隔墙检修门</b><small>防火 · 通往发电机保养面</small>','tag minor');
+    tag(g,(px+o.gen.x0)/2+25,1700,20,`检修间隙 ${o.gen.x0-o.partition[1]} mm`,'dim ok');
+  }
+  if(o.forklift){
+    tag(g,-250,(o.ibc.y0+o.ibc.y1)/2,300,'<b>← 后门：叉车装卸吨桶</b>','tag');
+  }
+  // 灭火器 ×3
+  for(const [ex,ey] of o.ext){ cyl(80,500,'y',ex,ey,350,M.red,g,16); cyl(30,60,'y',ex,ey,630,M.black,g,10); }
+  tag(g,o.ext[0][0],o.ext[0][1],780,'灭火器','tag minor');
+  // 工具车 + 电缆盘（仅方案 1）
+  if(o.cart){
+    box(3540,4060,40,560,0,850,M.cart,g);
+    for(const hh of [300,580]) box(3545,4055,45,555,hh,hh+15,M.dark,g);
+    const reel=cyl(300,380,'z',3800,230,1400,M.cable,g,32);
+    cyl(330,20,'z',3800,40,1400,M.red,g,32); cyl(330,20,'z',3800,420,1400,M.red,g,32);
+    tag(g,3800,300,1850,'<b>工具车 · 电缆盘</b>','tag minor');
+  }
+  // 地面管路示意（304 不锈钢主管，接油口 → 路边侧外接口）
+  const pipe=o.pipe;
+  for(let i=0;i<pipe.length-1;i++){
+    const [ax,ay,ah]=pipe[i],[bx,by,bh]=pipe[i+1];
+    const axis=ax!==bx?'x':(ay!==by?'z':'y'), len=Math.abs(bx-ax)+Math.abs(by-ay)+Math.abs(bh-ah);
+    cyl(22,len,axis,(ax+bx)/2,(ay+by)/2,(ah+bh)/2,M.ss,g,10);
+  }
+  const ph=o.portH!=null?o.portH:300;
+  for(const px of o.extPorts) cyl(30,90,'z',px,W+85,ph,M.ss,g,12); // 三个外接口
+  tag(g,o.extPorts[1],W+120,ph+150,'外接油口 ×3','tag minor');
+}
+
+function walkways(g,o){
+  for(const a of o.aisles){
+    const [x0,x1,y0,y1]=a.r;
+    const p=new THREE.Mesh(new THREE.PlaneGeometry((x1-x0)*S,(y1-y0)*S),M.walk);
+    p.rotation.x=-Math.PI/2; p.position.set(X((x0+x1)/2),0.004,Z((y0+y1)/2)); p.renderOrder=2; g.add(p);
+    const st=statusOf(a.w);
+    tag(g,a.at[0],a.at[1],20,`${a.lbl} ${a.w} mm`,'dim '+st);
+  }
+}
+
+function cgMarker(g,o){
+  const c=cgOf(o), hz=cgZ(o);
+  const grp=new THREE.Group(); grp.userData.cg=true;
+  const s=new THREE.Mesh(new THREE.SphereGeometry(0.07,24,16),M.cg); s.position.set(X(c.x),Y(hz),Z(c.y)); grp.add(s);
+  const ln=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(X(c.x),0.01,Z(c.y)),new THREE.Vector3(X(c.x),Y(hz),Z(c.y))]),M.cgLine); grp.add(ln);
+  const ring=new THREE.Mesh(new THREE.RingGeometry(0.1,0.13,40),new THREE.MeshBasicMaterial({color:'#E0621B',side:THREE.DoubleSide}));
+  ring.rotation.x=-Math.PI/2; ring.position.set(X(c.x),0.006,Z(c.y)); grp.add(ring);
+  tag(grp,c.x,c.y,hz+190,`<b>载荷重心</b><small>距后墙 ${Math.round(c.x).toLocaleString()} mm</small>`,'tag');
+  g.add(grp); return grp;
+}
+
+let cgGroup=null, shellMeshes=[];
+function build(key){
+  if(layout){toRemove(layout);scene.remove(layout);}
+  layout=new THREE.Group(); scene.add(layout);
+  const o=OPTS[key];
+  shell(layout,o);
+  const gen=buildGen(o.gen), pur=buildPur(o.pur), ibc=buildIbc(o.ibc);
+  pickables=[gen,pur,ibc];
+  for(const [k,g] of [['gen',gen],['pur',pur],['ibc',ibc]]){
+    layout.add(g);
+    const e=o[k], q=EQUIP[k];
+    tag(g,(e.x0+e.x1)/2,(e.y0+e.y1)/2,BASE+q.h+130,`<b>${q.name}</b><small>H ${q.h.toLocaleString()} · ${q.kg.toLocaleString()} kg</small>`,'tag');
+  }
+  accessories(layout,o);
+  walkways(layout,o);
+  cgGroup=cgMarker(layout,o);
+  shellMeshes=[]; layout.traverse(m=>{if(m.userData&&m.userData.shell)shellMeshes.push(m);});
+  applyShell(); cgGroup.visible=cgOn;
+  if(cgGroup) cgGroup.traverse(m=>{if(m.isCSS2DObject)m.element.style.display=cgOn?'':'none';});
+  select(state.sel&&state.sel,true);
+}
+
+/* ---------- 外壳显示 ---------- */
+let fullShell=false, cgOn=true;
+function applyShell(){
+  for(const m of shellMeshes){
+    const s=m.userData.shell;
+    if(s==='roof') m.visible=fullShell;
+    else if(s==='curb'||s==='rear') m.material=fullShell?M.wall:M.wallT;
+    else m.material=fullShell?M.wall:M.wallDrv;
+  }
+}
+
+/* ---------- 选择 ---------- */
+let helper=null;
+const selCard=document.getElementById('sel'), legend=document.getElementById('legend');
+function select(key,silent){
+  state.sel=key||null;
+  if(helper){scene.remove(helper);helper=null;}
+  const g=pickables.find(p=>p.userData.key===key);
+  if(g){helper=new THREE.BoxHelper(g,0xE39A45);scene.add(helper);}
+  legend.querySelectorAll('.item').forEach(b=>b.setAttribute('aria-current',b.dataset.key===key?'true':'false'));
+  if(!key){selCard.innerHTML='<h2>选中设备</h2><p class="note" style="margin:0">点击模型或下方清单中的设备，查看尺寸、重量和位置。</p>';return;}
+  const q=EQUIP[key], e=OPTS[state.opt][key];
+  const toFront=L-e.x1, pan=key==='gen'?'无（发电机间单独防护）':'有，边沿 2 in，1 in 排油阀';
+  selCard.innerHTML=`<h2>${q.name}</h2><div class="eyebrow">${q.en} · 业主提供</div>
+  <dl class="kv">
+    <dt>占地</dt><dd>${q.fp} mm</dd>
+    <dt>高度</dt><dd>${q.h.toLocaleString()} mm（加底座 ${(q.h+BASE).toLocaleString()}）</dd>
+    <dt>重量</dt><dd>${q.kg.toLocaleString()} kg · ${Math.round(q.kg*2.2046).toLocaleString()} lb</dd>
+    <dt>距后墙</dt><dd>${e.x0.toLocaleString()} mm</dd>
+    <dt>距前墙</dt><dd>${toFront.toLocaleString()} mm</dd>
+    <dt>距驾驶侧墙</dt><dd>${e.y0.toLocaleString()} mm</dd>
+    <dt>距路边侧墙</dt><dd>${(W-e.y1).toLocaleString()} mm</dd>
+    <dt>接油盘</dt><dd style="font-family:var(--body)">${pan}</dd>
+  </dl>`;
+}
+function buildLegend(){
+  legend.innerHTML='';
+  for(const k of ['gen','pur','ibc']){
+    const q=EQUIP[k], li=document.createElement('li');
+    li.innerHTML=`<button class="item" type="button" data-key="${k}"><span class="sw" style="background:${q.color}"></span><span>${q.name}</span><span class="num">${q.kg.toLocaleString()} kg</span></button>`;
+    legend.appendChild(li);
+  }
+  const extra=[['#B85C38','防火隔墙（假设）'],['#F2C94C','通道（黄色地面）'],['#6C7A89','工具板 / 工具架'],['#C3C9CC','柴油箱 / 爬梯'],['#E0621B','载荷重心']];
+  for(const [c,n] of extra){const li=document.createElement('li');li.innerHTML=`<div class="item" style="cursor:default"><span class="sw" style="background:${c}"></span><span>${n}</span><span></span></div>`;legend.appendChild(li);}
+  legend.querySelectorAll('button.item').forEach(b=>b.addEventListener('click',()=>select(state.sel===b.dataset.key?null:b.dataset.key)));
+}
+
+const ray=new THREE.Raycaster(), mouse=new THREE.Vector2(); let down=null;
+renderer.domElement.addEventListener('pointerdown',e=>{down=[e.clientX,e.clientY];});
+renderer.domElement.addEventListener('pointerup',e=>{
+  if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5)return;
+  const r=renderer.domElement.getBoundingClientRect();
+  mouse.set(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);
+  ray.setFromCamera(mouse,camera);
+  const hit=ray.intersectObjects(pickables,true)[0];
+  let k=null; if(hit){let o=hit.object;while(o&&!o.userData.key)o=o.parent;k=o?o.userData.key:null;}
+  select(k);
+});
+
+/* ---------- 核对面板 ---------- */
+const STXT={ok:'满足',warn:'临界',bad:'不满足',info:'参考'};
+function renderChecks(){
+  const NAMES={opt1:'方案 1',opt2:'方案 2',opt3:'方案 3（优化）'};
+  document.getElementById('chkTitle').textContent=(state.opt==='opt3'?'布置核对 · ':'图纸核对 · ')+NAMES[state.opt];
+  document.getElementById('optDesc').textContent=OPTS[state.opt].title+'。';
+  document.getElementById('checks').innerHTML=checksFor(state.opt).map(c=>
+    `<div class="row"><span class="pill ${c.s}">${STXT[c.s]}</span><span class="t">${c.t}</span><span class="v">${c.v}</span><span class="d">${c.d}</span></div>`).join('');
+  document.getElementById('cmp').innerHTML=['opt1','opt2','opt3'].map(k=>{const c=cgOf(OPTS[k]);
+    return `<div class="${k===state.opt?'cur':''}"><span>${NAMES[k]} · 距后墙</span><strong>${Math.round(c.x).toLocaleString()} mm</strong><span>距驾驶侧墙 ${Math.round(c.y).toLocaleString()} mm</span></div>`;}).join('');
+}
+
+/* ---------- 视角 ---------- */
+const VIEWS={
+  iso:{p:[-4.6,4.4,5.6],t:[0.4,0.3,0]},
+  top:{p:[0.7,10.5,0.02],t:[0.7,0,0]},
+  side:{p:[0.8,0.9,9.2],t:[0.8,0.3,0]},
+  rear:{p:[-7.5,1.6,0.6],t:[0,0.5,0]}
+};
+const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let anim=null;
+function goView(v,instant){
+  const V=VIEWS[v], p=new THREE.Vector3(...V.p), t=new THREE.Vector3(...V.t);
+  document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===v?'true':'false'));
+  if(instant||reduce){camera.position.copy(p);controls.target.copy(t);controls.update();return;}
+  anim={p0:camera.position.clone(),t0:controls.target.clone(),p,t,start:performance.now(),dur:650};
+}
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>goView(b.dataset.view)));
+
+/* ---------- 开关 ---------- */
+function toggle(id,fn){const b=document.getElementById(id);b.addEventListener('click',()=>{const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);fn(on);});}
+toggle('tShell',on=>{fullShell=on;applyShell();});
+toggle('tTags',on=>labelsEl.classList.toggle('hide-tags',!on));
+toggle('tDims',on=>{labelsEl.classList.toggle('hide-dims',!on);layout.traverse(m=>{if(m.material===M.walk)m.visible=on;});});
+toggle('tCg',on=>{cgOn=on;if(cgGroup){cgGroup.visible=on;cgGroup.traverse(m=>{if(m.isCSS2DObject)m.element.style.display=on?'':'none';});}});
+
+function setOpt(k){
+  state.opt=k;
+  for(const id of ['opt1','opt2','opt3']) document.getElementById(id).setAttribute('aria-pressed',id===k?'true':'false');
+  build(k); renderChecks();
+  const dimsOn=document.getElementById('tDims').getAttribute('aria-pressed')==='true';
+  if(!dimsOn) layout.traverse(m=>{if(m.material===M.walk)m.visible=false;});
+  try{history.replaceState(null,'','#'+k);}catch(e){}
+}
+document.getElementById('opt1').addEventListener('click',()=>setOpt('opt1'));
+document.getElementById('opt2').addEventListener('click',()=>setOpt('opt2'));
+document.getElementById('opt3').addEventListener('click',()=>setOpt('opt3'));
+
+/* ---------- 主题 ---------- */
+function applyTheme(){
+  const c=getComputedStyle(document.documentElement).getPropertyValue('--scene').trim()||'#E3E7E4';
+  scene.background=new THREE.Color(c);
+  const dark=new THREE.Color(c).getHSL({}).l<0.3;
+  grid.material.opacity=dark?.12:.18;
+}
+new MutationObserver(applyTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme);
+
+/* ---------- 尺寸与循环 ---------- */
+function resize(){
+  const w=stage.clientWidth,h=stage.clientHeight;
+  renderer.setSize(w,h,false); renderer.domElement.style.width=w+'px'; renderer.domElement.style.height=h+'px';
+  labelR.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(stage);
+
+function loop(now){
+  if(anim){
+    let k=Math.min(1,(now-anim.start)/anim.dur); k=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+    camera.position.lerpVectors(anim.p0,anim.p,k); controls.target.lerpVectors(anim.t0,anim.t,k);
+    if(k>=1)anim=null;
+  }
+  controls.update();
+  if(helper)helper.update();
+  renderer.render(scene,camera); labelR.render(scene,camera);
+  requestAnimationFrame(loop);
+}
+
+buildLegend();
+applyTheme();
+const h0=(location.hash||'').replace('#','');
+setOpt(OPTS[h0]?h0:'opt1');
+goView('iso',true);
+resize();
+requestAnimationFrame(loop);
+})();
+</script>
