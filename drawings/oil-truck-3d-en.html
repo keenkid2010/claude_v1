@@ -1,0 +1,726 @@
+<title>Oil Filtration Truck 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#EDEFEC; --panel:#F8F9F7; --ink:#1B2226; --muted:#5B676C; --line:#CDD3D0;
+  --accent:#B3620E; --accent-soft:#F3E3CF; --scene:#E3E7E4;
+  --ok:#2E7A4D; --ok-soft:#DCEFE3; --warn:#9A6A00; --warn-soft:#F6EBC8; --bad:#B42318; --bad-soft:#F8DEDA;
+  --info:#3F5E73; --info-soft:#DDE7EE;
+  --display:"Barlow Condensed","PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",sans-serif;
+  --body:"IBM Plex Sans","PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",sans-serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#111618; --panel:#192023; --ink:#E2E7E5; --muted:#95A2A6; --line:#2C3639;
+    --accent:#E39A45; --accent-soft:#3A2A17; --scene:#161C1F;
+    --ok:#62C08A; --ok-soft:#173226; --warn:#E3B341; --warn-soft:#352C12; --bad:#F2856F; --bad-soft:#3B1C17;
+    --info:#8FB4CC; --info-soft:#1C2A33;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111618; --panel:#192023; --ink:#E2E7E5; --muted:#95A2A6; --line:#2C3639;
+  --accent:#E39A45; --accent-soft:#3A2A17; --scene:#161C1F;
+  --ok:#62C08A; --ok-soft:#173226; --warn:#E3B341; --warn-soft:#352C12; --bad:#F2856F; --bad-soft:#3B1C17;
+  --info:#8FB4CC; --info-soft:#1C2A33;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.55;padding-inline:16px;padding-block:20px 40px}
+.wrap{max-width:1320px;margin:0 auto;display:grid;gap:18px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(26px,3.4vw,38px);line-height:1.05;margin:4px 0 6px;text-wrap:balance;letter-spacing:.005em}
+.sub{color:var(--muted);margin:0;max-width:68ch}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:3px;gap:3px;flex-wrap:wrap}
+.seg button{font:inherit;border:0;background:transparent;color:var(--muted);padding:7px 12px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg button:focus-visible,.chip:focus-visible,.item:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.seg.big button{font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:.02em;padding:8px 16px}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:start}
+@media (max-width:900px){.main{grid-template-columns:1fr}}
+.viewer{position:relative;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--scene);height:clamp(380px,64vh,720px)}
+#stage{position:absolute;inset:0}
+#stage canvas{display:block}
+#labels{position:absolute;inset:0;pointer-events:none}
+.bar{position:absolute;left:10px;right:10px;display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;pointer-events:none}
+.bar>*{pointer-events:auto}
+.bar.top{top:10px}.bar.bottom{bottom:10px;align-items:flex-end}
+.toggles{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:12.5px;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:5px 11px;cursor:pointer}
+.chip[aria-pressed="true"]{color:var(--ink);border-color:var(--ink)}
+.hint{font-size:12px;color:var(--muted);background:color-mix(in srgb,var(--panel) 85%,transparent);padding:4px 9px;border-radius:6px}
+.tag{font-family:var(--body);font-size:12px;line-height:1.3;color:#1B2226;background:rgba(255,255,255,.92);border:1px solid rgba(27,34,38,.18);border-radius:5px;padding:3px 7px;white-space:nowrap;transform:translateY(-4px);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.tag b{font-weight:600}
+.tag small{display:block;font-family:var(--mono);font-size:10.5px;color:#5B676C}
+.tag.minor{font-size:11px;padding:2px 6px;background:rgba(255,255,255,.8)}
+.dim{font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:4px;white-space:nowrap;border:1px solid}
+.dim.ok{color:#1E5E39;background:#DCEFE3;border-color:#9CCDB0}
+.dim.warn{color:#6E4C00;background:#F6EBC8;border-color:#DCC27A}
+.dim.bad{color:#8E1B12;background:#F8DEDA;border-color:#E6A59B}
+.hide-tags .tag,.hide-dims .dim{display:none}
+aside{display:grid;gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.card h2{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:.02em;margin:0 0 8px}
+.card p{margin:0}
+.list{display:grid;gap:2px;margin:0;padding:0;list-style:none}
+.item{display:grid;grid-template-columns:14px 1fr auto;align-items:center;gap:10px;padding:7px 8px;border-radius:6px;cursor:pointer;border:1px solid transparent;background:none;font:inherit;color:inherit;text-align:left;width:100%}
+.item:hover{background:var(--bg)}
+.item[aria-current="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.sw{width:14px;height:14px;border-radius:3px;border:1px solid rgba(0,0,0,.2)}
+.num{font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+dl.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:8px 0 0}
+dl.kv dt{color:var(--muted);font-size:12.5px}
+dl.kv dd{margin:0;font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums}
+.note{font-size:12.5px;color:var(--muted);margin-top:8px}
+.lower{display:grid;grid-template-columns:1.35fr 1fr;gap:18px;align-items:start}
+@media (max-width:900px){.lower{grid-template-columns:1fr}}
+.checks{display:grid;gap:0}
+.row{display:grid;grid-template-columns:78px minmax(0,1fr) auto;gap:4px 12px;padding:10px 0;border-top:1px solid var(--line);align-items:baseline}
+.row:first-child{border-top:0;padding-top:2px}
+.pill{font-size:11.5px;font-weight:600;border-radius:999px;padding:2px 8px;text-align:center;white-space:nowrap;justify-self:start}
+.pill.ok{color:var(--ok);background:var(--ok-soft)}
+.pill.warn{color:var(--warn);background:var(--warn-soft)}
+.pill.bad{color:var(--bad);background:var(--bad-soft)}
+.pill.info{color:var(--info);background:var(--info-soft)}
+.row .t{font-weight:500}
+.row .d{grid-column:2 / 4;color:var(--muted);font-size:12.5px}
+.row .v{font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:480px){.row{grid-template-columns:70px minmax(0,1fr)}.row .v{grid-column:2}.row .d{grid-column:1 / 3}}
+ul.plain{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--muted);font-size:13px}
+ul.plain b{color:var(--ink);font-weight:500}
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:10px}
+.cmp div{border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.cmp span{display:block;font-size:12px;color:var(--muted)}
+.cmp strong{font-family:var(--mono);font-weight:500;font-size:14px;font-variant-numeric:tabular-nums}
+.cmp .cur{border-color:var(--accent)}
+.err{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:var(--muted)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Delphi Power Equipment · Upfit RFQ · cargo box 4,100 × 2,400 mm (161 × 94.5 in)</div>
+      <h1>Mobile Transformer Oil Filtration Truck · 3D Layout</h1>
+      <p class="sub">Proposed upfit layout (dimensions in mm). IBC tote at the rear door for forklift exchange, purifier operation side facing the aisle, generator room at the cab end. Drag to rotate, scroll or pinch to zoom, click equipment for details.</p>
+    </div>
+    <div class="eyebrow" style="text-align:right">Proposed layout</div>
+  </header>
+
+  <div class="main">
+    <div class="viewer" id="viewer">
+      <div id="stage"></div>
+      <div id="labels"></div>
+      <div class="bar top">
+        <div class="seg" role="group" aria-label="View">
+          <button type="button" data-view="iso" aria-pressed="true">3D</button>
+          <button type="button" data-view="top" aria-pressed="false">Top</button>
+          <button type="button" data-view="side" aria-pressed="false">Curb side</button>
+          <button type="button" data-view="rear" aria-pressed="false">Rear</button>
+        </div>
+        <div class="toggles">
+          <button class="chip" type="button" id="tShell" aria-pressed="false">Full shell</button>
+          <button class="chip" type="button" id="tTags" aria-pressed="true">Labels</button>
+          <button class="chip" type="button" id="tDims" aria-pressed="true">Walkways</button>
+          <button class="chip" type="button" id="tCg" aria-pressed="true">Center of gravity</button>
+        </div>
+      </div>
+      <div class="bar bottom">
+        <span class="hint">Cab to the right, curb side toward the viewer. Yellow floor = walkway.</span>
+      </div>
+    </div>
+
+    <aside>
+      <section class="card" id="sel">
+        <h2>Selected equipment</h2>
+        <p class="note" style="margin:0">Click a unit in the model or in the list below to see its size, weight and position.</p>
+      </section>
+      <section class="card">
+        <h2>Equipment</h2>
+        <ul class="list" id="legend"></ul>
+      </section>
+    </aside>
+  </div>
+
+  <div class="lower">
+    <section class="card">
+      <h2>Layout notes</h2>
+      <ul class="plain">
+        <li><b>IBC tote</b> (1,000 kg full) at the rear door against the driver-side wall, exchanged by forklift through the full-width rear door. Quick-connect hose to the purifier; locating stops and ratchet straps.</li>
+        <li><b>Vacuum oil purifier</b> (DZL-30A, approx. 16 kW, DN32 connections) rotated 90° so the 1,100 mm operation side (control cabinet, Roots and vacuum pumps) faces the aisle. Casters removed, bolted to the channel base, lifting lugs cut after installation. Vacuum pump exhaust piped outside.</li>
+        <li><b>Generator room</b> at the cab end (66 kW genset): 50 mm fire-rated partition with double access doors to the genset service side, 400 mm service gap, louvered service doors at both ends (cooling air in and out), exhaust stack through the roof with rain cap.</li>
+        <li><b>Walkways:</b> main walkway on the curb side 890 mm (35.0 in), rear walkway 660 mm (26.0 in); both meet the 24 in minimum.</li>
+        <li><b>Electrical panel</b> (IP54) and <b>oil connection box</b> (3 capped DN32 ports + grounding stud) both on the driver side with exterior access. E-stop inside the side door.</li>
+        <li><b>Side personnel door</b> 800 mm, out-swing, on the curb side 1,850 mm from the rear wall, with fold-down aluminum ladder.</li>
+        <li><b>Also:</b> underbody diesel tank on the curb side; enclosed tool &amp; parts rack (280 mm deep) on the curb wall; explosion-proof exhaust fan in the oil work area; three 4 kg dry chemical extinguishers.</li>
+      </ul>
+    </section>
+    <section class="card">
+      <h2>Center of gravity (estimate)</h2>
+      <p class="note" style="margin:0">Plan-view CG, measured from the rear wall. Axle positions not included.</p>
+      <div class="cmp" id="cmp"></div>
+      <h2 style="margin-top:16px">Assumptions</h2>
+      <ul class="plain">
+        <li>Equipment sizes per the RFQ table. Interior height assumed 2,100 mm, to be confirmed.</li>
+        <li>All units on 100 mm channel-steel bases with anti-vibration mounts; drip trays with 2 in rim under the tote and purifier.</li>
+        <li>Base vehicle: 2024 Ford E-Series Cutaway, GVWR 14,500 lb. Cab, chassis and wheels are illustrative only.</li>
+        <li>Cable reel in an exterior compartment, location to be proposed (not modeled).</li>
+      </ul>
+    </section>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/renderers/CSS2DRenderer.js"></script>
+<script>
+(function(){
+'use strict';
+const viewer=document.getElementById('viewer');
+if(!window.THREE||!THREE.OrbitControls||!THREE.CSS2DRenderer){
+  viewer.insertAdjacentHTML('beforeend','<div class="err">The 3D library failed to load. Reload the page.</div>');
+  return;
+}
+
+
+const L=4100, W=2400, H=2100, FLOOR=900;
+const BASE=100;
+const S=0.001;
+const X=x=>x*S-L*S/2, Z=y=>y*S-W*S/2, Y=h=>h*S;
+const IN=mm=>(mm/25.4).toFixed(1);
+
+
+const EQUIP={
+  gen:{name:'Diesel generator set (66 kW)',en:'Diesel generator set',fp:'2,050 × 980',h:1390,kg:800,color:'#2B2F33'},
+  pur:{name:'Vacuum oil purifier',en:'Vacuum oil purifier',fp:'1,300 × 1,100',h:1700,kg:650,color:'#4F8F5E'},
+  ibc:{name:'IBC tote (full)',en:'Insulating oil IBC tote',fp:'1,200 × 1,200',h:1200,kg:1000,color:'#E9ECE8'}
+};
+const OPTS={
+  opt3:{
+    title:'Proposed layout',
+    ibc:{x0:50,x1:1250,y0:200,y1:1400,outFace:'x1',outY:400},
+    pur:{x0:1370,x1:2470,y0:150,y1:1450,panel:[1500,2150],ports:'x0',portY:[250,400],rot:true},
+    gen:{x0:3070,x1:4050,y0:175,y1:2225},
+    partition:[2620,2670], partDoor:[1550,2350],
+    toolPanel:[250,1340], rack:{d:280}, tank:[1550,2550], tankSide:'curb',
+    extra:[{kg:200,x:795,y:2260,h:900,n:'Tool rack incl. tools and parts (est.)'},{kg:200,x:2050,y:2140,h:-330,n:'Diesel tank, full (est.)'}],
+    exhaustRoof:{x:3560,y:1075}, elecDrvExt:[150,600], extBox:[1400,2000], genDoor:[3150,3950], genDoorBoth:true,
+    door:[1850,2650], ext:[[2570,2330],[130,2330],[3100,2320]],
+    cart:false, louverX:[3150,3950], fanX:2250,
+    pipe:[[1330,325,120],[1330,325,-200],[1330,-120,-200],[1450,-120,-200]], extPorts:[1550,1700,1850], portH:-200, portSide:'drv',
+    forklift:true,
+    aisles:[
+      {r:[1310,2620,1510,2400],w:890,lbl:'Main walkway',at:[1950,1950]},
+      {r:[0,1310,1460,2120],w:660,lbl:'Rear walkway',at:[650,1790]}
+    ]
+  }
+};
+const NEED=610; // ≥ 24 in
+const statusOf=w=>w>=NEED?'ok':(w>=NEED-20?'warn':'bad');
+
+function cgOf(o,noExtra){
+  let m=0,sx=0,sy=0;
+  for(const k of ['gen','pur','ibc']){const e=o[k],kg=EQUIP[k].kg;m+=kg;sx+=kg*(e.x0+e.x1)/2;sy+=kg*(e.y0+e.y1)/2;}
+  if(!noExtra) for(const a of (o.extra||[])){m+=a.kg;sx+=a.kg*a.x;sy+=a.kg*a.y;}
+  return {x:sx/m,y:sy/m,m};
+}
+function cgZ(o){
+  let m=0,s=0;
+  for(const k of ['gen','pur','ibc']){const kg=EQUIP[k].kg;m+=kg;s+=kg*(BASE+EQUIP[k].h/2);}
+  for(const a of (o.extra||[])){m+=a.kg;s+=a.kg*a.h;}
+  return s/m;
+}
+
+
+
+
+const stage=document.getElementById('stage'), labelsEl=document.getElementById('labels');
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding;
+stage.appendChild(renderer.domElement);
+const labelR=new THREE.CSS2DRenderer();
+labelsEl.appendChild(labelR.domElement);
+labelR.domElement.style.position='absolute';labelR.domElement.style.inset='0';
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(38,1,0.05,100);
+const controls=new THREE.OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true; controls.dampingFactor=0.08;
+controls.maxPolarAngle=Math.PI*0.495; controls.minDistance=1.5; controls.maxDistance=22;
+
+scene.add(new THREE.HemisphereLight(0xffffff,0x8a8f88,0.75));
+const sun=new THREE.DirectionalLight(0xffffff,0.85);
+sun.position.set(-3,8,6); sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera,{left:-6,right:6,top:6,bottom:-6,near:1,far:25});
+sun.shadow.bias=-0.0005;
+scene.add(sun);
+const fill=new THREE.DirectionalLight(0xffffff,0.25); fill.position.set(5,4,-6); scene.add(fill);
+
+function mat(color,opt){return new THREE.MeshStandardMaterial(Object.assign({color,roughness:.7,metalness:.05},opt||{}));}
+function box(x0,x1,y0,y1,h0,h1,m,parent){
+  const g=new THREE.BoxGeometry(Math.max((x1-x0)*S,1e-4),Math.max((h1-h0)*S,1e-4),Math.max((y1-y0)*S,1e-4));
+  const me=new THREE.Mesh(g,m);
+  me.position.set(X((x0+x1)/2),Y((h0+h1)/2),Z((y0+y1)/2));
+  me.castShadow=!m.transparent; me.receiveShadow=true;
+  (parent||scene).add(me); return me;
+}
+function cyl(r,len,axis,cx,cy,h,m,parent,seg){
+  const g=new THREE.CylinderGeometry(r*S,r*S,len*S,seg||24);
+  const me=new THREE.Mesh(g,m);
+  if(axis==='x')me.rotation.z=Math.PI/2; if(axis==='z')me.rotation.x=Math.PI/2;
+  me.position.set(X(cx),Y(h),Z(cy)); me.castShadow=true; me.receiveShadow=true;
+  parent.add(me); return me;
+}
+function tag(parent,x,y,h,html,cls){
+  const d=document.createElement('div'); d.className=cls||'tag'; d.innerHTML=html;
+  const o=new THREE.CSS2DObject(d); o.position.set(X(x),Y(h),Z(y)); parent.add(o); return o;
+}
+
+
+const M={
+  floor:mat('#34393C',{roughness:.95}), wall:mat('#DDE1DF',{roughness:.8}),
+  wallT:mat('#DDE1DF',{transparent:true,opacity:.14,depthWrite:false}),
+  wallDrv:mat('#CFD5D3',{roughness:.85,transparent:true,opacity:.55,depthWrite:false}),
+  roof:mat('#E6E9E7',{transparent:true,opacity:.95}),
+  steel:mat('#9EA6AA',{metalness:.6,roughness:.35}), dark:mat('#23272A',{roughness:.6}),
+  black:mat('#16191B',{roughness:.5}), red:mat('#C62828',{roughness:.45}),
+  genBody:mat('#2B2F33',{roughness:.55}), genRad:mat('#1D2124'), genAcc:mat('#B83227'),
+  purFrame:mat('#4F8F5E',{roughness:.55}), purTank:mat('#6FA37A',{roughness:.5}), purBox:mat('#E4E6E3'),
+  ibcTank:mat('#F3F4EF',{transparent:true,opacity:.82,roughness:.4}), ibcOil:mat('#C9A227',{transparent:true,opacity:.55,roughness:.2}),
+  pallet:mat('#5B6064'), channel:mat('#3E4A52',{metalness:.4,roughness:.5}),
+  pan:mat('#B4BBBE',{metalness:.55,roughness:.35}), fire:mat('#B85C38',{transparent:true,opacity:.6,roughness:.8,depthWrite:false}),
+  tool:mat('#6C7A89',{roughness:.8}), alu:mat('#C3C9CC',{metalness:.7,roughness:.3}), ss:mat('#D2D6D8',{metalness:.8,roughness:.25}),
+  panel:mat('#D5D9DA'), walk:new THREE.MeshBasicMaterial({color:'#F2C94C',transparent:true,opacity:.42,depthWrite:false}),
+  cab:mat('#F1F2EF',{roughness:.45,metalness:.1}), glass:mat('#2C3A44',{roughness:.1,metalness:.3,transparent:true,opacity:.75}),
+  tire:mat('#1A1A1A',{roughness:.9}), rim:mat('#B9BEC1',{metalness:.7,roughness:.3}),
+  louver:mat('#8C9599',{metalness:.5,roughness:.4}), cart:mat('#C0392B',{roughness:.5}), cable:mat('#1F1F1F',{roughness:.8}),
+  cg:new THREE.MeshBasicMaterial({color:'#E0621B'}), cgLine:new THREE.LineBasicMaterial({color:'#E0621B'})
+};
+
+
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.ShadowMaterial({opacity:.18}));
+ground.rotation.x=-Math.PI/2; ground.position.y=-FLOOR*S; ground.receiveShadow=true; scene.add(ground);
+const grid=new THREE.GridHelper(20,40,0x8f9793,0x8f9793); grid.position.y=-FLOOR*S+0.001;
+grid.material.transparent=true; grid.material.opacity=.18; scene.add(grid);
+
+const truck=new THREE.Group(); scene.add(truck);
+
+for(const yy of [W/2-480,W/2+380]) box(-300,6300,yy,yy+100,-FLOOR+330,-FLOOR+560,M.black,truck);
+
+for(let x=100;x<L;x+=500) box(x,x+60,0,W,-180,-80,M.dark,truck);
+
+function wheel(cx,side,dual){
+  const zs=side<0?[ -20 ]:[W+20];
+  const offs=dual?[0,260]:[0];
+  for(const off of offs){
+    const zc=side<0?(-off+180):(W-180+off);
+    const t=cyl(380,230,'z',cx,zc,-FLOOR+380,M.tire,truck,32);
+    const r=cyl(220,240,'z',cx,zc,-FLOOR+380,M.rim,truck,20);
+  }
+}
+wheel(900,-1,true); wheel(900,1,true); wheel(5550,-1,false); wheel(5550,1,false);
+
+box(L+60,L+1150,150,W-150,-FLOOR+560,1350,M.cab,truck);
+box(L+1150,L+2050,250,W-250,-FLOOR+560,280,M.cab,truck);
+box(L+1150,L+1500,300,W-300,280,1150,M.cab,truck);
+const ws=box(L+1180,L+1200,320,W-320,300,1120,M.glass,truck); ws.rotation.z=0.35;
+for(const yy of [148,W-150]) box(L+450,L+1100,yy,yy+2,450,1150,M.glass,truck);
+box(L+2040,L+2090,300,W-300,-FLOOR+420,-50,M.dark,truck);
+tag(truck,L+700,W/2,1500,'<b>Cab</b>','tag minor');
+
+
+let layout=null, pickables=[], state={opt:'opt1',sel:null};
+const toRemove=g=>{g.traverse(o=>{if(o.isCSS2DObject&&o.element.parentNode)o.element.parentNode.removeChild(o.element);});};
+
+function shell(g,o){
+  box(0,L,0,W,-80,0,M.floor,g);
+  box(0,L,-50,0,0,H,M.wallDrv,g).userData.shell='drv';
+  box(L,L+50,-50,W+50,0,H,M.wallDrv,g).userData.shell='front';
+  box(-50,0,-50,W+50,0,H,M.wallT,g).userData.shell='rear';
+
+  const [d0,d1]=o.door, DH=1900;
+  box(0,d0,W,W+50,0,H,M.wallT,g).userData.shell='curb';
+  box(d1,L,W,W+50,0,H,M.wallT,g).userData.shell='curb';
+  box(d0,d1,W,W+50,DH,H,M.wallT,g).userData.shell='curb';
+  const roof=box(-50,L+50,-50,W+50,H,H+60,M.roof,g); roof.userData.shell='roof';
+
+  const fr=M.steel;
+  box(d0-40,d0,W-10,W+60,0,DH,fr,g); box(d1,d1+40,W-10,W+60,0,DH,fr,g); box(d0-40,d1+40,W-10,W+60,DH,DH+40,fr,g);
+  tag(g,(d0+d1)/2,W+60,DH+140,'<b>Side door</b>','tag minor');
+
+  for(let hh=150;hh<H-100;hh+=150) box(-58,-52,150,W-150,hh,hh+12,M.louver,g).userData.shell='rear';
+
+
+  const lw=Math.min(d1-d0,700), lx0=(d0+d1)/2-lw/2, LEN=1250;
+  const pivot=new THREE.Group(); pivot.position.set(0,0,Z(W+50)); g.add(pivot);
+  const lbox=(x0,x1,z0,z1,h0,h1)=>{const m=new THREE.Mesh(new THREE.BoxGeometry((x1-x0)*S,(h1-h0)*S,(z1-z0)*S),M.alu);m.position.set(X((x0+x1)/2),Y((h0+h1)/2),(z0+z1)/2*S);m.castShadow=true;pivot.add(m);};
+  for(const xx of [lx0,lx0+lw-40]) lbox(xx,xx+40,0,LEN,-40,0);
+  for(let zz=180;zz<LEN;zz+=260) lbox(lx0,lx0+lw,zz,zz+70,-45,-10);
+  pivot.rotation.x=Math.asin(FLOOR/LEN);
+  tag(g,(d0+d1)/2,W+650,-520,'<b>Fold-down ladder</b>','tag minor');
+}
+
+function base(g,e,pan){
+  const m=60;
+  if(pan){
+    box(e.x0-m,e.x1+m,e.y0-m,e.y1+m,0,4,M.pan,g);
+    box(e.x0-m,e.x1+m,e.y0-m,e.y0-m+4,0,51,M.pan,g); box(e.x0-m,e.x1+m,e.y1+m-4,e.y1+m,0,51,M.pan,g);
+    box(e.x0-m,e.x0-m+4,e.y0-m,e.y1+m,0,51,M.pan,g); box(e.x1+m-4,e.x1+m,e.y0-m,e.y1+m,0,51,M.pan,g);
+    cyl(18,70,'z',e.x1+m-60,e.y1+m+30,30,M.ss,g,12);
+  }
+
+  const t=80;
+  box(e.x0,e.x1,e.y0,e.y0+t,4,BASE,M.channel,g); box(e.x0,e.x1,e.y1-t,e.y1,4,BASE,M.channel,g);
+  box(e.x0,e.x0+t,e.y0,e.y1,4,BASE,M.channel,g); box(e.x1-t,e.x1,e.y0,e.y1,4,BASE,M.channel,g);
+}
+
+function buildGen(e){
+  const g=new THREE.Group(); g.userData.key='gen';
+  base(g,e,false);
+  const b=BASE, x0=e.x0,x1=e.x1,y0=e.y0,y1=e.y1;
+  box(x0,x1,y0,y1,b,b+140,M.genBody,g);
+  box(x0+40,x1-40,y0+20,y0+260,b+140,b+1390,M.genRad,g);
+  box(x0+120,x1-120,y0+300,y1-700,b+140,b+1050,M.genBody,g);
+  cyl(90,380,'z',(x0+x1)/2,y0+520,b+1180,M.genAcc,g,16);
+  box(x0+100,x1-100,y1-660,y1-40,b+140,b+900,M.genBody,g);
+  box(x0+180,x1-180,y1-560,y1-160,b+900,b+1390,M.panel,g);
+  cyl(55,700,'y',(x0+x1)/2,y0+900,b+1400,M.ss,g,14);
+  return g;
+}
+function buildPur(e){
+  const g=new THREE.Group(); g.userData.key='pur';
+  base(g,e,true);
+  const b=BASE, x0=e.x0,x1=e.x1,y0=e.y0,y1=e.y1, T=50, top=b+1700;
+  for(const [xx,yy] of [[x0,y0],[x1-T,y0],[x0,y1-T],[x1-T,y1-T]]) box(xx,xx+T,yy,yy+T,b,top,M.purFrame,g);
+  for(const hh of [b,top-T]){box(x0,x1,y0,y0+T,hh,hh+T,M.purFrame,g);box(x0,x1,y1-T,y1,hh,hh+T,M.purFrame,g);box(x0,x0+T,y0,y1,hh,hh+T,M.purFrame,g);box(x1-T,x1,y0,y1,hh,hh+T,M.purFrame,g);}
+  box(x0+T,x1-T,y0+T,y1-T,b+T,b+T+20,M.purFrame,g);
+  cyl(280,1050,'y',x0+420,(y0+y1)/2-60,b+700,M.purTank,g,28);
+  cyl(200,700,'y',x1-330,y0+300,b+500,M.purTank,g,24);
+  box(x1-520,x1-120,y1-420,y1-120,b+70,b+420,M.genRad,g);
+  box(x0+700,x1-200,y0+150,y0+450,b+70,b+300,M.dark,g);
+  const [p0,p1]=e.panel;
+  box(p0,p1,y1-20,y1+70,b+850,b+1550,M.purBox,g);
+  for(let i=0;i<4;i++) cyl(14,20,'z',p0+80+i*90,y1+80,b+1150,i%2?M.red:M.purFrame,g,10);
+  const py=e.portY||[885,1060];
+  for(const yy of py){ cyl(24,160,'x',x0-80,yy,b+420,M.ss,g,12); }
+  tag(g,x0-120,(py[0]+py[1])/2,b+820,'Oil in / out','tag minor');
+  return g;
+}
+function buildIbc(e){
+  const g=new THREE.Group(); g.userData.key='ibc';
+  base(g,e,true);
+  const b=BASE, x0=e.x0,x1=e.x1,y0=e.y0,y1=e.y1;
+  box(x0,x1,y0,y1,b,b+150,M.pallet,g);
+  box(x0+30,x1-30,y0+30,y1-30,b+160,b+1150,M.ibcTank,g);
+  box(x0+45,x1-45,y0+45,y1-45,b+165,b+1000,M.ibcOil,g);
+
+  const pts=[], xa=S, H0=b+150, H1=b+1170;
+  const addL=(ax,ay,ah,bx,by,bh)=>{pts.push(new THREE.Vector3(X(ax),Y(ah),Z(ay)),new THREE.Vector3(X(bx),Y(bh),Z(by)));};
+  for(let i=0;i<=8;i++){const t=i/8, xx=x0+t*(x1-x0), yy=y0+t*(y1-y0);
+    addL(xx,y0,H0,xx,y0,H1); addL(xx,y1,H0,xx,y1,H1); addL(x0,yy,H0,x0,yy,H1); addL(x1,yy,H0,x1,yy,H1);}
+  for(const hh of [H0,H0+340,H0+680,H1]){addL(x0,y0,hh,x1,y0,hh);addL(x0,y1,hh,x1,y1,hh);addL(x0,y0,hh,x0,y1,hh);addL(x1,y0,hh,x1,y1,hh);}
+  for(let i=0;i<=4;i++){const t=i/4;addL(x0+t*(x1-x0),y0,H1,x0+t*(x1-x0),y1,H1);}
+  const cage=new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:0x7d8589}));
+  g.add(cage);
+  cyl(150,60,'y',(x0+x1)/2,(y0+y1)/2,H1+30,M.ibcTank,g,24);
+  if(e.outFace==='x1'){ cyl(40,140,'x',x1+40,e.outY,b+230,M.ss,g,12); tag(g,x1+80,e.outY,b+380,'Outlet valve','tag minor'); }
+  else { cyl(40,140,'z',e.out,y1+40,b+230,M.ss,g,12); tag(g,e.out,y1+80,b+380,'Outlet','tag minor'); }
+  return g;
+}
+
+function accessories(g,o){
+
+  const [p0,p1]=o.partition;
+  box(p0,p1,0,W,0,H,M.fire,g);
+  tag(g,(p0+p1)/2,150,H+120,'<b>Fire-rated partition</b><small>50 mm</small>','tag minor');
+
+  const [l0,l1]=o.louverX;
+  for(const [ya,yb] of [[-58,-50],[W+50,W+58]]) for(let hh=1250;hh<1850;hh+=70) box(l0,l1,ya,yb,hh,hh+30,M.louver,g);
+  cyl(220,60,'z',(l0+l1)/2,-80,1000,M.louver,g,24);
+
+  cyl(180,60,'z',o.fanX+150,-30,1850,M.louver,g,24);
+  tag(g,o.fanX+150,-60,2080,'Ex-proof exhaust fan','tag minor');
+
+  const [t0,t1]=o.toolPanel;
+  if(o.rack){
+    const y0=W-o.rack.d;
+    for(const xx of [t0,t1-40]) box(xx,xx+40,y0,W,0,1900,M.tool,g);
+    box(t0,t1,W-20,W,0,1900,M.tool,g);
+    for(const hh of [0,350,750,1150,1500,1860]) box(t0,t1,y0,W,hh,hh+30,M.tool,g);
+    const bins=['#D9A21B','#2F6FB0','#C0392B','#3E8E5E'];
+    for(let i=0;i<8;i++) box(t0+60+i*((t1-t0-120)/8),t0+50+(i+1)*((t1-t0-120)/8),y0+40,W-40,1180,1330,mat(bins[i%4]),g);
+    for(let i=0;i<3;i++) box(t0+80+i*360,t0+400+i*360,y0+30,W-30,380,700,M.dark,g);
+    tag(g,(t0+t1)/2,y0,2020,'<b>Tool &amp; parts rack</b><small>enclosed · 280 deep</small>','tag minor');
+  }else{
+    box(t0,t1,0,100,600,1800,M.tool,g);
+    tag(g,(t0+t1)/2,60,1900,'<b>Tool panel</b>','tag minor');
+  }
+
+  const [d0,d1]=o.tank;
+  const tyc=o.tankSide==='curb'?W-260:260;
+  cyl(220,d1-d0,'x',(d0+d1)/2,tyc,-330,M.alu,g,28);
+  for(const xx of [d0+120,d1-160]) box(xx,xx+40,tyc-140,tyc+160,-120,-40,M.dark,g);
+  tag(g,(d0+d1)/2,o.tankSide==='curb'?W+80:-80,-420,'<b>Diesel tank</b><small>underbody'+(o.tankSide==='curb'?', curb side':'')+' · lockable filler</small>','tag minor');
+
+  if(o.exhaustRoof){
+    const ex=o.exhaustRoof, top=BASE+1390+350;
+    cyl(60,H+700-top,'y',ex.x,ex.y,(top+H+700)/2,M.ss,g,14);
+    box(ex.x-110,ex.x+110,ex.y-110,ex.y+110,H+700,H+730,M.ss,g);
+    tag(g,ex.x,ex.y,H+880,'<b>Exhaust stack</b><small>through roof · rain cap</small>','tag minor');
+  }else{
+    const [e0,e1]=o.exhaust;
+    box(e0,e1,-260,-50,1350,1850,M.ss,g);
+    cyl(55,700,'y',(e0+e1)/2,-155,2200,M.ss,g,14);
+    tag(g,(e0+e1)/2,-260,2350,'<b>Exhaust box</b>','tag minor');
+  }
+  if(o.elecDrvExt){
+    const [c0,c1]=o.elecDrvExt;
+    box(c0,c1,-230,-50,20,780,M.panel,g);
+    tag(g,(c0+c1)/2,-240,900,'<b>Electrical panel</b><small>IP54 · exterior, driver side</small>','tag minor');
+  }
+  if(o.extBox){
+    const [e0,e1]=o.extBox;
+    box(e0,e1,-260,-50,-420,-20,M.panel,g);
+    tag(g,(e0+e1)/2,-280,-560,'<b>Oil connection box</b><small>3 × DN32 ports · ground stud</small>','tag minor');
+  }
+  if(o.elecCurb){
+    const [c0,c1]=o.elecCurb;
+    box(c0,c1,W-200,W,900,1700,M.panel,g);
+    tag(g,(c0+c1)/2,W-100,1800,'<b>Electrical panel</b><small>IP54</small>','tag minor');
+  }else if(o.elecInside){
+    const [c0,c1]=o.elecInside, px=o.partition[0];
+    box(px-200,px,c0,c1,900,1700,M.panel,g);
+    tag(g,px-100,(c0+c1)/2,1800,'<b>Electrical panel</b><small>IP54</small>','tag minor');
+  }else if(o.elec){
+    const [c0,c1]=o.elec;
+    box(c0,c1,W+50,W+230,900,1600,M.panel,g);
+    tag(g,(c0+c1)/2,W+240,1700,'<b>Electrical panel</b><small>IP54</small>','tag minor');
+  }
+  if(o.genDoor){
+    const [g0,g1]=o.genDoor;
+    box(g0-30,g0,W+50,W+70,150,1950,M.steel,g); box(g1,g1+30,W+50,W+70,150,1950,M.steel,g);
+    box(g0-30,g1+30,W+50,W+70,1950,1980,M.steel,g); box(g0-30,g1+30,W+50,W+70,150,180,M.steel,g);
+    tag(g,(g0+g1)/2,W+80,2150,'<b>Genset service door</b><small>louvered · control end</small>','tag minor');
+    if(o.genDoorBoth){
+      box(g0-30,g0,-70,-50,150,1950,M.steel,g); box(g1,g1+30,-70,-50,150,1950,M.steel,g);
+      box(g0-30,g1+30,-70,-50,1950,1980,M.steel,g); box(g0-30,g1+30,-70,-50,150,180,M.steel,g);
+      tag(g,(g0+g1)/2,-80,2150,'<b>Genset service door</b><small>louvered · radiator end</small>','tag minor');
+    }
+  }
+  if(o.partDoor){
+    const [d0,d1]=o.partDoor, px=o.partition[0];
+    box(px-10,px,d0-30,d0,0,1800,M.steel,g); box(px-10,px,d1,d1+30,0,1800,M.steel,g); box(px-10,px,d0-30,d1+30,1800,1830,M.steel,g);
+    box(px-6,px,(d0+d1)/2-3,(d0+d1)/2+3,0,1800,M.steel,g);
+    tag(g,px-20,(d0+d1)/2,1950,'<b>Partition access doors</b><small>fire-rated · to genset service side</small>','tag minor');
+    tag(g,(px+o.gen.x0)/2+25,1700,20,`Service gap ${o.gen.x0-o.partition[1]} mm`,'dim ok');
+  }
+  if(o.forklift){
+    tag(g,-250,(o.ibc.y0+o.ibc.y1)/2,300,'<b>← Rear door: forklift IBC exchange</b>','tag');
+  }
+
+  for(const [ex,ey] of o.ext){ cyl(80,500,'y',ex,ey,350,M.red,g,16); cyl(30,60,'y',ex,ey,630,M.black,g,10); }
+  tag(g,o.ext[0][0],o.ext[0][1],780,'Fire extinguisher','tag minor');
+
+  if(o.cart){
+    box(3540,4060,40,560,0,850,M.cart,g);
+    for(const hh of [300,580]) box(3545,4055,45,555,hh,hh+15,M.dark,g);
+    const reel=cyl(300,380,'z',3800,230,1400,M.cable,g,32);
+    cyl(330,20,'z',3800,40,1400,M.red,g,32); cyl(330,20,'z',3800,420,1400,M.red,g,32);
+    tag(g,3800,300,1850,'<b>Tool cart · cable reel</b>','tag minor');
+  }
+
+  const pipe=o.pipe;
+  for(let i=0;i<pipe.length-1;i++){
+    const [ax,ay,ah]=pipe[i],[bx,by,bh]=pipe[i+1];
+    const axis=ax!==bx?'x':(ay!==by?'z':'y'), len=Math.abs(bx-ax)+Math.abs(by-ay)+Math.abs(bh-ah);
+    cyl(22,len,axis,(ax+bx)/2,(ay+by)/2,(ah+bh)/2,M.ss,g,10);
+  }
+  const ph=o.portH!=null?o.portH:300;
+  const pz=o.portSide==='drv'?-305:W+85;
+  for(const px of o.extPorts) cyl(30,90,'z',px,pz,ph,M.ss,g,12);
+  if(o.portSide!=='drv') tag(g,o.extPorts[1],W+120,ph+150,'Oil ports ×3','tag minor');
+}
+
+function walkways(g,o){
+  for(const a of o.aisles){
+    const [x0,x1,y0,y1]=a.r;
+    const p=new THREE.Mesh(new THREE.PlaneGeometry((x1-x0)*S,(y1-y0)*S),M.walk);
+    p.rotation.x=-Math.PI/2; p.position.set(X((x0+x1)/2),0.004,Z((y0+y1)/2)); p.renderOrder=2; g.add(p);
+    const st=statusOf(a.w);
+    tag(g,a.at[0],a.at[1],20,`${a.lbl} ${a.w} mm / ${IN(a.w)} in`,'dim '+st);
+  }
+}
+
+function cgMarker(g,o){
+  const c=cgOf(o), hz=cgZ(o);
+  const grp=new THREE.Group(); grp.userData.cg=true;
+  const s=new THREE.Mesh(new THREE.SphereGeometry(0.07,24,16),M.cg); s.position.set(X(c.x),Y(hz),Z(c.y)); grp.add(s);
+  const ln=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(X(c.x),0.01,Z(c.y)),new THREE.Vector3(X(c.x),Y(hz),Z(c.y))]),M.cgLine); grp.add(ln);
+  const ring=new THREE.Mesh(new THREE.RingGeometry(0.1,0.13,40),new THREE.MeshBasicMaterial({color:'#E0621B',side:THREE.DoubleSide}));
+  ring.rotation.x=-Math.PI/2; ring.position.set(X(c.x),0.006,Z(c.y)); grp.add(ring);
+  tag(grp,c.x,c.y,hz+190,`<b>Center of gravity (est.)</b><small>${Math.round(c.x).toLocaleString()} mm from rear wall</small>`,'tag');
+  g.add(grp); return grp;
+}
+
+let cgGroup=null, shellMeshes=[];
+function build(key){
+  if(layout){toRemove(layout);scene.remove(layout);}
+  layout=new THREE.Group(); scene.add(layout);
+  const o=OPTS[key];
+  shell(layout,o);
+  const gen=buildGen(o.gen), pur=buildPur(o.pur), ibc=buildIbc(o.ibc);
+  pickables=[gen,pur,ibc];
+  for(const [k,g] of [['gen',gen],['pur',pur],['ibc',ibc]]){
+    layout.add(g);
+    const e=o[k], q=EQUIP[k];
+    tag(g,(e.x0+e.x1)/2,(e.y0+e.y1)/2,BASE+q.h+130,`<b>${q.name}</b><small>H ${q.h.toLocaleString()} · ${q.kg.toLocaleString()} kg</small>`,'tag');
+  }
+  accessories(layout,o);
+  walkways(layout,o);
+  cgGroup=cgMarker(layout,o);
+  shellMeshes=[]; layout.traverse(m=>{if(m.userData&&m.userData.shell)shellMeshes.push(m);});
+  applyShell(); cgGroup.visible=cgOn;
+  if(cgGroup) cgGroup.traverse(m=>{if(m.isCSS2DObject)m.element.style.display=cgOn?'':'none';});
+  select(state.sel&&state.sel,true);
+}
+
+
+let fullShell=false, cgOn=true;
+function applyShell(){
+  for(const m of shellMeshes){
+    const s=m.userData.shell;
+    if(s==='roof') m.visible=fullShell;
+    else if(s==='curb'||s==='rear') m.material=fullShell?M.wall:M.wallT;
+    else m.material=fullShell?M.wall:M.wallDrv;
+  }
+}
+
+
+let helper=null;
+const selCard=document.getElementById('sel'), legend=document.getElementById('legend');
+function select(key,silent){
+  state.sel=key||null;
+  if(helper){scene.remove(helper);helper=null;}
+  const g=pickables.find(p=>p.userData.key===key);
+  if(g){helper=new THREE.BoxHelper(g,0xE39A45);scene.add(helper);}
+  legend.querySelectorAll('.item').forEach(b=>b.setAttribute('aria-current',b.dataset.key===key?'true':'false'));
+  if(!key){selCard.innerHTML='<h2>Selected equipment</h2><p class="note" style="margin:0">Click a unit in the model or in the list below to see its size, weight and position.</p>';return;}
+  const q=EQUIP[key], e=OPTS[state.opt][key];
+  const toFront=L-e.x1, pan=key==='gen'?'None (separate generator room)':'Yes, 2 in rim, 1 in drain valve';
+  selCard.innerHTML=`<h2>${q.name}</h2><div class="eyebrow">Owner-furnished</div>
+  <dl class="kv">
+    <dt>Footprint</dt><dd>${q.fp} mm</dd>
+    <dt>Height</dt><dd>${q.h.toLocaleString()} mm (${(q.h+BASE).toLocaleString()} on base)</dd>
+    <dt>Weight</dt><dd>${q.kg.toLocaleString()} kg · ${Math.round(q.kg*2.2046).toLocaleString()} lb</dd>
+    <dt>From rear wall</dt><dd>${e.x0.toLocaleString()} mm</dd>
+    <dt>From front wall</dt><dd>${toFront.toLocaleString()} mm</dd>
+    <dt>From driver-side wall</dt><dd>${e.y0.toLocaleString()} mm</dd>
+    <dt>From curb-side wall</dt><dd>${(W-e.y1).toLocaleString()} mm</dd>
+    <dt>Drip tray</dt><dd style="font-family:var(--body)">${pan}</dd>
+  </dl>`;
+}
+function buildLegend(){
+  legend.innerHTML='';
+  for(const k of ['gen','pur','ibc']){
+    const q=EQUIP[k], li=document.createElement('li');
+    li.innerHTML=`<button class="item" type="button" data-key="${k}"><span class="sw" style="background:${q.color}"></span><span>${q.name}</span><span class="num">${q.kg.toLocaleString()} kg</span></button>`;
+    legend.appendChild(li);
+  }
+  const extra=[['#B85C38','Fire-rated partition'],['#F2C94C','Walkway (yellow floor)'],['#6C7A89','Tool & parts rack'],['#C3C9CC','Diesel tank / ladder'],['#E0621B','Center of gravity']];
+  for(const [c,n] of extra){const li=document.createElement('li');li.innerHTML=`<div class="item" style="cursor:default"><span class="sw" style="background:${c}"></span><span>${n}</span><span></span></div>`;legend.appendChild(li);}
+  legend.querySelectorAll('button.item').forEach(b=>b.addEventListener('click',()=>select(state.sel===b.dataset.key?null:b.dataset.key)));
+}
+
+const ray=new THREE.Raycaster(), mouse=new THREE.Vector2(); let down=null;
+renderer.domElement.addEventListener('pointerdown',e=>{down=[e.clientX,e.clientY];});
+renderer.domElement.addEventListener('pointerup',e=>{
+  if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5)return;
+  const r=renderer.domElement.getBoundingClientRect();
+  mouse.set(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);
+  ray.setFromCamera(mouse,camera);
+  const hit=ray.intersectObjects(pickables,true)[0];
+  let k=null; if(hit){let o=hit.object;while(o&&!o.userData.key)o=o.parent;k=o?o.userData.key:null;}
+  select(k);
+});
+
+
+function renderChecks(){
+  document.getElementById('cmp').innerHTML=[['3 owner units only',true],['Incl. tool rack ~200 kg + full diesel ~200 kg',false]].map(([n,ne])=>{const c=cgOf(OPTS[state.opt],ne);
+    return `<div class="${ne?'':'cur'}"><span>${n}</span><strong>${Math.round(c.x).toLocaleString()} mm</strong><span>from rear wall · ${Math.round(c.y).toLocaleString()} mm from driver-side wall</span></div>`;}).join('');
+}
+
+
+const VIEWS={
+  iso:{p:[-3.0,6.8,5.0],t:[0.6,0.1,0]},
+  top:{p:[0.7,10.5,0.02],t:[0.7,0,0]},
+  side:{p:[0.8,0.9,9.2],t:[0.8,0.3,0]},
+  rear:{p:[-7.5,1.6,0.6],t:[0,0.5,0]}
+};
+const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let anim=null;
+function goView(v,instant){
+  const V=VIEWS[v], p=new THREE.Vector3(...V.p), t=new THREE.Vector3(...V.t);
+  document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===v?'true':'false'));
+  if(instant||reduce){camera.position.copy(p);controls.target.copy(t);controls.update();return;}
+  anim={p0:camera.position.clone(),t0:controls.target.clone(),p,t,start:performance.now(),dur:650};
+}
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>goView(b.dataset.view)));
+
+
+function toggle(id,fn){const b=document.getElementById(id);b.addEventListener('click',()=>{const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);fn(on);});}
+toggle('tShell',on=>{fullShell=on;applyShell();});
+toggle('tTags',on=>labelsEl.classList.toggle('hide-tags',!on));
+toggle('tDims',on=>{labelsEl.classList.toggle('hide-dims',!on);layout.traverse(m=>{if(m.material===M.walk)m.visible=on;});});
+toggle('tCg',on=>{cgOn=on;if(cgGroup){cgGroup.visible=on;cgGroup.traverse(m=>{if(m.isCSS2DObject)m.element.style.display=on?'':'none';});}});
+
+function setOpt(k){
+  state.opt=k;
+  build(k); renderChecks();
+  const dimsOn=document.getElementById('tDims').getAttribute('aria-pressed')==='true';
+  if(!dimsOn) layout.traverse(m=>{if(m.material===M.walk)m.visible=false;});
+}
+
+
+function applyTheme(){
+  const c=getComputedStyle(document.documentElement).getPropertyValue('--scene').trim()||'#E3E7E4';
+  scene.background=new THREE.Color(c);
+  const dark=new THREE.Color(c).getHSL({}).l<0.3;
+  grid.material.opacity=dark?.12:.18;
+}
+new MutationObserver(applyTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme);
+
+
+function resize(){
+  const w=stage.clientWidth,h=stage.clientHeight;
+  renderer.setSize(w,h,false); renderer.domElement.style.width=w+'px'; renderer.domElement.style.height=h+'px';
+  labelR.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(stage);
+
+function loop(now){
+  if(anim){
+    let k=Math.min(1,(now-anim.start)/anim.dur); k=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+    camera.position.lerpVectors(anim.p0,anim.p,k); controls.target.lerpVectors(anim.t0,anim.t,k);
+    if(k>=1)anim=null;
+  }
+  controls.update();
+  if(helper)helper.update();
+  renderer.render(scene,camera); labelR.render(scene,camera);
+  requestAnimationFrame(loop);
+}
+
+buildLegend();
+applyTheme();
+const h0=(location.hash||'').replace('#','');
+setOpt('opt3');
+goView('iso',true);
+resize();
+requestAnimationFrame(loop);
+})();
+</script>
