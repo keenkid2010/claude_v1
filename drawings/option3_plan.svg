@@ -1,0 +1,202 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 1010" width="1280" height="1010" font-family="Helvetica, Arial, sans-serif">
+<defs>
+<marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#111"/></marker>
+<path id="arrR" d="M0,0 l-9,-3 v6 Z" fill="#111"/><path id="arrL" d="M0,0 l9,-3 v6 Z" fill="#111"/>
+<path id="arrU" d="M0,0 l-3,9 h6 Z" fill="#111"/><path id="arrD" d="M0,0 l-3,-9 h6 Z" fill="#111"/>
+<pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#B85C38" stroke-width="2"/></pattern>
+</defs>
+<style>
+.box{fill:none;stroke:#111;stroke-width:2.2}
+.eq{fill:#fff;stroke:#111;stroke-width:1.5}
+.tray{fill:none;stroke:#555;stroke-width:1;stroke-dasharray:5 3}
+.fill{fill:#e6e6e6;stroke:#111;stroke-width:1}
+.part{fill:url(#hatch);stroke:#B85C38;stroke-width:1.2}
+.walk{fill:#F7E7A6;opacity:.55}
+.thin{stroke:#111;stroke-width:1;fill:#fff}
+.thick{stroke:#111;stroke-width:2;fill:#fff}
+.red{stroke:#b3261e;stroke-width:1.5;fill:#f4c7c3}
+.ctr{stroke:#777;stroke-width:.8;stroke-dasharray:14 4 3 4}
+.dim,.ext{stroke:#111;stroke-width:.8} .ext{stroke:#888}
+.tick{stroke:#111;stroke-width:1}
+.door{stroke:#fff;stroke-width:5} .gap{fill:#fff;stroke:none}
+.gapw{stroke:#fff;stroke-width:5}
+.swing{fill:none;stroke:#111;stroke-width:.8;stroke-dasharray:4 3}
+.ladder{fill:#f2f2f2;stroke:#111;stroke-width:1}
+.hidden{fill:none;stroke:#555;stroke-width:1;stroke-dasharray:8 4}
+.hose{fill:none;stroke:#111;stroke-width:2}
+.arrow{stroke:#111;stroke-width:3;fill:none}
+.cg{fill:#fff;stroke:#111;stroke-width:1.2} .cgf{fill:#111}
+.lbl,.sm{font-size:11px;fill:#111} .hid{font-size:11px;fill:#555;font-style:italic}
+.eqn{font-size:13px;font-weight:700;fill:#111} .h{font-size:16px;font-weight:700;fill:#111}
+.dimt{font-size:12px;fill:#111} .dimb{font-size:15px;fill:#111}
+.cab{font-size:18px;fill:#111} .orient{font-size:12px;letter-spacing:.12em;fill:#444;font-weight:700}
+.t1{font-size:17px;font-weight:700;fill:#111} .t2{font-size:11.5px;fill:#333}
+</style>
+<rect width="1280" height="1010" fill="#fff"/>
+<path d="M518.0,452.0 H830.0 V670.0 H250.0 V522.0 H518.0 Z" class="walk"/>
+<rect x="254.0" y="258.0" width="264.0" height="264.0" class="tray" />
+<rect x="528.0" y="208.0" width="284.0" height="244.0" class="tray" />
+<rect x="250.0" y="190.0" width="820.0" height="480.0" class="box" />
+<line x1="250.0" y1="220.0" x2="250.0" y2="640.0" class="door"/>
+<rect x="247.6" y="220.0" width="4.8" height="420.0" class="gap"/>
+<line x1="1070.0" y1="250.0" x2="1250.0" y2="250.0" class="thin"/>
+<line x1="1070.0" y1="610.0" x2="1250.0" y2="610.0" class="thin"/>
+<line x1="1070.0" y1="430.0" x2="1250.0" y2="430.0" class="ctr"/>
+<text x="1182.0" y="420.0" class="cab" text-anchor="middle">CAB</text>
+<rect x="266.0" y="270.0" width="240.0" height="240.0" class="eq" />
+<text x="386.0" y="370.0" class="eqn" text-anchor="middle">IBC TOTE</text>
+<text x="386.0" y="392.0" class="h" text-anchor="middle">H=1200</text>
+<text x="386.0" y="414.0" class="sm" text-anchor="middle">1000 kg, w/ drip tray</text>
+<circle cx="512.0" cy="330.0" r="4" class="thin"/>
+<text x="500.0" y="342.0" class="sm" text-anchor="end">Oil out</text>
+<path d="M516.0,330.0 C522.0,330.0 526.0,330.0 536.0,330.0" class="hose"/>
+<rect x="540.0" y="220.0" width="260.0" height="220.0" class="eq" />
+<text x="670.0" y="302.0" class="eqn" text-anchor="middle">VACUUM OIL PURIFIER</text>
+<text x="670.0" y="326.0" class="h" text-anchor="middle">H=1700</text>
+<text x="670.0" y="348.0" class="sm" text-anchor="middle">650 kg, w/ drip tray</text>
+<circle cx="540.0" cy="312.0" r="4" class="thin"/>
+<circle cx="540.0" cy="348.0" r="4" class="thin"/>
+<text x="546.0" y="284.0" class="sm" text-anchor="start">Oil in / out</text>
+<rect x="630.0" y="440.0" width="88.0" height="10.0" class="fill" />
+<text x="674.0" y="470.0" class="sm" text-anchor="middle">Control panel</text>
+<rect x="830.0" y="190.0" width="10.0" height="480.0" class="part" />
+<text x="842.0" y="724.0" class="sm" text-anchor="start">Fire-rated partition (50)</text>
+<line x1="835.0" y1="670.0" x2="842.0" y2="710.0" class="ext"/>
+<rect x="860.0" y="225.0" width="196.0" height="410.0" class="eq" />
+<text x="958.0" y="470.0" class="eqn" text-anchor="middle">GENERATOR</text>
+<text x="958.0" y="492.0" class="h" text-anchor="middle">H=1390</text>
+<text x="958.0" y="514.0" class="sm" text-anchor="middle">800 kg</text>
+<circle cx="958.0" cy="405.0" r="7" class="thick"/>
+<text x="958.0" y="382.0" class="sm" text-anchor="middle">Exhaust stack</text>
+<text x="958.0" y="390.0" class="sm" text-anchor="middle"></text>
+<text x="958.0" y="366.0" class="sm" text-anchor="middle"></text>
+<rect x="880.0" y="183.0" width="160.0" height="7.0" class="fill" />
+<text x="960.0" y="178.0" class="sm" text-anchor="middle">Intake louver</text>
+<rect x="880.0" y="670.0" width="160.0" height="7.0" class="fill" />
+<text x="960.0" y="694.0" class="sm" text-anchor="middle">Louvered service door (gen. room)</text>
+<rect x="700.0" y="183.0" width="60.0" height="7.0" class="fill" />
+<text x="762.0" y="178.0" class="sm" text-anchor="end">Ex-proof exhaust fan</text>
+<line x1="620.0" y1="670.0" x2="780.0" y2="670.0" class="gapw"/>
+<path d="M780.0,670.0 A160.0,160.0 0 0 0 620.0,510.0" class="swing"/>
+<line x1="620.0" y1="670.0" x2="620.0" y2="510.0" class="thin"/>
+<rect x="630.0" y="682.0" width="140.0" height="100.0" class="ladder" />
+<line x1="630.0" y1="702.0" x2="770.0" y2="702.0" class="thin"/>
+<line x1="630.0" y1="722.0" x2="770.0" y2="722.0" class="thin"/>
+<line x1="630.0" y1="742.0" x2="770.0" y2="742.0" class="thin"/>
+<line x1="630.0" y1="762.0" x2="770.0" y2="762.0" class="thin"/>
+<text x="700.0" y="802.0" class="sm" text-anchor="middle">Entry door 800 + fold-down ladder</text>
+<rect x="290.0" y="650.0" width="220.0" height="20.0" class="fill" />
+<text x="400.0" y="640.0" class="sm" text-anchor="middle">Tool panel</text>
+<rect x="790.0" y="580.0" width="40.0" height="80.0" class="fill" />
+<text x="788.0" y="622.0" class="sm" text-anchor="end">Elec. panel</text>
+<circle cx="602.0" cy="650.0" r="5" class="red"/>
+<circle cx="810.0" cy="550.0" r="5" class="red"/>
+<circle cx="280.0" cy="650.0" r="5" class="red"/>
+<text x="280.0" y="636.0" class="sm" text-anchor="start">Fire ext.</text>
+<rect x="560.0" y="580.0" width="200.0" height="80.0" class="hidden" />
+<text x="660.0" y="602.0" class="hid" text-anchor="middle">Diesel tank (underbody)</text>
+<circle cx="540.0" cy="679.0" r="4" class="thin"/>
+<circle cx="574.0" cy="679.0" r="4" class="thin"/>
+<circle cx="608.0" cy="679.0" r="4" class="thin"/>
+<text x="574.0" y="694.0" class="sm" text-anchor="middle">3× capped oil ports</text>
+<g transform="translate(510.0,679.0)"><line x1="-5" y1="0" x2="5" y2="0" class="thin"/><line x1="0" y1="-5" x2="0" y2="5" class="thin"/></g>
+<text x="502.0" y="694.0" class="sm" text-anchor="end">Ground stud</text>
+<path d="M110.0,390.0 H226.0" class="arrow" marker-end="url(#m)"/>
+<text x="166.0" y="376.0" class="sm" text-anchor="middle">Forklift (IBC swap)</text>
+<text x="204.0" y="540.0" class="orient" text-anchor="middle" transform="rotate(-90 204.0 540.0)">REAR DOOR</text>
+<path d="M390.0,586.0 H510.0" class="arrow" marker-end="url(#m)"/>
+<text x="450.0" y="606.0" class="sm" text-anchor="middle">Walkway</text>
+<line x1="770.0" y1="452.0" x2="770.0" y2="670.0" class="dim"/>
+<use href="#arrU" x="770.0" y="452.0"/><use href="#arrD" x="770.0" y="670.0"/>
+<text x="761.0" y="561.0" class="dimt" text-anchor="middle" transform="rotate(-90 761.0 561.0)">1090</text>
+<line x1="320.0" y1="522.0" x2="320.0" y2="650.0" class="dim"/>
+<use href="#arrU" x="320.0" y="522.0"/><use href="#arrD" x="320.0" y="650.0"/>
+<text x="311.0" y="586.0" class="dimt" text-anchor="middle" transform="rotate(-90 311.0 586.0)">640</text>
+<g transform="translate(648.2,387.2)"><circle r="7" class="cg"/><path d="M0,-7 A7,7 0 0 1 7,0 L0,0 Z" class="cgf"/><path d="M0,7 A7,7 0 0 1 -7,0 L0,0 Z" class="cgf"/></g>
+<text x="660.2" y="402.0" class="sm" text-anchor="start">CG (equip.)</text>
+<line x1="220.0" y1="430.0" x2="1260.0" y2="430.0" class="ctr"/>
+<line x1="250.0" y1="144.0" x2="266.0" y2="144.0" class="dim"/>
+<line x1="266.0" y1="144.0" x2="506.0" y2="144.0" class="dim"/>
+<line x1="506.0" y1="144.0" x2="540.0" y2="144.0" class="dim"/>
+<line x1="540.0" y1="144.0" x2="800.0" y2="144.0" class="dim"/>
+<line x1="800.0" y1="144.0" x2="830.0" y2="144.0" class="dim"/>
+<line x1="830.0" y1="144.0" x2="840.0" y2="144.0" class="dim"/>
+<line x1="840.0" y1="144.0" x2="860.0" y2="144.0" class="dim"/>
+<line x1="860.0" y1="144.0" x2="1056.0" y2="144.0" class="dim"/>
+<line x1="1056.0" y1="144.0" x2="1070.0" y2="144.0" class="dim"/>
+<line x1="250.0" y1="136.0" x2="250.0" y2="152.0" class="tick"/>
+<line x1="250.0" y1="190.0" x2="250.0" y2="152.0" class="ext"/>
+<line x1="266.0" y1="136.0" x2="266.0" y2="152.0" class="tick"/>
+<line x1="266.0" y1="190.0" x2="266.0" y2="152.0" class="ext"/>
+<line x1="506.0" y1="136.0" x2="506.0" y2="152.0" class="tick"/>
+<line x1="506.0" y1="190.0" x2="506.0" y2="152.0" class="ext"/>
+<line x1="540.0" y1="136.0" x2="540.0" y2="152.0" class="tick"/>
+<line x1="540.0" y1="190.0" x2="540.0" y2="152.0" class="ext"/>
+<line x1="800.0" y1="136.0" x2="800.0" y2="152.0" class="tick"/>
+<line x1="800.0" y1="190.0" x2="800.0" y2="152.0" class="ext"/>
+<line x1="830.0" y1="136.0" x2="830.0" y2="152.0" class="tick"/>
+<line x1="830.0" y1="190.0" x2="830.0" y2="152.0" class="ext"/>
+<line x1="840.0" y1="136.0" x2="840.0" y2="152.0" class="tick"/>
+<line x1="840.0" y1="190.0" x2="840.0" y2="152.0" class="ext"/>
+<line x1="860.0" y1="136.0" x2="860.0" y2="152.0" class="tick"/>
+<line x1="860.0" y1="190.0" x2="860.0" y2="152.0" class="ext"/>
+<line x1="1056.0" y1="136.0" x2="1056.0" y2="152.0" class="tick"/>
+<line x1="1056.0" y1="190.0" x2="1056.0" y2="152.0" class="ext"/>
+<line x1="1070.0" y1="136.0" x2="1070.0" y2="152.0" class="tick"/>
+<line x1="1070.0" y1="190.0" x2="1070.0" y2="152.0" class="ext"/>
+<text x="386.0" y="138.0" class="dimt" text-anchor="middle">1200</text>
+<text x="523.0" y="138.0" class="dimt" text-anchor="middle">170</text>
+<text x="670.0" y="138.0" class="dimt" text-anchor="middle">1300</text>
+<text x="815.0" y="138.0" class="dimt" text-anchor="middle">150</text>
+<text x="958.0" y="138.0" class="dimt" text-anchor="middle">980</text>
+<text x="258.0" y="124.0" class="dimt" text-anchor="middle">80</text>
+<text x="833.0" y="124.0" class="dimt" text-anchor="end">50</text>
+<text x="845.0" y="124.0" class="dimt" text-anchor="start">100</text>
+<text x="1063.0" y="124.0" class="dimt" text-anchor="middle">70</text>
+<line x1="250.0" y1="104.0" x2="1070.0" y2="104.0" class="dim"/>
+<line x1="250.0" y1="96.0" x2="250.0" y2="144.0" class="ext"/>
+<line x1="1070.0" y1="96.0" x2="1070.0" y2="144.0" class="ext"/>
+<use href="#arrL" x="250.0" y="104.0"/><use href="#arrR" x="1070.0" y="104.0"/>
+<text x="660.0" y="98.0" class="dimb" text-anchor="middle">4100</text>
+<line x1="60.0" y1="190.0" x2="60.0" y2="670.0" class="dim"/>
+<use href="#arrU" x="60.0" y="190.0"/><use href="#arrD" x="60.0" y="670.0"/>
+<text x="52.0" y="430.0" class="dimb" text-anchor="middle" transform="rotate(-90 52.0 430.0)">2400</text>
+<line x1="60.0" y1="190.0" x2="250.0" y2="190.0" class="ext"/>
+<line x1="60.0" y1="670.0" x2="250.0" y2="670.0" class="ext"/>
+<line x1="1056.0" y1="225.0" x2="1118.0" y2="225.0" class="ext"/>
+<line x1="1056.0" y1="635.0" x2="1118.0" y2="635.0" class="ext"/>
+<line x1="1110.0" y1="225.0" x2="1110.0" y2="635.0" class="dim"/>
+<use href="#arrU" x="1110.0" y="225.0"/><use href="#arrD" x="1110.0" y="635.0"/>
+<text x="1101.0" y="430.0" class="dimt" text-anchor="middle" transform="rotate(-90 1101.0 430.0)">2050</text>
+<line x1="562.0" y1="220.0" x2="562.0" y2="440.0" class="dim"/>
+<use href="#arrU" x="562.0" y="220.0"/><use href="#arrD" x="562.0" y="440.0"/>
+<text x="553.0" y="330.0" class="dimt" text-anchor="middle" transform="rotate(-90 553.0 330.0)">1100</text>
+<line x1="266.0" y1="546.0" x2="506.0" y2="546.0" class="dim"/>
+<use href="#arrL" x="266.0" y="546.0"/><use href="#arrR" x="506.0" y="546.0"/>
+<text x="386.0" y="538.0" class="dimt" text-anchor="middle">1200 (IBC)</text>
+<line x1="290.0" y1="270.0" x2="290.0" y2="510.0" class="dim"/>
+<use href="#arrU" x="290.0" y="270.0"/><use href="#arrD" x="290.0" y="510.0"/>
+<text x="281.0" y="390.0" class="dimt" text-anchor="middle" transform="rotate(-90 281.0 390.0)">1200</text>
+<text x="200.0" y="272.0" class="dimt" text-anchor="middle" transform="rotate(-90 200.0 272.0)">400</text>
+<line x1="190.0" y1="190.0" x2="190.0" y2="270.0" class="dim"/>
+<line x1="184.0" y1="270.0" x2="266.0" y2="270.0" class="ext"/>
+<text x="532.0" y="232.0" class="dimt" text-anchor="middle" transform="rotate(-90 532.0 232.0)">150</text>
+<line x1="250.0" y1="830.0" x2="620.0" y2="830.0" class="dim"/>
+<line x1="620.0" y1="830.0" x2="780.0" y2="830.0" class="dim"/>
+<line x1="250.0" y1="822.0" x2="250.0" y2="838.0" class="tick"/>
+<line x1="620.0" y1="822.0" x2="620.0" y2="838.0" class="tick"/>
+<line x1="780.0" y1="822.0" x2="780.0" y2="838.0" class="tick"/>
+<text x="435.0" y="824.0" class="dimt" text-anchor="middle">1850</text>
+<text x="700.0" y="824.0" class="dimt" text-anchor="middle">800 door</text>
+<line x1="250.0" y1="682.0" x2="250.0" y2="838.0" class="ext"/>
+<text x="700.0" y="78.0" class="orient" text-anchor="middle">DRIVER SIDE</text>
+<text x="940.0" y="830.0" class="orient" text-anchor="middle">CURB SIDE</text>
+<g transform="translate(40,900)">
+<line x1="0" y1="-12" x2="1200" y2="-12" stroke="#111" stroke-width="1"/>
+<text x="0" y="10" class="t1">Option 3 (Proposed) – IBC tote at rear door, purifier along driver side, generator room at cab end</text>
+<text x="0" y="32" class="t2">Plan view, cab to the right. Dimensions in mm. Cargo box 4100 × 2400 (161 × 94.5 in) interior clear. Dashed outlines = drip trays (≥ 2 in rim, 1 in drain). Yellow = walkway.</text>
+<text x="0" y="50" class="t2">Walkways: main 1090 mm (42.9 in), rear section 640 mm (25.2 in) – both ≥ 24 in. IBC swapped by forklift through rear door (verify door clear opening ≥ 1300 W × 1350 H).</text>
+<text x="0" y="68" class="t2">Equipment CG (3 units, 2450 kg): 1991 mm from rear wall, 214 mm toward driver side. Generator exhaust exits through roof with rain cap. Equipment on channel-steel bases with anti-vibration mounts.</text>
+<text x="0" y="86" class="t2">Preliminary layout for discussion – not for fabrication. Verify against actual box, rear door, axle positions and weights.</text>
+</g>
+</svg>
