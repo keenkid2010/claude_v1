@@ -1,4 +1,4 @@
-<img src="Delphi_Power_Equipment_logo.png" alt="Delphi Power Equipment" width="190">
+<img src="Delphi_Power_Equipment_logo.png" alt="Delphi Power Equipment" width="105">
 
 # 二手叉车验车总结<br><span class="en">Used Forklift Inspection Summary</span>
 
