@@ -1,3 +1,5 @@
+<img src="Delphi_Power_Equipment_logo.png" alt="Delphi Power Equipment" width="190">
+
 # 二手叉车验车总结
 
 **Doosan GC45BCS-9（订单写作 CGC45）｜S/N FGB1B-3620-00507**
