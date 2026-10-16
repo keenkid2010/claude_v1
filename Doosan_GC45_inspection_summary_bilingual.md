@@ -20,8 +20,8 @@
 **车辆本体：验收通过。** 铭牌、序列号、工时、发动机、门架、轮胎、安全装置核对无误，视频功能测试无问题。<br>
 **Machine itself: ACCEPTED.** Nameplate, serial number, hour meter, engine, mast, tires and safety equipment all check out. The video function test showed no problems.
 
-**文件与披露：暂不建议付款或签收。** 有 5 项必须在付款前解决：发票品牌型号错误、订单卖方未签字、电汇信息需回拨确认、租赁来源未披露、车身后部有碰撞和补漆迹象。<br>
-**Paperwork and disclosure: do NOT pay or sign for delivery yet.** Five items must be resolved before payment: wrong make/model on the invoice, order not signed by the seller, wire instructions need a call-back, undisclosed rental history, and signs of impact and repainting at the rear of the body.
+**文件与披露：暂不建议付款或签收。** 有 4 项必须在付款前解决：发票品牌型号错误、订单卖方未签字、电汇信息需回拨确认、车身后部有碰撞和补漆迹象。<br>
+**Paperwork and disclosure: do NOT pay or sign for delivery yet.** Four items must be resolved before payment: wrong make/model on the invoice, order not signed by the seller, wire instructions need a call-back, and signs of impact and repainting at the rear of the body.
 
 ---
 
@@ -78,8 +78,7 @@ Please tick each item during inspection and keep photo evidence:
 | A1 | **发票品牌型号错误**：写成 CLARK CGC55<br>**Wrong make/model on the invoice**: shown as CLARK CGC55 | 铭牌是 Doosan GC45BCS-9，订单是 Doosan CGC45<br>Nameplate: Doosan GC45BCS-9; order: Doosan CGC45 | 重开发票，按铭牌填写<br>Reissue the invoice per the nameplate |
 | A2 | **订单卖方未签字**<br>**Order not signed by the seller** | 文件名含 NOT_SIGNED，只有买方签了字<br>File name contains NOT_SIGNED; only the buyer has signed | Lonestar 签字盖章。订单条款第 1 条要求修改须有卖方书面签署，第 3 条规定订单不得取消，退出条款在卖方签字前不一定有效<br>Lonestar to sign. Terms §1 require changes to be signed by the seller and §3 says the order may not be cancelled, so the exit clause may not be effective until the seller signs |
 | A3 | **电汇风险**<br>**Wire-transfer risk** | 发票抬头电话 713-695-3675，底部联系人 Terry Foster 电话 713-694-3675，差一位数字。订单抬头是 Lonestar Forklift USA 2017 INC.（Garland），发票和支票抬头是 Lonestar Forklift（Houston）<br>Invoice header phone 713-695-3675 vs. contact Terry Foster 713-694-3675 — one digit differs. Order shows Lonestar Forklift USA 2017 INC. (Garland); invoice and check payee show Lonestar Forklift (Houston) | 用官网或订单上的固定电话回拨确认电汇指示，核对收款户名与合同主体一致<br>Call back on a number from the website or the order to confirm wire instructions; verify the payee name matches the contracting entity |
-| A4 | **租赁来源未披露**<br>**Undisclosed rental history** | 铭牌上方有 Leavitt Machinery 租赁部条码标签（5675），侧板有 Leavitt "RENTAL CUSTOMER" 租赁警示贴，原气罐是 Lonestar Rentals<br>Leavitt Machinery rental-dept. barcode label (5675) above the nameplate; Leavitt "RENTAL CUSTOMER" decals on the side panel; original tank was a Lonestar Rentals tank | 要求书面披露来源，提供所有权链条（Bill of Sale）、有无留置权、维修保养记录<br>Require written disclosure of origin, chain of title (Bill of Sale), lien status and service records |
-| A5 | **车身后部碰撞和补漆迹象**<br>**Signs of impact and repainting at the rear** | 配重左后转角有竖直折痕，漆面起伏，下角崩缺；右后轮罩漆面光亮并有橘皮纹，掉漆处露白色底层，有洋红色蹭漆；尾部拖拽销凹槽大面积掉漆生锈<br>Vertical crease and wavy paint at the left rear counterweight corner, chipped lower corner; glossy orange-peel paint on the right rear fender with white primer showing and magenta paint transfer; tow-pin recess heavily chipped and rusted | 请 Jeff 检查配重和车架接缝、后桥、焊点；要求 Lonestar 书面说明是否有碰撞和钣金修复。可作议价依据<br>Jeff to inspect the counterweight-to-frame seam, rear axle and welds; Lonestar to state in writing whether there was an impact or bodywork repair. Can be used in price negotiation |
+| A4 | **车身后部碰撞和补漆迹象**<br>**Signs of impact and repainting at the rear** | 配重左后转角有竖直折痕，漆面起伏，下角崩缺；右后轮罩漆面光亮并有橘皮纹，掉漆处露白色底层，有洋红色蹭漆；尾部拖拽销凹槽大面积掉漆生锈<br>Vertical crease and wavy paint at the left rear counterweight corner, chipped lower corner; glossy orange-peel paint on the right rear fender with white primer showing and magenta paint transfer; tow-pin recess heavily chipped and rusted | 请 Jeff 检查配重和车架接缝、后桥、焊点；要求 Lonestar 书面说明是否有碰撞和钣金修复。可作议价依据<br>Jeff to inspect the counterweight-to-frame seam, rear axle and welds; Lonestar to state in writing whether there was an impact or bodywork repair. Can be used in price negotiation |
 
 ### B. 需要澄清 / Needs Clarification
 
@@ -88,11 +87,9 @@ Please tick each item during inspection and keep photo evidence:
 | B1 | **库存号不一致**<br>**Stock number mismatch** | 订单 **RF6143**；车上标签和门架 **5675**；整备单 **RF5675**<br>Order **RF6143**; labels on truck and mast **5675**; make-ready **RF5675** | 序列号一致，所以车辆身份可确认。要求 Lonestar 书面解释库存号和"RF"前缀的含义<br>The serial number matches, so the unit's identity is confirmed. Lonestar to explain in writing the stock numbers and the "RF" prefix |
 | B2 | 整备单序列号少一位<br>Make-ready serial number is one digit short | 整备单 FGB1B-3620-**0057**，铭牌 **00507**<br>Make-ready FGB1B-3620-**0057**; nameplate **00507** | 视为笔误，要求更正<br>Treat as a typo; ask for correction |
 | B3 | 整备单年份 2021，订单 2023<br>Make-ready says 2021, order says 2023 | 发动机出厂 2023/05 支持 2023<br>Engine build date 2023/05 supports 2023 | 要求书面确认 2023，并核对车架钢印或出厂日期贴纸<br>Get written confirmation of 2023 and check the frame stamp or build-date decal |
-| B4 | 工时来源<br>Hour-meter source | 订单写"595 HRS ROUGHLY"，实测 593.1 h，整备单 591 h。工时不会倒退<br>Order says "595 HRS ROUGHLY"; measured 593.1 h; make-ready 591 h. Hours cannot go backwards | 要求提供带日期的工时记录，确认仪表没有被更换或重置过<br>Request dated hour readings; confirm the meter was not replaced or reset |
-| B5 | **门架软管近期更换**<br>**Mast hoses recently replaced** | 软管印有生产日期 **2026-06-26**，是 Weatherhead Dura-Tuff，且有 345 bar、350 bar 两种规格<br>Hose printed with date **2026-06-26**; Weatherhead Dura-Tuff, in both 345 bar and 350 bar ratings | 要求提供更换原因和维修工单<br>Request the reason for replacement and the work order |
-| B6 | 整备单未完成<br>Make-ready not completed | 完成日期和工单号为空；PM 勾 NO，附注却要求 500 h PM 和换滤芯<br>Completion date and work order blank; PM ticked NO, yet notes call for a 500 h PM and filter changes | 要求提供保养工单和日期<br>Request the service work order and date |
-| B7 | 税费和交货条款不明<br>Unclear taxes and delivery terms | "HE tax"未说明；订单为 CIP，发票为 F.O.B. Houston；发货日 TBD<br>"HE tax" not explained; order says CIP, invoice says F.O.B. Houston; ship date TBD | 要求写明费用构成，确认运输风险在卖方，直至送到你们厂址<br>Get the charges itemized; confirm transport risk stays with the seller until delivery to your site |
-| B8 | **气罐换新**<br>**New LP tank** | 卖方口头承诺<br>Verbal commitment from the seller | 写进更正后的订单：新罐随车交付并转移所有权，规格与罐架匹配，写明是否带气，费用是否包含在 $59,900 内，DOT 认证且在复检期内<br>Put in the corrected order: new tank delivered with the truck and ownership transferred, fits the existing bracket, state whether filled, confirm cost is included in the $59,900, DOT-certified and within its requalification date |
+| B4 | 整备单未完成<br>Make-ready not completed | 完成日期和工单号为空；PM 勾 NO，附注却要求 500 h PM 和换滤芯<br>Completion date and work order blank; PM ticked NO, yet notes call for a 500 h PM and filter changes | 要求提供保养工单和日期<br>Request the service work order and date |
+| B5 | 税费和交货条款不明<br>Unclear taxes and delivery terms | "HE tax"未说明；订单为 CIP，发票为 F.O.B. Houston；发货日 TBD<br>"HE tax" not explained; order says CIP, invoice says F.O.B. Houston; ship date TBD | 要求写明费用构成，确认运输风险在卖方，直至送到你们厂址<br>Get the charges itemized; confirm transport risk stays with the seller until delivery to your site |
+| B6 | **气罐换新**<br>**New LP tank** | 卖方口头承诺<br>Verbal commitment from the seller | 写进更正后的订单：新罐随车交付并转移所有权，规格与罐架匹配，写明是否带气，费用是否包含在 $59,900 内，DOT 认证且在复检期内<br>Put in the corrected order: new tank delivered with the truck and ownership transferred, fits the existing bracket, state whether filled, confirm cost is included in the $59,900, DOT-certified and within its requalification date |
 
 ### C. 较小问题和建议 / Minor Issues and Recommendations
 
@@ -102,10 +99,9 @@ Please tick each item during inspection and keep photo evidence:
 | C2 | 后轮比前轮显旧，后轮上方胎侧有折痕<br>Rear tires look older than the front; crease in the upper sidewall of a rear tire | 用卡尺量磨损线，必要时向卖方要求更换或议价<br>Measure the wear line with calipers; request replacement or a price adjustment if needed |
 | C3 | 链条略带锈色，润滑一般<br>Chain slightly rusty; lubrication average | 实测 12 in 链节伸长量，超出约 3% 就应更换<br>Measure elongation over 12 in of chain; replace if it exceeds about 3% |
 | C4 | 灭火器压力表和检验标签未读<br>Extinguisher gauge and inspection tag not read | 现场拍照确认在有效期内<br>Photograph on site and confirm it is in date |
-| C5 | 地面油渍、转向柱斑块未排除<br>Floor stains and steering-column marks not ruled out | 运转后复查车底；斑块可能是清洁剂残留<br>Re-check the underside after running; the marks may be cleaning-product residue |
-| C6 | 质保条款偏"as is"，条款第 1、10、11 条排除一切默示保证<br>Warranty terms lean "as is"; terms §1, §10, §11 exclude all implied warranties | 要求提供 180 天动力总成保修的书面细则<br>Request written details of the 180-day power train warranty |
-| C7 | 整备单划掉了 -9 系列项目（调整仪表语言、单位、称重校准）<br>Make-ready struck out the -9 series items (display language, units, scale calibration) | 仪表已是英制 mph，无需处理<br>Display is already in mph; no action needed |
-| C8 | 车架钢印和出厂日期贴纸未见<br>Frame stamp and build-date decal not seen | 补拍，用于核对年份<br>Photograph them to verify the model year |
+| C5 | 质保条款偏"as is"，条款第 1、10、11 条排除一切默示保证<br>Warranty terms lean "as is"; terms §1, §10, §11 exclude all implied warranties | 要求提供 180 天动力总成保修的书面细则<br>Request written details of the 180-day power train warranty |
+| C6 | 整备单划掉了 -9 系列项目（调整仪表语言、单位、称重校准）<br>Make-ready struck out the -9 series items (display language, units, scale calibration) | 仪表已是英制 mph，无需处理<br>Display is already in mph; no action needed |
+| C7 | 车架钢印和出厂日期贴纸未见<br>Frame stamp and build-date decal not seen | 补拍，用于核对年份<br>Photograph them to verify the model year |
 
 ---
 
@@ -116,14 +112,12 @@ Please tick each item during inspection and keep photo evidence:
 | 1 | Lonestar 重开发票（Doosan，按铭牌写型号）<br>Reissue the invoice (Doosan, model per nameplate) | Lonestar | ☐ |
 | 2 | Lonestar 签字盖章后的订单，含退出条款、气罐换新、货叉两套<br>Order signed and stamped by Lonestar, including the exit clause, new LP tank and both fork sets | Lonestar | ☐ |
 | 3 | 回拨确认电汇信息，核对户名<br>Call back to confirm wire instructions; verify payee name | 买方 Buyer | ☐ |
-| 4 | 书面说明租赁来源，提供 Bill of Sale 和保养记录<br>Written explanation of rental origin; provide Bill of Sale and service records | Lonestar | ☐ |
-| 5 | 书面说明后部碰撞和补漆情况，现场检查配重和车架<br>Written explanation of rear impact and repaint; on-site check of counterweight and frame | Lonestar、Jeff | ☐ |
-| 6 | 书面解释库存号 RF6143 / 5675 / RF5675<br>Written explanation of stock numbers RF6143 / 5675 / RF5675 | Lonestar | ☐ |
-| 7 | 书面确认年份 2023，补拍车架钢印<br>Written confirmation of model year 2023; photograph the frame stamp | Lonestar、Jeff | ☐ |
-| 8 | 门架软管更换原因和工单<br>Reason and work order for the mast hose replacement | Lonestar | ☐ |
-| 9 | 货叉清单勾选完成并拍照（见第三节）<br>Fork checklist completed and photographed (see Section 3) | Jeff | ☐ |
-| 10 | 更换安全带，量轮胎磨损线和链条伸长量<br>Replace the seat belt; measure tire wear lines and chain elongation | Lonestar、Jeff | ☐ |
-| 11 | 确认运费、保险、交货日期<br>Confirm freight, insurance and delivery date | 买方 Buyer、Lonestar | ☐ |
+| 4 | 书面说明后部碰撞和补漆情况，现场检查配重和车架<br>Written explanation of rear impact and repaint; on-site check of counterweight and frame | Lonestar、Jeff | ☐ |
+| 5 | 书面解释库存号 RF6143 / 5675 / RF5675<br>Written explanation of stock numbers RF6143 / 5675 / RF5675 | Lonestar | ☐ |
+| 6 | 书面确认年份 2023，补拍车架钢印<br>Written confirmation of model year 2023; photograph the frame stamp | Lonestar、Jeff | ☐ |
+| 7 | 货叉清单勾选完成并拍照（见第三节）<br>Fork checklist completed and photographed (see Section 3) | Jeff | ☐ |
+| 8 | 更换安全带，量轮胎磨损线和链条伸长量<br>Replace the seat belt; measure tire wear lines and chain elongation | Lonestar、Jeff | ☐ |
+| 9 | 确认运费、保险、交货日期<br>Confirm freight, insurance and delivery date | 买方 Buyer、Lonestar | ☐ |
 
 ---
 
@@ -133,5 +127,5 @@ Please tick each item during inspection and keep photo evidence:
   This summary is based on photos and documents. Claude did not see the video directly; "function test passed" is the buyer's own feedback.
 - 货叉、车架钢印、灭火器压力表、车底漏油情况在照片中没有拍到，按上文清单现场确认。<br>
   The forks, frame stamp, extinguisher gauge and underside leaks were not captured in the photos; confirm them on site using the checklists above.
-- 照片无法判断是否发生过事故，A5 的结论需要现场结构检查。<br>
-  Photos cannot establish whether an accident occurred; item A5 requires an on-site structural inspection.
+- 照片无法判断是否发生过事故，A4 的结论需要现场结构检查。<br>
+  Photos cannot establish whether an accident occurred; item A4 requires an on-site structural inspection.
