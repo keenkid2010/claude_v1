@@ -125,8 +125,8 @@ Please tick each item during inspection and keep photo evidence:
 
 ## 六、说明 / Notes
 
-- 本总结依据照片和文件做出。视频我（Claude）没有直接看到，"功能测试无问题"是买方的验收反馈。<br>
-  This summary is based on photos and documents. Claude did not see the video directly; "function test passed" is the buyer's own feedback.
+- 本总结依据照片和文件做出。"功能测试无问题"是买方的验收反馈。<br>
+  This summary is based on photos and documents. "Function test passed" is the buyer's own inspection feedback.
 - 货叉、车架钢印、灭火器压力表、车底漏油情况在照片中没有拍到，按上文清单现场确认。<br>
   The forks, frame stamp, extinguisher gauge and underside leaks were not captured in the photos; confirm them on site using the checklists above.
 - 照片无法判断是否发生过事故，A4 的结论需要现场结构检查。<br>
