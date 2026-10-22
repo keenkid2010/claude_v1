@@ -1,0 +1,434 @@
+<title>钥匙交换盒</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* Layout: one X-ray front view of both cams and the interlock rod, controls beneath in two lock cards. */
+:root {
+  --bg: #eceff2;
+  --panel: #ffffff;
+  --panel2: #f4f6f8;
+  --ink: #1b2128;
+  --muted: #5a6672;
+  --line: #c9d0d7;
+  --steel: #b4bec8;
+  --steel-line: #6e7b88;
+  --guide: #dde3e9;
+  --rod: #2b343d;
+  --brass: #c2922f;
+  --brass-line: #7d5a14;
+  --ok: #1d8a5a;
+  --bad: #c9362c;
+  --accent: #2456a6;
+  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161b; --panel: #1b2128; --panel2: #232b33; --ink: #e8ecf0; --muted: #98a4b0;
+    --line: #36414b; --steel: #55616d; --steel-line: #93a1b0; --guide: #262f38; --rod: #e4e9ee;
+    --brass: #d6a94c; --brass-line: #f0d38d; --ok: #4cc38a; --bad: #ff6b5e; --accent: #7fa8ea;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161b; --panel: #1b2128; --panel2: #232b33; --ink: #e8ecf0; --muted: #98a4b0;
+  --line: #36414b; --steel: #55616d; --steel-line: #93a1b0; --guide: #262f38; --rod: #e4e9ee;
+  --brass: #d6a94c; --brass-line: #f0d38d; --ok: #4cc38a; --bad: #ff6b5e; --accent: #7fa8ea;
+  color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-sans);
+  padding-block: 20px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  font-size: 15px; line-height: 1.6;
+}
+.wrap { max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+h1 { font-size: 26px; line-height: 1.2; margin: 0; letter-spacing: .02em; text-wrap: balance; }
+.sub { margin: 4px 0 0; color: var(--muted); max-width: 62ch; }
+.stage { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px; }
+svg { display: block; width: 100%; height: auto; }
+svg text { font-family: var(--font-sans); fill: var(--ink); }
+.mono { font-family: var(--font-mono); }
+.muted { fill: var(--muted); }
+.guide { fill: var(--guide); stroke: var(--line); stroke-width: 1.5; }
+.cam { fill: var(--steel); stroke: var(--steel-line); stroke-width: 2.5; stroke-linejoin: round; }
+.rotor { fill: var(--panel2); stroke: var(--steel-line); stroke-width: 2; }
+.slot { fill: var(--steel-line); }
+.rod { fill: var(--rod); transition: fill .15s; }
+.rod.blocked { fill: var(--bad); }
+.key { fill: var(--brass); stroke: var(--brass-line); stroke-width: 2.5; stroke-linejoin: round; }
+.hole { fill: var(--panel); stroke: var(--brass-line); stroke-width: 2; }
+.tray { fill: none; stroke: var(--line); stroke-width: 2; stroke-dasharray: 8 6; }
+.tick { fill: none; stroke: var(--muted); stroke-width: 2; }
+.dot-ok { fill: var(--ok); } .dot-bad { fill: var(--bad); } .dot-off { fill: var(--muted); }
+.banner {
+  background: var(--panel); border: 1px solid var(--line); border-left: 5px solid var(--accent);
+  border-radius: 8px; padding: 12px 16px; min-height: 3.4em; display: flex; align-items: center;
+}
+.banner.warn { border-left-color: var(--bad); }
+.banner.good { border-left-color: var(--ok); }
+.locks { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.lock { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.lock h2 { margin: 0; font-size: 16px; display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.lock h2 span { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--muted); }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; }
+button {
+  font: inherit; font-size: 14px; color: var(--ink); background: var(--panel2);
+  border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; cursor: pointer; min-height: 40px;
+}
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:disabled { opacity: .4; cursor: not-allowed; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+:root[data-theme="dark"] button.primary { color: #0d1620; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) button.primary { color: #0d1620; } }
+.bar { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; }
+.read { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.notes div { min-width: 0; }
+.notes h3 { margin: 0 0 4px; font-size: 14px; }
+.notes p { margin: 0; color: var(--muted); font-size: 14px; }
+@media (prefers-reduced-motion: reduce) { .rod { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>钥匙交换盒</h1>
+    <p class="sub">从前面板后方看进去：两个凸轮和中间一根联锁杆。点按钮操作钥匙，看杆怎么只放行一把。</p>
+  </header>
+
+  <div class="stage">
+    <svg viewBox="0 0 900 500" role="img" aria-label="两个锁头的凸轮与联锁杆的动态示意图">
+      <!-- guide channel for the rod -->
+      <rect class="guide" x="170" y="182" width="560" height="56" rx="6"/>
+      <text class="muted" x="450" y="170" text-anchor="middle" font-size="17">联锁杆 Ø5 × 46.7 mm</text>
+
+      <!-- cams -->
+      <g id="camA"><path class="cam" id="camPathA"/><circle class="rotor" r="46"/><rect class="slot" x="-4" y="-40" width="8" height="30" rx="2"/></g>
+      <g id="camB"><path class="cam" id="camPathB"/><circle class="rotor" r="46"/><rect class="slot" x="-4" y="-40" width="8" height="30" rx="2"/></g>
+
+      <!-- rod on top of the cams so the tips show inside the notches -->
+      <rect class="rod" id="rod" y="190" height="40" rx="20"/>
+
+      <!-- fixed angle ticks -->
+      <g id="ticks"></g>
+
+      <!-- trays -->
+      <rect class="tray" x="80" y="400" width="180" height="76" rx="10"/>
+      <rect class="tray" x="640" y="400" width="180" height="76" rx="10"/>
+      <text class="muted" x="170" y="492" text-anchor="middle" font-size="15">手中</text>
+      <text class="muted" x="730" y="492" text-anchor="middle" font-size="15">手中</text>
+
+      <!-- keys -->
+      <g id="keyA"></g>
+      <g id="keyB"></g>
+
+      <!-- headings and state badges -->
+      <text x="170" y="30" text-anchor="middle" font-size="22" font-weight="700">锁 A</text>
+      <text x="730" y="30" text-anchor="middle" font-size="22" font-weight="700">锁 B</text>
+      <g id="badgeA"><circle cx="75" cy="56" r="7" id="dotA"/><text id="txtA" x="90" y="62" font-size="17"></text></g>
+      <g id="badgeB"><circle cx="635" cy="56" r="7" id="dotB"/><text id="txtB" x="650" y="62" font-size="17"></text></g>
+    </svg>
+  </div>
+
+  <div class="banner" id="banner" role="status" aria-live="polite"></div>
+
+  <div class="locks">
+    <section class="lock">
+      <h2>锁 A <span id="angA">0°</span></h2>
+      <div class="btns">
+        <button id="keyBtnA" type="button">取出钥匙</button>
+        <button id="cwA" type="button">顺时针转到 180°</button>
+        <button id="ccwA" type="button">逆时针转到 0°</button>
+      </div>
+    </section>
+    <section class="lock">
+      <h2>锁 B <span id="angB">180°</span></h2>
+      <div class="btns">
+        <button id="keyBtnB" type="button">取出钥匙</button>
+        <button id="cwB" type="button">顺时针转到 180°</button>
+        <button id="ccwB" type="button">逆时针转到 0°</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="bar">
+    <div class="btns">
+      <button id="demo" class="primary" type="button">自动演示一次交换</button>
+      <button id="reset" type="button">复位</button>
+    </div>
+    <div class="read" id="read"></div>
+  </div>
+
+  <div class="notes">
+    <div><h3>杆长怎么定的</h3><p>两凸轮轴距 70 mm，大圆半径 14 mm，缺口底半径 9 mm。杆长 46.7 mm，比两个大圆之间的距离 42 mm 长，所以两个凸轮不可能同时在大圆位置。</p></div>
+    <div><h3>钥匙为什么拔不出</h3><p>锁头只在逆时针到底（0°）时放钥匙。凸轮把它转到 180° 之后，钥匙就拔不出来，必须逆转回去，而这一步要看另一个凸轮让不让。</p></div>
+    <div><h3>可以自己试</h3><p>取出 A 的钥匙后，直接逆转 B，杆会变红并把 B 挡住。再试着在 B 不在 0° 时拔钥匙，锁头也不会放。</p></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var NS = "http://www.w3.org/2000/svg";
+  var D = 70, R = 14, r = 9, L = 46.7, S = 8;       // mm, px per mm
+  var NOTCH_FLAT = 3, NOTCH_OPEN = 24;               // degrees
+  var CY = 210;
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var ROT_SPEED = reduce ? 600 : 110;                // deg per second
+  var KEY_SPEED = reduce ? 20 : 2.2;
+
+  function norm(a) { a = ((a + 180) % 360 + 360) % 360 - 180; return a; }
+  function rho(d) {
+    d = Math.abs(d);
+    if (d <= NOTCH_FLAT) return r;
+    if (d >= NOTCH_OPEN) return R;
+    return r + (R - r) * (d - NOTCH_FLAT) / (NOTCH_OPEN - NOTCH_FLAT);
+  }
+  // radius of each cam measured along the rod line at key angle th
+  function rhoA(th) { return rho(norm(-th - 180)); }
+  function rhoB(th) { return rho(norm(180 - th)); }
+  function feasible(a, b) { return rhoA(a) + rhoB(b) + L <= D + 1e-9; }
+
+  var locks = {
+    A: { id: "A", cx: 170, theta: 0,   target: 0,   hasKey: true, keyT: 1, resolve: null, blockUntil: 0, notch: 180 },
+    B: { id: "B", cx: 730, theta: 180, target: 180, hasKey: true, keyT: 1, resolve: null, blockUntil: 0, notch: 0 }
+  };
+  var rodX = 0;
+  var msg = { text: "", tone: "", until: 0 };
+  var demoRunning = false, demoCancel = false;
+
+  function el(name, attrs, parent) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function $(id) { return document.getElementById(id); }
+  function pt(deg, rad) { var a = deg * Math.PI / 180; return (rad * Math.cos(a)).toFixed(2) + " " + (rad * Math.sin(a)).toFixed(2); }
+
+  function camPath(c) {
+    var Rp = R * S, rp = r * S;
+    return "M " + pt(c + NOTCH_OPEN, Rp) +
+      " A " + Rp + " " + Rp + " 0 1 1 " + pt(c - NOTCH_OPEN, Rp) +
+      " L " + pt(c - NOTCH_FLAT, rp) + " L " + pt(c + NOTCH_FLAT, rp) + " Z";
+  }
+  $("camPathA").setAttribute("d", camPath(locks.A.notch));
+  $("camPathB").setAttribute("d", camPath(locks.B.notch));
+
+  // ticks: 0 deg (removable) at top, 180 deg at bottom of each lock
+  ["A", "B"].forEach(function (id) {
+    var cx = locks[id].cx, g = $("ticks");
+    el("path", { class: "tick", d: "M " + (cx - 9) + " " + (CY - 128) + " L " + (cx + 9) + " " + (CY - 128) + " L " + cx + " " + (CY - 116) + " Z" }, g);
+    el("path", { class: "tick", d: "M " + (cx - 9) + " " + (CY + 128) + " L " + (cx + 9) + " " + (CY + 128) + " L " + cx + " " + (CY + 116) + " Z" }, g);
+    var t1 = el("text", { class: "muted mono", x: cx + 16, y: CY - 119, "font-size": 15 }, g); t1.textContent = "0° 可拔";
+    var t2 = el("text", { class: "muted mono", x: cx + 16, y: CY + 137, "font-size": 15 }, g); t2.textContent = "180°";
+  });
+
+  // key artwork (points up at 0 deg)
+  ["A", "B"].forEach(function (id) {
+    var g = $("key" + id);
+    el("rect", { class: "key", x: -8, y: -70, width: 16, height: 60, rx: 3 }, g);
+    el("rect", { class: "key", x: 8, y: -62, width: 9, height: 9, rx: 1 }, g);
+    el("rect", { class: "key", x: 8, y: -46, width: 9, height: 9, rx: 1 }, g);
+    el("circle", { class: "key", cx: 0, cy: -92, r: 24 }, g);
+    el("circle", { class: "hole", cx: 0, cy: -92, r: 8 }, g);
+    var t = el("text", { x: 0, y: -50, "text-anchor": "middle", "font-size": 0 }, g);
+  });
+
+  var rod = $("rod");
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function ease(t) { return t * t * (3 - 2 * t); }
+
+  function say(text, tone, ms) { msg.text = text; msg.tone = tone || ""; msg.until = performance.now() + (ms || 3200); }
+
+  function other(l) { return l.id === "A" ? locks.B : locks.A; }
+
+  function stepLock(l, dt, now) {
+    if (!l.hasKey || l.theta === l.target) {
+      if (l.resolve && l.theta === l.target) { var f = l.resolve; l.resolve = null; f(true); }
+      return;
+    }
+    var dir = Math.sign(l.target - l.theta);
+    var delta = Math.min(ROT_SPEED * dt, Math.abs(l.target - l.theta));
+    var o = other(l);
+    function ok(th) { return l.id === "A" ? feasible(th, o.theta) : feasible(o.theta, th); }
+    var next = l.theta + dir * delta;
+    if (ok(next)) { l.theta = next; return; }
+    var lo = 0, hi = 1;
+    for (var i = 0; i < 8; i++) {
+      var mid = (lo + hi) / 2;
+      if (ok(l.theta + dir * delta * mid)) lo = mid; else hi = mid;
+    }
+    l.theta = l.theta + dir * delta * lo;
+    l.target = l.theta;
+    l.blockUntil = now + 1100;
+    say("锁 " + l.id + " 被联锁杆挡住：锁 " + o.id + " 的钥匙没有转到 180°，杆正顶着缺口。", "warn", 3600);
+    if (l.resolve) { var f2 = l.resolve; l.resolve = null; f2(false); }
+  }
+
+  var last = performance.now();
+  function frame(now) {
+    var dt = Math.min(0.05, (now - last) / 1000); last = now;
+    ["A", "B"].forEach(function (id) {
+      var l = locks[id];
+      stepLock(l, dt, now);
+      var goal = l.hasKey ? 1 : 0;
+      l.keyT += Math.sign(goal - l.keyT) * Math.min(KEY_SPEED * dt, Math.abs(goal - l.keyT));
+    });
+    var lo = rhoA(locks.A.theta), hi = D - rhoB(locks.B.theta) - L;
+    rodX = Math.min(Math.max(rodX, lo), hi);
+    render(now, hi - lo);
+    requestAnimationFrame(frame);
+  }
+
+  var lastBanner = "", lastBtn = "";
+  function render(now, travel) {
+    ["A", "B"].forEach(function (id) {
+      var l = locks[id];
+      $("cam" + id).setAttribute("transform", "translate(" + l.cx + " " + CY + ") rotate(" + l.theta.toFixed(2) + ")");
+      var t = ease(l.keyT);
+      var kx = lerp(l.cx, l.cx, t), ky = lerp(438, CY, t);
+      var rot = l.hasKey || l.keyT > 0 ? lerp(90, l.theta, t) : 90;
+      var sc = lerp(0.8, 1, t);
+      $("key" + id).setAttribute("transform", "translate(" + kx + " " + ky.toFixed(1) + ") rotate(" + rot.toFixed(2) + ") scale(" + sc.toFixed(3) + ")");
+
+      var removable = l.hasKey && l.theta < 0.5;
+      var dot = $("dot" + id), txt = $("txt" + id);
+      var label, cls;
+      if (!l.hasKey) { label = "钥匙已取走"; cls = "dot-off"; }
+      else if (removable) { label = "钥匙可拔出"; cls = "dot-ok"; }
+      else { label = "钥匙被扣住"; cls = "dot-bad"; }
+      dot.setAttribute("class", cls);
+      txt.textContent = label;
+      $("ang" + id).textContent = Math.round(l.theta) + "°";
+    });
+    rod.setAttribute("x", locks.A.cx + rodX * S);
+    rod.setAttribute("width", L * S);
+    var blocked = now < locks.A.blockUntil || now < locks.B.blockUntil;
+    rod.setAttribute("class", "rod" + (blocked ? " blocked" : ""));
+
+    var b = banner(now);
+    if (b.text !== lastBanner || b.tone !== $("banner").dataset.tone) {
+      $("banner").textContent = b.text;
+      $("banner").className = "banner" + (b.tone ? " " + b.tone : "");
+      $("banner").dataset.tone = b.tone;
+      lastBanner = b.text;
+    }
+    var slack = D - (rhoA(locks.A.theta) + rhoB(locks.B.theta) + L);
+    $("read").textContent = "联锁余量 " + slack.toFixed(2) + " mm · 杆可移动 " + travel.toFixed(2) + " mm";
+
+    var sig = ["A", "B"].map(function (id) { var l = locks[id]; return (l.hasKey ? 1 : 0) + ":" + (l.theta < 0.5 ? 0 : l.theta > 179.5 ? 2 : 1); }).join("|") + demoRunning;
+    if (sig !== lastBtn) { lastBtn = sig; updateButtons(); }
+  }
+
+  function banner(now) {
+    if (now < msg.until && msg.text) return { text: msg.text, tone: msg.tone };
+    var A = locks.A, B = locks.B;
+    var out = [A, B].filter(function (l) { return !l.hasKey; });
+    var moving = [A, B].some(function (l) { return l.theta !== l.target; });
+    if (moving) return { text: "转动中", tone: "" };
+    if (out.length) {
+      var o = out[0], k = other(o);
+      return { text: "钥匙 " + o.id + " 在手中。钥匙 " + k.id + " 被扣住，要等钥匙 " + o.id + " 插回并顺转到 180° 才会放行。", tone: "" };
+    }
+    var free = [A, B].filter(function (l) { return l.theta < 0.5; });
+    if (free.length === 1) {
+      var f = free[0];
+      return { text: "钥匙 " + f.id + " 可以拔出，钥匙 " + other(f).id + " 被杆扣住。", tone: "good" };
+    }
+    if ([A, B].every(function (l) { return l.theta > 179.5; })) {
+      return { text: "两把钥匙都在 180°，都拔不出。逆转任意一把到 0°，另一把随即被锁住。", tone: "" };
+    }
+    return { text: "", tone: "" };
+  }
+
+  function updateButtons() {
+    ["A", "B"].forEach(function (id) {
+      var l = locks[id];
+      $("keyBtn" + id).textContent = l.hasKey ? "取出钥匙" : "插入钥匙";
+      $("keyBtn" + id).disabled = demoRunning;
+      $("cw" + id).disabled = demoRunning || !l.hasKey;
+      $("ccw" + id).disabled = demoRunning || !l.hasKey;
+    });
+    $("reset").disabled = false;
+  }
+
+  function turn(l, target) {
+    return new Promise(function (res) {
+      if (l.resolve) { l.resolve(false); l.resolve = null; }
+      if (!l.hasKey) { res(false); return; }
+      l.target = target;
+      if (l.theta === target) { res(true); return; }
+      l.resolve = res;
+    });
+  }
+  function toggleKey(l) {
+    if (l.hasKey) {
+      if (l.theta > 0.5) {
+        l.blockUntil = 0;
+        say("钥匙 " + l.id + " 不在 0°，锁头不放钥匙。要先逆时针转到底。", "warn");
+        return false;
+      }
+      l.hasKey = false;
+      say("钥匙 " + l.id + " 已取走。", "", 2000);
+    } else {
+      l.hasKey = true;
+      say("钥匙 " + l.id + " 插入，位置 0°。", "", 2000);
+    }
+    return true;
+  }
+
+  ["A", "B"].forEach(function (id) {
+    var l = locks[id];
+    $("keyBtn" + id).addEventListener("click", function () { toggleKey(l); });
+    $("cw" + id).addEventListener("click", function () { turn(l, 180); });
+    $("ccw" + id).addEventListener("click", function () { turn(l, 0); });
+  });
+
+  function sleep(ms) {
+    return new Promise(function (res, rej) {
+      setTimeout(function () { demoCancel ? rej("cancel") : res(); }, ms);
+    });
+  }
+  function resetState() {
+    ["A", "B"].forEach(function (id) {
+      var l = locks[id];
+      if (l.resolve) { l.resolve(false); l.resolve = null; }
+    });
+    locks.A.theta = locks.A.target = 0; locks.A.hasKey = true; locks.A.blockUntil = 0;
+    locks.B.theta = locks.B.target = 180; locks.B.hasKey = true; locks.B.blockUntil = 0;
+    rodX = rhoA(0);
+    msg.until = 0;
+  }
+  async function runDemo() {
+    var A = locks.A, B = locks.B;
+    resetState();
+    await sleep(900);
+    say("1. 起始状态：A 在 0° 可拔，B 在 180° 被扣住。", "", 2600); await sleep(2700);
+    say("2. 拔出钥匙 A。", "", 1800); toggleKey(A); await sleep(1500);
+    say("3. 试着逆转 B：杆被 A 的大圆顶住，B 动不了。", "", 2600); await sleep(1000);
+    await turn(B, 0); await sleep(2800);
+    say("4. 钥匙 A 用完，插回锁 A。", "", 2000); toggleKey(A); await sleep(1700);
+    say("5. 顺时针转 A 到 180°，A 的缺口对准杆，B 被放行。", "", 3200); await turn(A, 180); await sleep(1300);
+    say("6. 现在逆转 B 到底，杆顶进 A 的缺口，A 被锁住。", "", 3200); await turn(B, 0); await sleep(1500);
+    say("7. 拔出钥匙 B。交换完成：B 在手中，A 被扣住。", "good", 3600); toggleKey(B); await sleep(2000);
+  }
+  $("demo").addEventListener("click", async function () {
+    if (demoRunning) { demoCancel = true; return; }
+    demoRunning = true; demoCancel = false;
+    $("demo").textContent = "停止演示"; lastBtn = ""; updateButtons();
+    try { await runDemo(); } catch (e) { /* cancelled */ }
+    demoRunning = false; demoCancel = false;
+    $("demo").textContent = "自动演示一次交换"; lastBtn = ""; updateButtons();
+  });
+  $("reset").addEventListener("click", function () {
+    if (demoRunning) demoCancel = true;
+    resetState();
+  });
+
+  rodX = rhoA(0);
+  requestAnimationFrame(function (t) { last = t; frame(t); });
+})();
+</script>
