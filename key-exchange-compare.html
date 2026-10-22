@@ -1,0 +1,659 @@
+<title>钥匙交换盒三方案</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* Layout: tab per scheme, one shared X-ray front view, then controls, a fault-injection slider and a force test. */
+:root {
+  --bg: #eceff2;
+  --panel: #ffffff;
+  --panel2: #f4f6f8;
+  --ink: #1b2128;
+  --muted: #5a6672;
+  --line: #c9d0d7;
+  --steel: #b4bec8;
+  --steel-line: #6e7b88;
+  --guide: #dde3e9;
+  --gear: #cfd6dd;
+  --rod: #2b343d;
+  --brass: #c2922f;
+  --brass-line: #7d5a14;
+  --ok: #1d8a5a;
+  --bad: #c9362c;
+  --warn: #a96a00;
+  --accent: #2456a6;
+  --on-accent: #ffffff;
+  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161b; --panel: #1b2128; --panel2: #232b33; --ink: #e8ecf0; --muted: #98a4b0;
+    --line: #36414b; --steel: #55616d; --steel-line: #93a1b0; --guide: #262f38; --gear: #323d47; --rod: #e4e9ee;
+    --brass: #d6a94c; --brass-line: #f0d38d; --ok: #4cc38a; --bad: #ff6b5e; --warn: #e3a63c; --accent: #7fa8ea; --on-accent: #0d1620;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161b; --panel: #1b2128; --panel2: #232b33; --ink: #e8ecf0; --muted: #98a4b0;
+  --line: #36414b; --steel: #55616d; --steel-line: #93a1b0; --guide: #262f38; --gear: #323d47; --rod: #e4e9ee;
+  --brass: #d6a94c; --brass-line: #f0d38d; --ok: #4cc38a; --bad: #ff6b5e; --warn: #e3a63c; --accent: #7fa8ea; --on-accent: #0d1620;
+  color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-sans);
+  padding-block: 20px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  font-size: 15px; line-height: 1.6;
+}
+.wrap { max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+h1 { font-size: 26px; line-height: 1.2; margin: 0; letter-spacing: .02em; }
+.sub { margin: 4px 0 0; color: var(--muted); max-width: 62ch; }
+.tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px; }
+.tab { text-align: left; padding: 10px 14px; display: flex; flex-direction: column; gap: 2px; border-radius: 8px; }
+.tab b { font-size: 15px; }
+.tab span { font-size: 12.5px; color: var(--muted); }
+.tab[aria-selected="true"] { border-color: var(--accent); box-shadow: inset 0 -3px 0 var(--accent); background: var(--panel); }
+.desc { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+.desc h2 { margin: 0; font-size: 17px; }
+.desc p { margin: 0; color: var(--muted); max-width: 70ch; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 12.5px; padding: 2px 10px; border-radius: 99px; border: 1px solid var(--line); }
+.chip.good { color: var(--ok); border-color: var(--ok); }
+.chip.bad { color: var(--bad); border-color: var(--bad); }
+.chip.mid { color: var(--warn); border-color: var(--warn); }
+.stage { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px; }
+svg { display: block; width: 100%; height: auto; }
+svg text { font-family: var(--font-sans); fill: var(--ink); }
+.mono { font-family: var(--font-mono); }
+.muted { fill: var(--muted); }
+.guide { fill: var(--guide); stroke: var(--line); stroke-width: 1.5; }
+.gear { fill: var(--gear); stroke: var(--steel-line); stroke-width: 2; stroke-linejoin: round; }
+.gear.ghost { fill-opacity: .5; stroke-opacity: .7; }
+.cam { fill: var(--steel); stroke: var(--steel-line); stroke-width: 2.5; stroke-linejoin: round; }
+.rotor { fill: var(--panel2); stroke: var(--steel-line); stroke-width: 2; }
+.slot { fill: var(--steel-line); }
+.rod { fill: var(--rod); transition: fill .15s; }
+.rod.blocked { fill: var(--bad); }
+.key { fill: var(--brass); stroke: var(--brass-line); stroke-width: 2.5; stroke-linejoin: round; }
+.hole { fill: var(--panel); stroke: var(--brass-line); stroke-width: 2; }
+.tray { fill: none; stroke: var(--line); stroke-width: 2; stroke-dasharray: 8 6; }
+.tick { fill: none; stroke: var(--muted); stroke-width: 2; }
+.dot-ok { fill: var(--ok); } .dot-bad { fill: var(--bad); } .dot-off { fill: var(--muted); }
+.banner {
+  background: var(--panel); border: 1px solid var(--line); border-left: 5px solid var(--accent);
+  border-radius: 8px; padding: 12px 16px; min-height: 3.4em; display: flex; align-items: center;
+}
+.banner.warn { border-left-color: var(--bad); }
+.banner.good { border-left-color: var(--ok); }
+.locks { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.lock, .tool { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.lock h2, .tool h2 { margin: 0; font-size: 16px; display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.lock h2 span { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--muted); }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; }
+button {
+  font: inherit; font-size: 14px; color: var(--ink); background: var(--panel2);
+  border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; cursor: pointer; min-height: 40px;
+}
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:disabled { opacity: .4; cursor: not-allowed; }
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.tool p { margin: 0; color: var(--muted); font-size: 14px; }
+.row { display: flex; align-items: center; gap: 12px; }
+input[type="range"] { flex: 1; min-width: 0; accent-color: var(--accent); }
+.val { font-family: var(--font-mono); font-size: 14px; min-width: 6.5em; text-align: right; font-variant-numeric: tabular-nums; }
+.stat { font-size: 14px; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--line); }
+.stat.ok { border-color: var(--ok); color: var(--ok); }
+.stat.warn { border-color: var(--warn); color: var(--warn); }
+.stat.bad { border-color: var(--bad); color: var(--bad); }
+.gauge { display: flex; align-items: center; gap: 10px; }
+.gbar { flex: 1; height: 10px; border-radius: 5px; background: var(--panel2); border: 1px solid var(--line); overflow: hidden; }
+.gbar i { display: block; height: 100%; width: 0; background: var(--accent); }
+.gbar i.over { background: var(--bad); }
+.read { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tablewrap { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 14px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 600; background: var(--panel2); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 600; white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .rod { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>钥匙交换盒三方案</h1>
+    <p class="sub">同一套钥匙规则，三种做法。切换方案后可以操作钥匙、拖动误差滑块、做强扭测试，比较它们的反应。</p>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="方案">
+    <button class="tab" role="tab" id="tab-cam" data-mode="cam" aria-selected="true"><b>方案一</b><span>凸轮 + 联锁杆（宽容差版）</span></button>
+    <button class="tab" role="tab" id="tab-gear" data-mode="gear" aria-selected="false"><b>方案二</b><span>齿轮耦合</span></button>
+    <button class="tab" role="tab" id="tab-hybrid" data-mode="hybrid" aria-selected="false"><b>方案三</b><span>齿轮 + 联锁杆叠加（会打架）</span></button>
+  </div>
+
+  <section class="desc" id="desc"></section>
+
+  <div class="stage">
+    <svg viewBox="0 0 900 630" role="img" aria-label="钥匙交换机构的动态示意图">
+      <text id="capt" class="muted" x="450" y="28" text-anchor="middle" font-size="16"></text>
+      <rect id="guide" class="guide" rx="6"/>
+      <g id="gearA"><path class="gear" id="gearPathA"/></g>
+      <g id="gearB"><path class="gear" id="gearPathB"/></g>
+      <g id="camA"><path class="cam" id="camPathA"/></g>
+      <g id="camB"><path class="cam" id="camPathB"/></g>
+      <g id="rotA"><circle class="rotor" r="46"/><rect class="slot" x="-4" y="-40" width="8" height="30" rx="2"/></g>
+      <g id="rotB"><circle class="rotor" r="46"/><rect class="slot" x="-4" y="-40" width="8" height="30" rx="2"/></g>
+      <rect class="rod" id="rod" height="40" rx="20"/>
+      <text id="rodLabel" class="muted" text-anchor="middle" font-size="16"></text>
+      <g id="ticks"></g>
+      <rect class="tray" id="trayA" y="525" width="180" height="76" rx="10"/>
+      <rect class="tray" id="trayB" y="525" width="180" height="76" rx="10"/>
+      <text id="trayTA" class="muted" y="617" text-anchor="middle" font-size="15">手中</text>
+      <text id="trayTB" class="muted" y="617" text-anchor="middle" font-size="15">手中</text>
+      <g id="keyA"></g>
+      <g id="keyB"></g>
+      <text id="titleA" y="30" text-anchor="middle" font-size="22" font-weight="700">锁 A</text>
+      <text id="titleB" y="30" text-anchor="middle" font-size="22" font-weight="700">锁 B</text>
+      <circle id="dotA" cy="56" r="7"/><text id="txtA" y="62" font-size="17"></text>
+      <circle id="dotB" cy="56" r="7"/><text id="txtB" y="62" font-size="17"></text>
+    </svg>
+  </div>
+
+  <div class="banner" id="banner" role="status" aria-live="polite"></div>
+
+  <div class="locks">
+    <section class="lock">
+      <h2>锁 A <span id="angA">0°</span></h2>
+      <div class="btns">
+        <button id="keyBtnA" type="button">取出钥匙</button>
+        <button id="cwA" type="button">顺时针转到底</button>
+        <button id="ccwA" type="button">逆时针转到 0°</button>
+      </div>
+    </section>
+    <section class="lock">
+      <h2>锁 B <span id="angB">180°</span></h2>
+      <div class="btns">
+        <button id="keyBtnB" type="button">取出钥匙</button>
+        <button id="cwB" type="button">顺时针转到底</button>
+        <button id="ccwB" type="button">逆时针转到 0°</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="tools">
+    <section class="tool">
+      <h2>装配误差</h2>
+      <p id="errHelp"></p>
+      <div class="row"><input type="range" id="err" aria-label="装配误差"><span class="val" id="errVal"></span></div>
+      <div class="stat" id="errStat"></div>
+    </section>
+    <section class="tool">
+      <h2>强扭测试</h2>
+      <p>取走钥匙 A 后，用力逆转 B，想把 B 的钥匙也拿出来。假设没钥匙的锁芯最多抗 <b>2.5 N·m</b>（请以实际锁头为准）。</p>
+      <div class="gauge"><div class="gbar"><i id="gfill"></i></div><span class="read" id="gtxt">0.0 N·m</span></div>
+      <div class="btns">
+        <button id="attack" type="button">开始强扭</button>
+        <button id="demo" class="primary" type="button">自动演示</button>
+        <button id="reset" type="button">复位</button>
+      </div>
+    </section>
+  </div>
+  <div class="read" id="read"></div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th></th><th>方案一 凸轮 + 杆</th><th>方案二 齿轮耦合</th><th>方案三 齿轮 + 杆</th></tr></thead>
+      <tbody>
+        <tr><td>尺寸容错</td><td>杆长窗口约 −2.5 ~ +1.3 mm</td><td>装配相位 ±90° 都能用</td><td>杆必须缩到 17 mm 以下才不卡，等于没有杆</td></tr>
+        <tr><td>强扭</td><td>杆挡住，锁芯不受力</td><td>全靠无钥匙锁芯抗扭，超过就旁路</td><td>能挡住，但正常交换也卡死</td></tr>
+        <tr><td>零件</td><td>2 凸轮 + 1 杆 + 导槽</td><td>2 齿轮</td><td>不可用</td></tr>
+        <tr><td>适合</td><td>需要防硬拧的场合</td><td>办公室、设备间交接，重视不装错</td><td>——</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+(function () {
+  var NS = "http://www.w3.org/2000/svg";
+  var S = 8, CY = 285;
+  var NOTCH_FLAT = 3, NOTCH_OPEN = 24;
+  var Z = 30, PITCH = 360 / Z;
+  var TLOCK = 2.5, TMAX = 4;
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var ROT_SPEED = reduce ? 600 : 110;
+  var KEY_SPEED = reduce ? 20 : 2.2;
+
+  var MODES = {
+    cam: {
+      title: "方案一 · 凸轮 + 联锁杆（宽容差版）",
+      text: "缺口加深到 6 mm，杆长留 1.5 mm 余量。杆长只要落在大约 −2.5 ~ +1.3 mm 的窗口里就能工作。强扭时杆直接顶住凸轮，无钥匙的锁芯不受力。",
+      chips: [["尺寸容错：较好", "good"], ["抗强扭：好", "good"], ["零件：少", "good"]],
+      D: 70, R: 14, r: 8, L0: 46.5, cx: [170, 730], coupled: false, rod: true, gear: false, cam: true,
+      err: { label: "杆长偏差", help: "拖动滑块改变杆长，看窗口内外的区别。杆太长会卡死，太短两把钥匙都能拔。", min: -5, max: 3, step: 0.1, unit: " mm", def: 0 }
+    },
+    gear: {
+      title: "方案二 · 齿轮耦合",
+      text: "两个等径齿轮啮合，两把锁的角度之和保持 180°：一个顺时针转到底，另一个就被带到 0°。没有杆，也没有尺寸链。缺点是强扭时只有无钥匙锁芯自己顶着。",
+      chips: [["尺寸容错：最好", "good"], ["抗强扭：取决于锁头", "mid"], ["零件：最少", "good"]],
+      D: 45, R: 14, r: 8, L0: 0, cx: [270, 630], coupled: true, rod: false, gear: true, cam: false,
+      err: { label: "齿轮装配相位偏差", help: "两个齿轮装到锁尾时的相位可以不准。拖动滑块，看交换行程怎么变化，功能不受影响。", min: -90, max: 90, step: 1, unit: "°", def: 0 }
+    },
+    hybrid: {
+      title: "方案三 · 齿轮 + 联锁杆叠加（会打架）",
+      text: "想让齿轮负责耦合、杆当后备。但齿轮要同时转动两个凸轮，中途两个都不在缺口里，杆不允许这种状态，所以正常交换也会被卡住。这个方案行不通。",
+      chips: [["正常交换：卡死", "bad"], ["强扭：能挡", "mid"], ["零件：多", "bad"]],
+      D: 45, R: 14, r: 8, L0: 21.5, cx: [270, 630], coupled: true, rod: true, gear: true, cam: true,
+      err: { label: "杆长偏差", help: "把杆缩短到 17 mm 以下（偏差约 −4.5 mm）就不再卡，但那时杆已经没有后备作用了。", min: -6, max: 3, step: 0.1, unit: " mm", def: 0 }
+    }
+  };
+
+  var mode = "cam", M = MODES.cam, err = 0, Lcur = M.L0, Cval = 180;
+  var locks = {}, rodX = 0, breakOK = false, bypassed = false;
+  var msg = { text: "", tone: "", until: 0 };
+  var token = 0, busy = false;
+
+  function $(id) { return document.getElementById(id); }
+  function el(name, attrs, parent) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function norm(a) { return ((a + 180) % 360 + 360) % 360 - 180; }
+  function pt(deg, rad) { var a = deg * Math.PI / 180; return (rad * Math.cos(a)).toFixed(2) + " " + (rad * Math.sin(a)).toFixed(2); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function ease(t) { return t * t * (3 - 2 * t); }
+  function other(l) { return l.id === "A" ? locks.B : locks.A; }
+
+  function rho(d) {
+    d = Math.abs(d);
+    if (d <= NOTCH_FLAT) return M.r;
+    if (d >= NOTCH_OPEN) return M.R;
+    return M.r + (M.R - M.r) * (d - NOTCH_FLAT) / (NOTCH_OPEN - NOTCH_FLAT);
+  }
+  function rhoA(th) { return rho(norm(-th - 180)); }
+  function rhoB(th) { return rho(norm(180 - th)); }
+  function rodFeasible(a, b) { return !M.rod || rhoA(a) + rhoB(b) + Lcur <= M.D + 1e-9; }
+  function slackNow() { return M.D - M.R - M.r - Lcur; }
+
+  function camPath(c) {
+    var Rp = M.R * S, rp = M.r * S;
+    return "M " + pt(c + NOTCH_OPEN, Rp) + " A " + Rp + " " + Rp + " 0 1 1 " + pt(c - NOTCH_OPEN, Rp) +
+      " L " + pt(c - NOTCH_FLAT, rp) + " L " + pt(c + NOTCH_FLAT, rp) + " Z";
+  }
+  function gearPath(off) {
+    var ro = 192, rr = 165, p = PITCH, pts = [];
+    for (var k = 0; k < Z; k++) {
+      var c = off + k * p;
+      pts.push(pt(c - 0.30 * p, rr), pt(c - 0.15 * p, ro), pt(c + 0.15 * p, ro), pt(c + 0.30 * p, rr));
+    }
+    return "M " + pts.join(" L ") + " Z";
+  }
+
+  // keys
+  ["A", "B"].forEach(function (id) {
+    var g = $("key" + id);
+    el("rect", { class: "key", x: -8, y: -70, width: 16, height: 60, rx: 3 }, g);
+    el("rect", { class: "key", x: 8, y: -62, width: 9, height: 9, rx: 1 }, g);
+    el("rect", { class: "key", x: 8, y: -46, width: 9, height: 9, rx: 1 }, g);
+    el("circle", { class: "key", cx: 0, cy: -92, r: 24 }, g);
+    el("circle", { class: "hole", cx: 0, cy: -92, r: 8 }, g);
+  });
+
+  function resetState() {
+    token++; busy = false;
+    ["A", "B"].forEach(function (id) {
+      var l = locks[id];
+      if (l && l.resolve) { l.resolve(false); l.resolve = null; }
+    });
+    locks.A = { id: "A", cx: M.cx[0], theta: 0, target: 0, hasKey: true, keyT: 1, resolve: null, blockUntil: 0 };
+    locks.B = { id: "B", cx: M.cx[1], theta: Cval, target: Cval, hasKey: true, keyT: 1, resolve: null, blockUntil: 0 };
+    rodX = M.rod ? Math.min(Math.max(0, rhoA(0)), M.D - rhoB(Cval) - Lcur) : 0;
+    breakOK = false; bypassed = false;
+    msg.until = 0;
+    $("gfill").style.width = "0"; $("gfill").className = ""; $("gtxt").textContent = "0.0 N·m";
+    lastBtn = ""; lastBanner = null;
+  }
+
+  function computeParams() {
+    Lcur = M.L0 + (M.rod ? err : 0);
+    Cval = mode === "gear" ? 180 + err : 180;
+  }
+
+  function buildScene() {
+    $("camPathA").setAttribute("d", camPath(180));
+    $("camPathB").setAttribute("d", camPath(0));
+    var offB = 6 - (mode === "gear" ? err : 0);
+    $("gearPathA").setAttribute("d", gearPath(0));
+    $("gearPathB").setAttribute("d", gearPath(offB));
+    var ghost = mode === "hybrid";
+    $("gearPathA").setAttribute("class", "gear" + (ghost ? " ghost" : ""));
+    $("gearPathB").setAttribute("class", "gear" + (ghost ? " ghost" : ""));
+    ["A", "B"].forEach(function (id) {
+      $("gear" + id).style.display = M.gear ? "" : "none";
+      $("cam" + id).style.display = M.cam ? "" : "none";
+    });
+    $("rod").style.display = M.rod ? "" : "none";
+    $("rodLabel").style.display = M.rod ? "" : "none";
+    $("guide").style.display = M.rod ? "" : "none";
+    if (M.rod) {
+      $("guide").setAttribute("x", M.cx[0]); $("guide").setAttribute("y", CY - 28);
+      $("guide").setAttribute("width", M.cx[1] - M.cx[0]); $("guide").setAttribute("height", 56);
+      $("rod").setAttribute("y", CY - 20);
+      $("rod").setAttribute("width", Lcur * S);
+      $("rodLabel").setAttribute("x", 450); $("rodLabel").setAttribute("y", CY - 40);
+      $("rodLabel").textContent = "联锁杆 Ø5 × " + Lcur.toFixed(1) + " mm";
+    }
+    var tg = $("ticks"); while (tg.firstChild) tg.removeChild(tg.firstChild);
+    var tr = M.gear ? 205 : 124;
+    [0, 1].forEach(function (i) {
+      var cx = M.cx[i];
+      el("path", { class: "tick", d: "M " + (cx - 9) + " " + (CY - tr - 12) + " L " + (cx + 9) + " " + (CY - tr - 12) + " L " + cx + " " + (CY - tr) + " Z" }, tg);
+      el("path", { class: "tick", d: "M " + (cx - 9) + " " + (CY + tr + 12) + " L " + (cx + 9) + " " + (CY + tr + 12) + " L " + cx + " " + (CY + tr) + " Z" }, tg);
+      el("text", { class: "muted mono", x: cx + 16, y: CY - tr - 2, "font-size": 15 }, tg).textContent = "0° 可拔";
+      el("text", { class: "muted mono", x: cx + 16, y: CY + tr + 24, "font-size": 15 }, tg).textContent = "180°";
+      var id = i ? "B" : "A";
+      $("tray" + id).setAttribute("x", cx - 90);
+      $("trayT" + id).setAttribute("x", cx);
+      $("title" + id).setAttribute("x", cx);
+      $("dot" + id).setAttribute("cx", cx - 95);
+      $("txt" + id).setAttribute("x", cx - 80);
+    });
+    $("capt").textContent = mode === "gear" ? "齿轮 Z=30 · 模数 1.5 · 中心距 45 mm" : mode === "hybrid" ? "中心距 45 mm · 齿轮（半透明）+ 凸轮 + 杆" : "中心距 70 mm · 凸轮 R14 / 缺口 r8";
+  }
+
+  function buildUI() {
+    var d = $("desc"); d.textContent = "";
+    var h = document.createElement("h2"); h.textContent = M.title; d.appendChild(h);
+    var p = document.createElement("p"); p.textContent = M.text; d.appendChild(p);
+    var c = document.createElement("div"); c.className = "chips";
+    M.chips.forEach(function (x) { var s = document.createElement("span"); s.className = "chip " + x[1]; s.textContent = x[0]; c.appendChild(s); });
+    d.appendChild(c);
+    var e = M.err, sl = $("err");
+    sl.min = e.min; sl.max = e.max; sl.step = e.step; sl.value = err;
+    $("errHelp").textContent = e.help;
+    $("err").setAttribute("aria-label", e.label);
+    updateErrText();
+  }
+
+  function updateErrText() {
+    var e = M.err;
+    var v = (err > 0 ? "+" : "") + (e.step < 1 ? err.toFixed(1) : err) + e.unit;
+    $("errVal").textContent = e.label.replace("装配", "") + " " + v;
+    var st = $("errStat"), t, cls;
+    if (mode === "gear") {
+      t = "交换行程 " + Cval + "°。只要大约在 10°~350° 之间都能用，这里一直正常。"; cls = "ok";
+    } else {
+      var s = slackNow(), m = M.R - M.r - s;
+      if (s < 0) { t = "卡死：杆比缺口能容纳的长 " + (-s).toFixed(1) + " mm"; cls = "bad"; }
+      else if (m <= 0) {
+        if (mode === "hybrid") { t = "不再卡，但杆太短，已经没有后备作用"; cls = "warn"; }
+        else { t = "互锁失效：杆太短，两个大圆能同时出现"; cls = "bad"; }
+      } else if (mode === "hybrid") { t = "杆仍会和齿轮打架，正常交换会卡在约 24°"; cls = "bad"; }
+      else if (m < 2 || s < 0.2) { t = "接近窗口边缘：余量 " + s.toFixed(2) + " mm，插入深度 " + m.toFixed(2) + " mm"; cls = "warn"; }
+      else { t = "在安全窗口内：余量 " + s.toFixed(2) + " mm，插入深度 " + m.toFixed(2) + " mm"; cls = "ok"; }
+    }
+    st.textContent = t; st.className = "stat " + cls;
+  }
+
+  function setMode(name) {
+    mode = name; M = MODES[name]; err = M.err.def;
+    document.querySelectorAll(".tab").forEach(function (b) { b.setAttribute("aria-selected", b.dataset.mode === name ? "true" : "false"); });
+    computeParams(); buildScene(); buildUI(); resetState();
+    try { history.replaceState(null, "", "#" + name); } catch (e) { /* ignore */ }
+  }
+
+  function say(text, tone, ms) { msg.text = text; msg.tone = tone || ""; msg.until = performance.now() + (ms || 3400); }
+
+  function anglesFor(l, th) {
+    var a, b;
+    if (l.id === "A") { a = th; b = M.coupled ? Cval - th : locks.B.theta; }
+    else { b = th; a = M.coupled ? Cval - th : locks.A.theta; }
+    return [a, b];
+  }
+  function okAt(l, th) { var ab = anglesFor(l, th); return rodFeasible(ab[0], ab[1]); }
+
+  function stepLock(l, dt, now) {
+    if (l.theta === l.target) {
+      if (l.resolve) { var f = l.resolve; l.resolve = null; f(true); }
+      return;
+    }
+    if (!l.hasKey) { l.target = l.theta; return; }
+    var dir = Math.sign(l.target - l.theta);
+    var delta = Math.min(ROT_SPEED * dt, Math.abs(l.target - l.theta));
+    var next = l.theta + dir * delta, got;
+    if (okAt(l, next)) { got = next; }
+    else {
+      var lo = 0, hi = 1;
+      for (var i = 0; i < 8; i++) { var mid = (lo + hi) / 2; if (okAt(l, l.theta + dir * delta * mid)) lo = mid; else hi = mid; }
+      got = l.theta + dir * delta * lo;
+      l.blockUntil = now + 1100;
+      if (slackNow() < 0 && M.rod) say("杆太长，缺口容不下，机构卡死。", "warn", 3800);
+      else if (M.coupled) say("卡住了：齿轮要同时转动两个凸轮，但杆不允许两个大圆同时出现。", "warn", 4200);
+      else say("锁 " + l.id + " 被联锁杆挡住：锁 " + other(l).id + " 的钥匙没有转到 180°，杆正顶着缺口。", "warn", 3800);
+    }
+    var ab = anglesFor(l, got);
+    locks.A.theta = ab[0]; locks.B.theta = ab[1];
+    if (M.coupled) other(l).target = other(l).theta;
+    if (got !== next) {
+      l.target = l.theta;
+      if (l.resolve) { var f2 = l.resolve; l.resolve = null; f2(false); }
+    }
+  }
+
+  var last = performance.now(), lastBanner = null, lastBtn = "";
+  function frame(now) {
+    var dt = Math.min(0.05, (now - last) / 1000); last = now;
+    ["A", "B"].forEach(function (id) {
+      var l = locks[id];
+      stepLock(l, dt, now);
+      var goal = l.hasKey ? 1 : 0;
+      l.keyT += Math.sign(goal - l.keyT) * Math.min(KEY_SPEED * dt, Math.abs(goal - l.keyT));
+    });
+    if (M.rod) {
+      var lo = rhoA(locks.A.theta), hi = M.D - rhoB(locks.B.theta) - Lcur;
+      rodX = hi < lo ? hi : Math.min(Math.max(rodX, lo), hi);
+    }
+    render(now);
+    requestAnimationFrame(frame);
+  }
+
+  function render(now) {
+    var A = locks.A, B = locks.B;
+    ["A", "B"].forEach(function (id) {
+      var l = locks[id], tf = "translate(" + l.cx + " " + CY + ") rotate(" + l.theta.toFixed(2) + ")";
+      $("cam" + id).setAttribute("transform", tf);
+      $("gear" + id).setAttribute("transform", tf);
+      $("rot" + id).setAttribute("transform", tf);
+      var t = ease(l.keyT), ky = lerp(563, CY, t);
+      var rot = lerp(90, l.theta, t), sc = lerp(0.8, 1, t);
+      $("key" + id).setAttribute("transform", "translate(" + l.cx + " " + ky.toFixed(1) + ") rotate(" + rot.toFixed(2) + ") scale(" + sc.toFixed(3) + ")");
+      var removable = l.hasKey && l.theta < 0.5, label, cls;
+      if (!l.hasKey) { label = "钥匙已取走"; cls = "dot-off"; }
+      else if (removable) { label = "钥匙可拔出"; cls = "dot-ok"; }
+      else { label = "钥匙被扣住"; cls = "dot-bad"; }
+      $("dot" + id).setAttribute("class", cls);
+      $("txt" + id).textContent = label;
+      $("ang" + id).textContent = Math.round(l.theta) + "°";
+    });
+    if (M.rod) {
+      $("rod").setAttribute("x", A.cx + rodX * S);
+      var blocked = now < A.blockUntil || now < B.blockUntil;
+      $("rod").setAttribute("class", "rod" + (blocked ? " blocked" : ""));
+    }
+    var b = banner(now);
+    if (b.text !== lastBanner || b.tone !== $("banner").dataset.tone) {
+      $("banner").textContent = b.text;
+      $("banner").className = "banner" + (b.tone ? " " + b.tone : "");
+      $("banner").dataset.tone = b.tone;
+      lastBanner = b.text;
+    }
+    $("read").textContent = M.rod
+      ? "联锁余量 " + (M.D - rhoA(A.theta) - rhoB(B.theta) - Lcur).toFixed(2) + " mm"
+      : "θA + θB = " + Math.round(A.theta + B.theta) + "°";
+    var sig = [A, B].map(function (l) { return (l.hasKey ? 1 : 0) + ":" + (l.theta < 0.5 ? 0 : 1); }).join("|") + busy;
+    if (sig !== lastBtn) { lastBtn = sig; updateButtons(); }
+  }
+
+  function banner(now) {
+    if (now < msg.until && msg.text) return { text: msg.text, tone: msg.tone };
+    var A = locks.A, B = locks.B;
+    if (M.rod && slackNow() < 0) return { text: "杆太长：缺口容不下，两个锁都转不动。", tone: "warn" };
+    if (!M.coupled && M.rod && M.R - M.r - slackNow() <= 0) return { text: "杆太短：两个大圆可以同时出现，两把钥匙都能拔出，互锁失效。", tone: "warn" };
+    if (bypassed) return { text: "旁路：A 的锁芯被拧坏，B 被转到 0°，两把钥匙都拿到了。", tone: "warn" };
+    var out = [A, B].filter(function (l) { return !l.hasKey; });
+    if ([A, B].some(function (l) { return l.theta !== l.target; })) return { text: "转动中", tone: "" };
+    if (out.length) {
+      var o = out[0], k = other(o);
+      var why = M.coupled ? "没钥匙的锁芯转不动，齿轮把另一把带住。" : "要等钥匙 " + o.id + " 插回并顺转到 180° 才会放行。";
+      return { text: "钥匙 " + o.id + " 在手中。钥匙 " + k.id + " 被扣住，" + why, tone: "" };
+    }
+    var free = [A, B].filter(function (l) { return l.theta < 0.5; });
+    if (free.length === 1) {
+      var f = free[0];
+      var tip = M.coupled ? "转任意一把到底即可交换。" : "";
+      return { text: "钥匙 " + f.id + " 可以拔出，钥匙 " + other(f).id + " 被扣住。" + tip, tone: "good" };
+    }
+    if (!M.coupled && [A, B].every(function (l) { return l.theta > 179.5; })) return { text: "两把钥匙都在 180°，都拔不出。逆转任意一把到 0°，另一把随即被锁住。", tone: "" };
+    return { text: "", tone: "" };
+  }
+
+  function updateButtons() {
+    ["A", "B"].forEach(function (id) {
+      var l = locks[id];
+      $("keyBtn" + id).textContent = l.hasKey ? "取出钥匙" : "插入钥匙";
+      $("keyBtn" + id).disabled = busy;
+      $("cw" + id).disabled = busy || !l.hasKey;
+      $("ccw" + id).disabled = busy || !l.hasKey;
+    });
+    $("attack").disabled = busy;
+    $("demo").textContent = busy ? "停止" : "自动演示";
+  }
+
+  function turn(l, target) {
+    return new Promise(function (res) {
+      if (l.resolve) { l.resolve(false); l.resolve = null; }
+      if (!l.hasKey) { res(false); return; }
+      if (M.coupled && !other(l).hasKey && !breakOK) {
+        say("锁 " + other(l).id + " 没有钥匙，转子被锁住，齿轮带不动，锁 " + l.id + " 转不了。", "warn", 3800);
+        l.blockUntil = performance.now() + 900;
+        res(false); return;
+      }
+      l.target = target;
+      if (l.theta === target) { res(true); return; }
+      l.resolve = res;
+    });
+  }
+  function toggleKey(l) {
+    if (l.hasKey) {
+      if (l.theta > 0.5) { say("钥匙 " + l.id + " 不在 0°，锁头不放钥匙。要先逆时针转到底。", "warn"); return false; }
+      l.hasKey = false; say("钥匙 " + l.id + " 已取走。", "", 2000);
+    } else {
+      if (l.theta > 0.5) { say("锁 " + l.id + " 的锁芯已损坏，不能再插入钥匙。点复位重来。", "warn"); return false; }
+      l.hasKey = true; say("钥匙 " + l.id + " 插入，位置 0°。", "", 2000);
+    }
+    return true;
+  }
+  function cwTarget() { return M.coupled ? Cval : 180; }
+
+  ["A", "B"].forEach(function (id) {
+    $("keyBtn" + id).addEventListener("click", function () { toggleKey(locks[id]); });
+    $("cw" + id).addEventListener("click", function () { turn(locks[id], cwTarget()); });
+    $("ccw" + id).addEventListener("click", function () { turn(locks[id], 0); });
+  });
+  document.querySelectorAll(".tab").forEach(function (b) { b.addEventListener("click", function () { setMode(b.dataset.mode); }); });
+  $("err").addEventListener("input", function () {
+    err = parseFloat(this.value);
+    computeParams(); buildScene(); resetState(); updateErrText();
+  });
+  $("reset").addEventListener("click", function () { resetState(); });
+
+  function sleep(ms, my) {
+    return new Promise(function (res, rej) { setTimeout(function () { my !== token ? rej("cancel") : res(); }, ms); });
+  }
+  function chk(my) { if (my !== token) throw "cancel"; }
+  function setGauge(T) {
+    $("gfill").style.width = Math.min(100, T / TMAX * 100) + "%";
+    $("gfill").className = T >= TLOCK && mode !== "cam" && mode !== "hybrid" && bypassed ? "over" : "";
+    $("gtxt").textContent = T.toFixed(1) + " N·m";
+  }
+  function ramp(my, from, to, ms) {
+    return new Promise(function (res, rej) {
+      var t0 = performance.now();
+      (function tick() {
+        if (my !== token) { rej("cancel"); return; }
+        var f = Math.min(1, (performance.now() - t0) / ms);
+        setGauge(from + (to - from) * f);
+        if (f < 1) setTimeout(tick, 30); else res();
+      })();
+    });
+  }
+
+  async function attack() {
+    resetState(); var my = token; busy = true; updateButtons();
+    var A = locks.A, B = locks.B;
+    try {
+      await sleep(300, my); toggleKey(A); await sleep(900, my); chk(my);
+      say("强扭测试：钥匙 A 不在，用力逆转 B。", "", 2600);
+      var r1 = await turn(B, 0); chk(my);
+      if (M.coupled) {
+        await ramp(my, 0, TLOCK, 1600);
+        say("扭矩到 2.5 N·m，假设 A 的无钥匙锁芯被拧坏。", "warn", 3000);
+        breakOK = true;
+        var r2 = await turn(B, 0); chk(my);
+        if (r2) {
+          bypassed = true; setGauge(TLOCK); await sleep(400, my);
+        } else {
+          await ramp(my, TLOCK, TMAX, 900);
+          say("杆挡住了，旁路失败。但同一根杆也会卡住正常交换，这个方案不可用。", "good", 5000);
+        }
+      } else {
+        await ramp(my, 0, TMAX, 2200);
+        var F = TMAX / (M.r * 0.001);
+        say("B 动不了。4 N·m 时杆端受力约 " + Math.round(F) + " N，线接触应力约 900 MPa，硬化钢承受得住。", "good", 5200);
+      }
+    } catch (e) { /* cancelled */ }
+    if (my === token) { busy = false; lastBtn = ""; updateButtons(); }
+  }
+  $("attack").addEventListener("click", attack);
+
+  async function runDemo() {
+    resetState(); var my = token; busy = true; updateButtons();
+    var A = locks.A, B = locks.B;
+    try {
+      await sleep(700, my);
+      say("1. 起始：A 在 0° 可拔，B 在 180° 被扣住。", "", 2400); await sleep(2500, my);
+      chk(my); say("2. 拔出钥匙 A。", "", 1700); toggleKey(A); await sleep(1500, my);
+      chk(my); say("3. 试着逆转 B。", "", 2200); await sleep(700, my);
+      chk(my); await turn(B, 0); await sleep(2800, my);
+      chk(my); say("4. 钥匙 A 插回锁 A。", "", 1800); toggleKey(A); await sleep(1600, my);
+      chk(my);
+      if (mode === "cam") {
+        say("5. 顺时针转 A 到 180°，A 的缺口对准杆，B 被放行。", "", 3200); await turn(A, 180); await sleep(1300, my);
+        chk(my); say("6. 现在逆转 B 到底，杆顶进 A 的缺口，A 被锁住。", "", 3200); await turn(B, 0); await sleep(1500, my);
+      } else if (mode === "gear") {
+        say("5. 顺时针转 A 到底，齿轮同时把 B 逆转到 0°。", "", 3600); await turn(A, Cval); await sleep(1500, my);
+      } else {
+        say("5. 顺时针转 A，齿轮开始带动 B。", "", 3000); await turn(A, Cval); await sleep(3600, my);
+      }
+      chk(my);
+      if (mode === "hybrid") { say("两个凸轮同时离开缺口，杆被夹死。叠加方案走不通。", "warn", 4200); await sleep(3000, my); }
+      else { say("7. 拔出钥匙 B。交换完成：B 在手中，A 被扣住。", "good", 3600); toggleKey(B); await sleep(2000, my); }
+    } catch (e) { /* cancelled */ }
+    if (my === token) { busy = false; lastBtn = ""; updateButtons(); }
+  }
+  $("demo").addEventListener("click", function () {
+    if (busy) { resetState(); return; }
+    runDemo();
+  });
+
+  var start = "cam";
+  try { var h = location.hash.replace("#", ""); if (MODES[h]) start = h; } catch (e) { /* ignore */ }
+  setMode(start);
+  requestAnimationFrame(function (t) { last = t; frame(t); });
+})();
+</script>
