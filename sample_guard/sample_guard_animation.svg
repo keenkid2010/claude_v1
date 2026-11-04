@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 770" width="1280" height="770" font-family="'Noto Sans CJK SC','PingFang SC','Microsoft YaHei','WenQuanYi Zen Hei',sans-serif">
+<svg id="sg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 770" width="1280" height="770" font-family="'Noto Sans CJK SC','PingFang SC','Microsoft YaHei','WenQuanYi Zen Hei',sans-serif">
 <title>External Sample Guard 原理动画</title>
 <defs>
 <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -131,4 +131,11 @@
 <g opacity="0"><animate attributeName="opacity" dur="24.0s" repeatCount="indefinite" calcMode="discrete" values="0;1;0" keyTimes="0;0.25;0.5"/><text x="520" y="640" class="cap">② 取样：开闸阀，变压器油经油软管流进取样瓶</text><text x="520" y="664" class="cap2">不进高压舱；气枕保持正压</text></g>
 <g opacity="0"><animate attributeName="opacity" dur="24.0s" repeatCount="indefinite" calcMode="discrete" values="0;1;0" keyTimes="0;0.5;0.7083"/><text x="520" y="640" class="cap">③ 超压：油温升高，气枕压力升到约 10 psi，泄压阀开启放气</text><text x="520" y="664" class="cap2">压力回落到约 8 psi 后阀座复位；拉环可手动泄压</text></g>
 <g opacity="0"><animate attributeName="opacity" dur="24.0s" repeatCount="indefinite" calcMode="discrete" values="0;1;0" keyTimes="0;0.7083;0.9167"/><text x="520" y="640" class="cap">④ 泄压到 0：开放气阀，把压力降到 0 psi</text><text x="520" y="664" class="cap2">说明书：拆装泄压阀前要先泄压并确认表压 0 psi</text></g>
+<g opacity="0"><animate attributeName="opacity" dur="24.0s" repeatCount="indefinite" calcMode="discrete" values="0;1;0" keyTimes="0;0.04167;0.9375"/><polygon points="1010,118 1010,598 1046,578 1046,136" fill="#dfe3e8" stroke="#555" stroke-width="2"/><circle cx="1034" cy="360" r="5" fill="#777"/></g>
+<text x="1028" y="612" class="ts" text-anchor="middle" opacity="0"><animate attributeName="opacity" dur="24.0s" repeatCount="indefinite" calcMode="discrete" values="0;1;0" keyTimes="0;0.04167;0.9375"/>门已开</text>
+<g transform="translate(985,135)"><g opacity="1"><animate attributeName="opacity" dur="24.0s" repeatCount="indefinite" calcMode="discrete" values="1;0;1" keyTimes="0;0.04167;0.9375"/><rect x="-9" y="0" width="18" height="14" rx="2" fill="#c0392b"/><path d="M-5,0 v-5 a5,5 0 0 1 10,0 v5" fill="none" stroke="#c0392b" stroke-width="3"/></g><g opacity="0"><animate attributeName="opacity" dur="24.0s" repeatCount="indefinite" calcMode="discrete" values="0;1;0" keyTimes="0;0.04167;0.9375"/><rect x="-9" y="0" width="18" height="14" rx="2" fill="#27ae60"/><path d="M-5,0 v-5 a5,5 0 0 1 10,0" fill="none" stroke="#27ae60" stroke-width="3"/></g></g>
+<text x="985" y="168" class="ts" text-anchor="middle" opacity="1"><animate attributeName="opacity" dur="24.0s" repeatCount="indefinite" calcMode="discrete" values="1;0;1" keyTimes="0;0.04167;0.9375"/>钥匙锁已锁</text>
+<text x="985" y="168" class="ts" text-anchor="middle" fill="#27ae60" opacity="0"><animate attributeName="opacity" dur="24.0s" repeatCount="indefinite" calcMode="discrete" values="0;1;0" keyTimes="0;0.04167;0.9375"/>钥匙开锁</text>
+<rect x="1050" y="395" width="200" height="0" fill="none"/>
+<text x="40" y="738" class="tb" fill="#27ae60">全程在舱外操作：高压舱门保持关闭，不进入电弧闪光边界（NFPA 70E），无需停电</text>
 </svg>
