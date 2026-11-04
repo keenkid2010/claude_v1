@@ -54,31 +54,23 @@
   <text x="880" y="664" class="ts" text-anchor="end">箱底离地 4–5 in；上下耳板 2×carriage bolt 固定</text>
 
   <!-- ===================== GAS LINE ===================== -->
-  <!-- tank port -->
-  <rect x="200" y="250" width="12" height="20" class="brass"/>
-  <!-- elbow b1 at tank -->
-  <path d="M212,260 L250,260" class="gas"/>
-  <rect x="212" y="250" width="26" height="20" rx="3" class="brass"/>
-  <!-- tube -->
-  <path d="M238,260 L430,260" class="gas"/>
-  <!-- elbow b2 at wall -->
-  <rect x="424" y="250" width="26" height="20" rx="3" class="brass"/>
-  <!-- bulkhead gas -->
-  <rect x="450" y="248" width="40" height="24" class="brass"/>
-  <rect x="478" y="244" width="8" height="32" fill="#bbb" stroke="#555"/>
-  <!-- inside manifold -->
-  <path d="M490,260 L780,260" class="gas"/>
-  <circle cx="560" cy="260" r="7" fill="#1f77b4"/>
-  <circle cx="680" cy="260" r="7" fill="#1f77b4"/>
-
-  <!-- PRV -->
-  <path d="M560,260 L560,222" class="gas"/>
-  <rect x="544" y="170" width="32" height="52" rx="5" class="part"/>
-  <rect x="548" y="150" width="24" height="22" rx="4" fill="#fff" stroke="#555" stroke-width="1.6"/>
-  <circle cx="560" cy="141" r="8" fill="none" stroke="#555" stroke-width="2"/>
-  <text x="560" y="204" text-anchor="middle" class="ts" font-size="10">PRV</text>
-
-  <!-- gauge -->
+  <rect x="200" y="320" width="12" height="20" class="brass"/>
+  <path d="M212,330 L250,330" class="gas"/>
+  <rect x="212" y="320" width="26" height="20" rx="3" class="brass"/>
+  <path d="M238,330 L430,330" class="gas"/>
+  <rect x="424" y="320" width="26" height="20" rx="3" class="brass"/>
+  <rect x="450" y="318" width="40" height="24" class="brass"/>
+  <rect x="478" y="314" width="8" height="32" fill="#bbb" stroke="#555"/>
+  <g class="part"><rect x="300" y="318" width="14" height="24" rx="3"/><rect x="370" y="318" width="14" height="24" rx="3"/></g>
+  <path d="M490,330 L680,330 L680,260" class="gas"/>
+  <path d="M590,260 L780,260" class="gas"/>
+  <circle cx="680" cy="260" r="8" fill="#1f77b4"/>
+  <text x="694" y="284" class="ts">四通(十字)</text>
+  <path d="M590,260 L590,222" class="gas"/>
+  <rect x="574" y="170" width="32" height="52" rx="5" class="part"/>
+  <rect x="578" y="150" width="24" height="22" rx="4" fill="#fff" stroke="#555" stroke-width="1.6"/>
+  <circle cx="590" cy="141" r="8" fill="none" stroke="#555" stroke-width="2"/>
+  <text x="590" y="204" text-anchor="middle" class="ts" font-size="10">PRV</text>
   <path d="M680,260 L680,226" class="gas"/>
   <circle cx="680" cy="178" r="48" fill="#fff" stroke="#333" stroke-width="3"/>
   <g stroke="#333" stroke-width="1.5">
@@ -91,8 +83,6 @@
   <circle cx="680" cy="178" r="4" fill="#333"/>
   <text x="680" y="200" text-anchor="middle" class="ts" font-size="9">-15 ~ +15</text>
   <text x="680" y="212" text-anchor="middle" class="ts" font-size="9">psi</text>
-
-  <!-- purge valve (angle needle) -->
   <rect x="770" y="248" width="32" height="26" rx="4" class="brass"/>
   <path d="M786,274 L786,300" stroke="#8a6d12" stroke-width="5"/>
   <circle cx="786" cy="308" r="13" fill="#e6c15a" stroke="#8a6d12" stroke-width="2"/>
@@ -120,10 +110,7 @@
     <rect x="364" y="555" width="16" height="22" rx="2"/>
   </g>
   <!-- cushion clamps c on gas tube -->
-  <g class="part">
-    <rect x="300" y="248" width="14" height="24" rx="3"/>
-    <rect x="370" y="248" width="14" height="24" rx="3"/>
-  </g>
+  
   <!-- bulkhead oil -->
   <rect x="450" y="533" width="40" height="24" class="brass"/>
   <rect x="478" y="529" width="8" height="32" fill="#bbb" stroke="#555"/>
@@ -144,32 +131,32 @@
 
   <!-- ===================== BOM NUMBER BADGES ===================== -->
   <g>
-    <circle class="no" cx="560" cy="130" r="11"/><text class="no-t" x="560" y="134">4</text>
+    <circle class="no" cx="590" cy="128" r="11"/><text class="no-t" x="590" y="132">4</text>
     <circle class="no" cx="740" cy="140" r="11"/><text class="no-t" x="740" y="144">3</text>
     <circle class="no" cx="830" cy="300" r="11"/><text class="no-t" x="830" y="304">5</text>
     <circle class="no" cx="640" cy="455" r="11"/><text class="no-t" x="640" y="459">6</text>
-    <circle class="no" cx="470" cy="228" r="11"/><text class="no-t" x="470" y="232">7</text>
+    <circle class="no" cx="470" cy="298" r="11"/><text class="no-t" x="470" y="302">7</text>
     <circle class="no" cx="470" cy="513" r="11"/><text class="no-t" x="470" y="517">8</text>
-    <circle class="no" cx="610" cy="236" r="11"/><text class="no-t" x="610" y="240">10</text>
+    <circle class="no" cx="652" cy="284" r="11"/><text class="no-t" x="652" y="288">10</text>
     <circle class="no" cx="330" cy="520" r="11"/><text class="no-t" x="330" y="524">11</text>
-    <circle class="no" cx="330" cy="236" r="11"/><text class="no-t" x="330" y="240">12</text>
+    <circle class="no" cx="330" cy="306" r="11"/><text class="no-t" x="330" y="310">12</text>
     <circle class="no" cx="264" cy="640" r="11"/><text class="no-t" x="264" y="644">13</text>
     <circle class="no" cx="438" cy="515" r="11"/><text class="no-t" x="438" y="519">13</text>
-    <circle class="no" cx="225" cy="236" r="11"/><text class="no-t" x="225" y="240">14</text>
-    <circle class="no" cx="437" cy="236" r="11"/><text class="no-t" x="437" y="240">14</text>
-    <circle class="no" cx="377" cy="290" r="11"/><text class="no-t" x="377" y="294">15</text>
+    <circle class="no" cx="225" cy="306" r="11"/><text class="no-t" x="225" y="310">14</text>
+    <circle class="no" cx="437" cy="306" r="11"/><text class="no-t" x="437" y="310">14</text>
+    <circle class="no" cx="377" cy="360" r="11"/><text class="no-t" x="377" y="364">15</text>
     <circle class="no" cx="372" cy="598" r="11"/><text class="no-t" x="372" y="602">16</text>
-    <circle class="no" cx="680" cy="345" r="11"/><text class="no-t" x="680" y="349">1</text>
+    <circle class="no" cx="840" cy="420" r="11"/><text class="no-t" x="840" y="424">1</text>
   </g>
-  <text x="696" y="349" class="ts">外壳</text>
+  <text x="856" y="424" class="ts">外壳</text>
 
   <!-- ===================== PORT TAGS ===================== -->
   <g>
-    <rect class="pt" x="184" y="214" width="26" height="18" rx="3"/><text class="pt-t" x="197" y="227">G1</text>
-    <rect class="pt" x="262" y="214" width="26" height="18" rx="3"/><text class="pt-t" x="275" y="227">G2</text>
-    <rect class="pt" x="398" y="214" width="26" height="18" rx="3"/><text class="pt-t" x="411" y="227">G3</text>
-    <rect class="pt" x="496" y="280" width="26" height="18" rx="3"/><text class="pt-t" x="509" y="293">G4</text>
-    <rect class="pt" x="612" y="280" width="26" height="18" rx="3"/><text class="pt-t" x="625" y="293">G5</text>
+    <rect class="pt" x="184" y="284" width="26" height="18" rx="3"/><text class="pt-t" x="197" y="297">G1</text>
+    <rect class="pt" x="262" y="284" width="26" height="18" rx="3"/><text class="pt-t" x="275" y="297">G2</text>
+    <rect class="pt" x="398" y="284" width="26" height="18" rx="3"/><text class="pt-t" x="411" y="297">G3</text>
+    <rect class="pt" x="520" y="352" width="26" height="18" rx="3"/><text class="pt-t" x="533" y="365">G4</text>
+    <rect class="pt" x="640" y="300" width="26" height="18" rx="3"/><text class="pt-t" x="653" y="313">G5</text>
     <rect class="pt" x="838" y="228" width="26" height="18" rx="3"/><text class="pt-t" x="851" y="241">G6</text>
     <rect class="pt" x="186" y="565" width="26" height="18" rx="3"/><text class="pt-t" x="199" y="578">L1</text>
     <rect class="pt" x="250" y="665" width="26" height="18" rx="3"/><text class="pt-t" x="263" y="678">L2</text>
@@ -194,7 +181,7 @@
     <text x="928" y="185">G2</text><text x="962" y="185">弯头b ↔ 气管(12)</text><text x="1150" y="185">3/8" OD 推入式</text><text x="1378" y="185" fill="#c0392b">待测</text>
     <text x="928" y="209">G3</text><text x="962" y="209">气管 → 弯头b → 穿壁接头(7)</text><text x="1150" y="209">1/2"-14 NPS 外螺纹·内 1/4" NPT 母</text><text x="1378" y="209" fill="#c0392b">待测</text>
     <text x="928" y="233">G4</text><text x="962" y="233">穿壁接头(7) → 歧管(10)</text><text x="1150" y="233">1/4" NPT</text><text x="1378" y="233">设计</text>
-    <text x="928" y="257">G5</text><text x="962" y="257">三通 → PRV(4)/表(3)/放气阀(5)</text><text x="1150" y="257">1/4" NPT；表下接 LM</text><text x="1378" y="257">设计</text>
+    <text x="928" y="257">G5</text><text x="962" y="257">四通 → PRV(4)/表(3)/放气阀(5)</text><text x="1150" y="257">1/4" NPT；表下接 LM</text><text x="1378" y="257">设计</text>
     <text x="928" y="281">G6</text><text x="962" y="281">放气阀出口 → 氮气管</text><text x="1150" y="281">1/4" 宝塔(倒刺)</text><text x="1378" y="281">设计</text>
   </g>
   <g class="row">
