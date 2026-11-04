@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 750" width="1440" height="750" font-family="'Noto Sans CJK SC','PingFang SC','Microsoft YaHei','WenQuanYi Zen Hei',sans-serif">
+  <title>External Sample Guard 管路接口示意图</title>
+  <defs>
+    <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="8" height="8" fill="#e4e6ea"/>
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#9aa0aa" stroke-width="2"/>
+    </pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <style>
+      .t{font-size:13px;fill:#222}
+      .ts{font-size:11.5px;fill:#444}
+      .tb{font-size:14px;font-weight:700;fill:#111}
+      .h{font-size:20px;font-weight:700;fill:#111}
+      .oil{stroke:#d98a00;stroke-width:6;fill:none;stroke-linecap:round}
+      .gas{stroke:#1f77b4;stroke-width:5;fill:none;stroke-linecap:round}
+      .part{fill:#f4f4f4;stroke:#555;stroke-width:1.6}
+      .brass{fill:#e6c15a;stroke:#8a6d12;stroke-width:1.6}
+      .no{fill:#1f3a5f}
+      .no-t{font-size:12px;font-weight:700;fill:#fff;text-anchor:middle}
+      .pt{fill:#fff;stroke:#c0392b;stroke-width:1.6}
+      .pt-t{font-size:10.5px;font-weight:700;fill:#c0392b;text-anchor:middle}
+      .row{font-size:11.5px;fill:#222}
+    </style>
+  </defs>
+  <rect width="1440" height="750" fill="#ffffff"/>
+
+  <text x="40" y="44" class="h">External Sample Guard — 管路接口示意图（按说明书用途）</text>
+  <text x="40" y="68" class="ts">深蓝圆号 = BOM 序号；红框 G(气路)/L(油路) = 接口编号（见右侧接口表）。螺纹规格为设计假设，须实物测量后锁定。</text>
+
+  <!-- zones -->
+  <text x="40" y="104" class="tb">变压器油箱</text>
+  <text x="232" y="104" class="tb">高压舱内部（已断电 LOTO）</text>
+  <text x="452" y="104" class="tb">舱壁</text>
+  <text x="560" y="104" class="tb">Sample Guard 箱体（舱外，NEMA 3R）</text>
+
+  <!-- tank -->
+  <rect x="40" y="115" width="160" height="590" fill="#cfe6f7" stroke="#555" stroke-width="2"/>
+  <rect x="40" y="390" width="160" height="315" fill="#ffe3a3" stroke="#555" stroke-width="2"/>
+  <text x="120" y="250" class="t" text-anchor="middle">氮气气枕</text>
+  <text x="120" y="270" class="ts" text-anchor="middle">目标 3 psi</text>
+  <text x="120" y="500" class="t" text-anchor="middle">变压器油</text>
+
+  <!-- cabinet dashed -->
+  <rect x="200" y="115" width="250" height="590" fill="#fafbfc" stroke="#999" stroke-dasharray="6 5"/>
+  <!-- wall -->
+  <rect x="450" y="115" width="30" height="590" fill="url(#hatch)" stroke="#666" stroke-width="1.5"/>
+
+  <!-- box -->
+  <rect x="480" y="115" width="400" height="530" rx="6" fill="#f2f4f7" stroke="#444" stroke-width="2.5"/>
+  <rect x="470" y="126" width="22" height="14" fill="#cdd1d8" stroke="#555"/>
+  <!-- door hint -->
+  <text x="880" y="664" class="ts" text-anchor="end">箱底离地 4–5 in；上下耳板 2×carriage bolt 固定</text>
+
+  <!-- ===================== GAS LINE ===================== -->
+  <!-- tank port -->
+  <rect x="200" y="250" width="12" height="20" class="brass"/>
+  <!-- elbow b1 at tank -->
+  <path d="M212,260 L250,260" class="gas"/>
+  <rect x="212" y="250" width="26" height="20" rx="3" class="brass"/>
+  <!-- tube -->
+  <path d="M238,260 L430,260" class="gas"/>
+  <!-- elbow b2 at wall -->
+  <rect x="424" y="250" width="26" height="20" rx="3" class="brass"/>
+  <!-- bulkhead gas -->
+  <rect x="450" y="248" width="40" height="24" class="brass"/>
+  <rect x="478" y="244" width="8" height="32" fill="#bbb" stroke="#555"/>
+  <!-- inside manifold -->
+  <path d="M490,260 L780,260" class="gas"/>
+  <circle cx="560" cy="260" r="7" fill="#1f77b4"/>
+  <circle cx="680" cy="260" r="7" fill="#1f77b4"/>
+
+  <!-- PRV -->
+  <path d="M560,260 L560,222" class="gas"/>
+  <rect x="544" y="170" width="32" height="52" rx="5" class="part"/>
+  <rect x="548" y="150" width="24" height="22" rx="4" fill="#fff" stroke="#555" stroke-width="1.6"/>
+  <circle cx="560" cy="141" r="8" fill="none" stroke="#555" stroke-width="2"/>
+  <text x="560" y="204" text-anchor="middle" class="ts" font-size="10">PRV</text>
+
+  <!-- gauge -->
+  <path d="M680,260 L680,226" class="gas"/>
+  <circle cx="680" cy="178" r="48" fill="#fff" stroke="#333" stroke-width="3"/>
+  <g stroke="#333" stroke-width="1.5">
+    <line x1="680" y1="136" x2="680" y2="146"/>
+    <line x1="710" y1="148" x2="704" y2="155"/><line x1="650" y1="148" x2="656" y2="155"/>
+    <line x1="720" y1="178" x2="711" y2="178"/><line x1="640" y1="178" x2="649" y2="178"/>
+    <line x1="710" y1="208" x2="704" y2="201"/><line x1="650" y1="208" x2="656" y2="201"/>
+  </g>
+  <path d="M680,178 L694,158" stroke="#c0392b" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="680" cy="178" r="4" fill="#333"/>
+  <text x="680" y="200" text-anchor="middle" class="ts" font-size="9">-15 ~ +15</text>
+  <text x="680" y="212" text-anchor="middle" class="ts" font-size="9">psi</text>
+
+  <!-- purge valve (angle needle) -->
+  <rect x="770" y="248" width="32" height="26" rx="4" class="brass"/>
+  <path d="M786,274 L786,300" stroke="#8a6d12" stroke-width="5"/>
+  <circle cx="786" cy="308" r="13" fill="#e6c15a" stroke="#8a6d12" stroke-width="2"/>
+  <path d="M802,260 L842,260" stroke="#8a6d12" stroke-width="9" stroke-linecap="round"/>
+  <path d="M832,254 l10,6 l-10,6 z" fill="#8a6d12"/>
+  <text x="786" y="338" text-anchor="middle" class="ts">放气阀(针阀)</text>
+  <path d="M884,260 L842,260" stroke="#555" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="880" y="372" class="ts" text-anchor="end">充氮：开箱门，氮气管接放气阀宝塔口</text>
+
+  <!-- ===================== OIL LINE ===================== -->
+  <!-- drain valve at tank -->
+  <rect x="200" y="600" width="12" height="24" class="brass"/>
+  <rect x="212" y="598" width="40" height="28" rx="4" class="brass"/>
+  <text x="232" y="590" text-anchor="middle" class="ts">排油阀</text>
+  <text x="232" y="654" text-anchor="middle" class="ts">侧取样口</text>
+  <!-- elbow a1 -->
+  <rect x="252" y="602" width="22" height="20" rx="3" fill="#cfd3d9" stroke="#555" stroke-width="1.6"/>
+  <!-- hose -->
+  <path d="M274,612 C350,612 350,545 428,545" class="oil"/>
+  <!-- elbow a2 -->
+  <rect x="426" y="535" width="24" height="20" rx="3" fill="#cfd3d9" stroke="#555" stroke-width="1.6"/>
+  <!-- beam clamps d -->
+  <g class="part">
+    <rect x="316" y="565" width="16" height="22" rx="2"/>
+    <rect x="364" y="555" width="16" height="22" rx="2"/>
+  </g>
+  <!-- cushion clamps c on gas tube -->
+  <g class="part">
+    <rect x="300" y="248" width="14" height="24" rx="3"/>
+    <rect x="370" y="248" width="14" height="24" rx="3"/>
+  </g>
+  <!-- bulkhead oil -->
+  <rect x="450" y="533" width="40" height="24" class="brass"/>
+  <rect x="478" y="529" width="8" height="32" fill="#bbb" stroke="#555"/>
+  <!-- line in box -->
+  <path d="M490,545 L580,545" class="oil"/>
+  <!-- gate valve -->
+  <path d="M580,545 L620,527 L620,563 z M660,527 L660,563 L620,545 z" fill="#e6c15a" stroke="#8a6d12" stroke-width="1.8" transform="translate(0,0)"/>
+  <path d="M640,536 L640,500" stroke="#8a6d12" stroke-width="5"/>
+  <circle cx="640" cy="490" r="17" fill="none" stroke="#8a6d12" stroke-width="4"/>
+  <line x1="623" y1="490" x2="657" y2="490" stroke="#8a6d12" stroke-width="3"/>
+  <line x1="640" y1="473" x2="640" y2="507" stroke="#8a6d12" stroke-width="3"/>
+  <path d="M660,545 L740,545" class="oil"/>
+  <path d="M740,545 L740,590" class="oil" marker-end="url(#arr)"/>
+  <!-- sample bottle -->
+  <path d="M716,596 h48 v30 q0,12 -12,12 h-24 q-12,0 -12,-12 z" fill="#ffe3a3" stroke="#555" stroke-width="1.8"/>
+  <rect x="728" y="586" width="24" height="12" fill="#ddd" stroke="#555"/>
+  <text x="776" y="622" class="ts">取样瓶</text>
+
+  <!-- ===================== BOM NUMBER BADGES ===================== -->
+  <g>
+    <circle class="no" cx="560" cy="130" r="11"/><text class="no-t" x="560" y="134">4</text>
+    <circle class="no" cx="740" cy="140" r="11"/><text class="no-t" x="740" y="144">3</text>
+    <circle class="no" cx="830" cy="300" r="11"/><text class="no-t" x="830" y="304">5</text>
+    <circle class="no" cx="640" cy="455" r="11"/><text class="no-t" x="640" y="459">6</text>
+    <circle class="no" cx="470" cy="228" r="11"/><text class="no-t" x="470" y="232">7</text>
+    <circle class="no" cx="470" cy="513" r="11"/><text class="no-t" x="470" y="517">8</text>
+    <circle class="no" cx="610" cy="236" r="11"/><text class="no-t" x="610" y="240">10</text>
+    <circle class="no" cx="330" cy="520" r="11"/><text class="no-t" x="330" y="524">11</text>
+    <circle class="no" cx="330" cy="236" r="11"/><text class="no-t" x="330" y="240">12</text>
+    <circle class="no" cx="264" cy="640" r="11"/><text class="no-t" x="264" y="644">13</text>
+    <circle class="no" cx="438" cy="515" r="11"/><text class="no-t" x="438" y="519">13</text>
+    <circle class="no" cx="225" cy="236" r="11"/><text class="no-t" x="225" y="240">14</text>
+    <circle class="no" cx="437" cy="236" r="11"/><text class="no-t" x="437" y="240">14</text>
+    <circle class="no" cx="377" cy="290" r="11"/><text class="no-t" x="377" y="294">15</text>
+    <circle class="no" cx="372" cy="598" r="11"/><text class="no-t" x="372" y="602">16</text>
+    <circle class="no" cx="680" cy="345" r="11"/><text class="no-t" x="680" y="349">1</text>
+  </g>
+  <text x="696" y="349" class="ts">外壳</text>
+
+  <!-- ===================== PORT TAGS ===================== -->
+  <g>
+    <rect class="pt" x="184" y="214" width="26" height="18" rx="3"/><text class="pt-t" x="197" y="227">G1</text>
+    <rect class="pt" x="262" y="214" width="26" height="18" rx="3"/><text class="pt-t" x="275" y="227">G2</text>
+    <rect class="pt" x="398" y="214" width="26" height="18" rx="3"/><text class="pt-t" x="411" y="227">G3</text>
+    <rect class="pt" x="496" y="280" width="26" height="18" rx="3"/><text class="pt-t" x="509" y="293">G4</text>
+    <rect class="pt" x="612" y="280" width="26" height="18" rx="3"/><text class="pt-t" x="625" y="293">G5</text>
+    <rect class="pt" x="838" y="228" width="26" height="18" rx="3"/><text class="pt-t" x="851" y="241">G6</text>
+    <rect class="pt" x="186" y="565" width="26" height="18" rx="3"/><text class="pt-t" x="199" y="578">L1</text>
+    <rect class="pt" x="250" y="665" width="26" height="18" rx="3"/><text class="pt-t" x="263" y="678">L2</text>
+    <rect class="pt" x="316" y="620" width="26" height="18" rx="3"/><text class="pt-t" x="329" y="633">L3</text>
+    <rect class="pt" x="496" y="570" width="26" height="18" rx="3"/><text class="pt-t" x="509" y="583">L4</text>
+    <rect class="pt" x="536" y="512" width="26" height="18" rx="3"/><text class="pt-t" x="549" y="525">L5</text>
+    <rect class="pt" x="672" y="512" width="26" height="18" rx="3"/><text class="pt-t" x="685" y="525">L6</text>
+  </g>
+
+  <!-- ===================== INTERFACE TABLE ===================== -->
+  <text x="920" y="104" class="tb">接口表（设计值 — 红色“待测”需实物确认）</text>
+  <g>
+    <rect x="920" y="115" width="500" height="26" fill="#1f3a5f"/>
+    <text x="928" y="133" font-size="12" font-weight="700" fill="#fff">#</text>
+    <text x="962" y="133" font-size="12" font-weight="700" fill="#fff">连接</text>
+    <text x="1150" y="133" font-size="12" font-weight="700" fill="#fff">规格</text>
+    <text x="1378" y="133" font-size="12" font-weight="700" fill="#fff">状态</text>
+  </g>
+  <g class="row">
+    <rect x="920" y="141" width="500" height="150" fill="#eef5fb"/>
+    <text x="928" y="161">G1</text><text x="962" y="161">变压器泄压口 → 弯头b(14)</text><text x="1150" y="161">1/4" NPT 公（假设）</text><text x="1378" y="161" fill="#c0392b">待测</text>
+    <text x="928" y="185">G2</text><text x="962" y="185">弯头b ↔ 气管(12)</text><text x="1150" y="185">3/8" OD 推入式</text><text x="1378" y="185" fill="#c0392b">待测</text>
+    <text x="928" y="209">G3</text><text x="962" y="209">气管 → 弯头b → 穿壁接头(7)</text><text x="1150" y="209">1/2"-14 NPS 外螺纹·内 1/4" NPT 母</text><text x="1378" y="209" fill="#c0392b">待测</text>
+    <text x="928" y="233">G4</text><text x="962" y="233">穿壁接头(7) → 歧管(10)</text><text x="1150" y="233">1/4" NPT</text><text x="1378" y="233">设计</text>
+    <text x="928" y="257">G5</text><text x="962" y="257">三通 → PRV(4)/表(3)/放气阀(5)</text><text x="1150" y="257">1/4" NPT；表下接 LM</text><text x="1378" y="257">设计</text>
+    <text x="928" y="281">G6</text><text x="962" y="281">放气阀出口 → 氮气管</text><text x="1150" y="281">1/4" 宝塔(倒刺)</text><text x="1378" y="281">设计</text>
+  </g>
+  <g class="row">
+    <rect x="920" y="291" width="500" height="150" fill="#fff6dd"/>
+    <text x="928" y="311">L1</text><text x="962" y="311">排油阀侧取样口 → 弯头a(13)</text><text x="1150" y="311">螺纹待测（常见 1/2" NPT 母）</text><text x="1378" y="311" fill="#c0392b">待测</text>
+    <text x="928" y="335">L2</text><text x="962" y="335">弯头a ↔ 油软管(11)</text><text x="1150" y="335">JIC-6 · 9/16"-18 UNF 37°</text><text x="1378" y="335" fill="#c0392b">待测</text>
+    <text x="928" y="359">L3</text><text x="962" y="359">油软管(11) 全长</text><text x="1150" y="359">3/8" ID · PTFE+304 编织 · 1.8 m</text><text x="1378" y="359" fill="#c0392b">待测</text>
+    <text x="928" y="383">L4</text><text x="962" y="383">弯头a → 穿壁接头(8)</text><text x="1150" y="383">SAE-6 ORB 9/16"-18 UNF-2B</text><text x="1378" y="383" fill="#c0392b">待测</text>
+    <text x="928" y="407">L5</text><text x="962" y="407">穿壁接头(8) 箱内 → 闸阀(6)</text><text x="1150" y="407">1/2" NPT 母</text><text x="1378" y="407">设计</text>
+    <text x="928" y="431">L6</text><text x="962" y="431">闸阀出口 → 取样瓶/接头</text><text x="1150" y="431">1/2" NPT 母 (+螺塞)</text><text x="1378" y="431">设计</text>
+  </g>
+
+  <!-- legend / notes -->
+  <text x="920" y="475" class="tb">图例</text>
+  <line x1="920" y1="494" x2="960" y2="494" class="oil"/><text x="970" y="498" class="t">油路（变压器油）</text>
+  <line x1="920" y1="518" x2="960" y2="518" class="gas"/><text x="970" y="522" class="t">气路（氮气气枕）</text>
+  <rect x="920" y="536" width="40" height="14" fill="url(#hatch)" stroke="#666"/><text x="970" y="548" class="t">高压舱壁（现场钻 2 孔让接头穿过）</text>
+
+  <text x="920" y="590" class="tb">要点</text>
+  <text x="920" y="612" class="t">① 气路：变压器泄压口压力 → 舱外压力真空表，PRV 保护，放气阀充氮至 3 psi</text>
+  <text x="920" y="634" class="t">② 油路：排油阀侧取样口 → 舱外闸阀，免进高压舱取油样</text>
+  <text x="920" y="656" class="t">③ 原变压器泄压阀被拆下，由箱内 PRV 取代其泄压功能</text>
+  <text x="920" y="678" class="t">④ 箱体背面两个穿壁接头：上=气路(小号)，下=油路(大号)</text>
+
+  <text x="40" y="720" class="ts">比例为示意，不代表实际尺寸。依据：JST《External Sample Guard》说明书 Rev.1 与样品照片；非说明书直接给出的数值均为设计假设。</text>
+</svg>
