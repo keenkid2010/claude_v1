@@ -94,7 +94,7 @@
 <text x="880" y="348" class="ts" text-anchor="middle" fill="#27ae60" font-weight="700" opacity="0"><animate attributeName="opacity" dur="24.0s" repeatCount="indefinite" calcMode="discrete" values="0;1;0;1;0" keyTimes="0;0.04167;0.2292;0.7083;0.9375"/>开启</text>
 <path d="M940,250 C1010,250 1110,330 1110,410" stroke="#7f8c9a" stroke-width="5" fill="none" stroke-dasharray="2 0" opacity="0.35"/>
 <g><rect x="1080" y="410" width="60" height="150" rx="14" fill="#9fb4c8" stroke="#4a6076" stroke-width="2"/><rect x="1098" y="396" width="24" height="16" fill="#4a6076"/><text x="1110" y="490" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">N₂</text></g>
-<text x="1110" y="580" class="ts" text-anchor="middle">氮气瓶</text>
+<text x="1110" y="580" class="ts" text-anchor="middle">氮气瓶</text><text x="1110" y="596" class="ts" text-anchor="middle">现场自备（示意）</text>
 <g><path d="M680,430 L700,414 L700,446 z M720,430 L700,414 L700,446 z" fill="#e6c15a" stroke="#8a6d12" stroke-width="1.8"/><rect x="697" y="414" width="6" height="32" fill="#7a4a00"><animate attributeName="opacity" dur="24.0s" repeatCount="indefinite" values="1;1;0;0;1;1" keyTimes="0;0.25;0.2833;0.5;0.5333;1"/></rect></g>
 <path d="M700,414 L700,384" stroke="#8a6d12" stroke-width="5"/>
 <g transform="translate(700,374)"><g><animateTransform attributeName="transform" type="rotate" dur="24.0s" repeatCount="indefinite" values="0;0;360;360;0;0" keyTimes="0;0.25;0.2917;0.5;0.5417;1"/><circle r="16" fill="none" stroke="#8a6d12" stroke-width="4"/><line x1="-16" y1="0" x2="16" y2="0" stroke="#8a6d12" stroke-width="3"/><line x1="0" y1="-16" x2="0" y2="16" stroke="#8a6d12" stroke-width="3"/></g></g>
