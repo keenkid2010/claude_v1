@@ -177,7 +177,7 @@
   </g>
   <g class="row">
     <rect x="920" y="141" width="500" height="150" fill="#eef5fb"/>
-    <text x="928" y="161">G1</text><text x="962" y="161">变压器泄压口 → 弯头b(14)</text><text x="1150" y="161">1/4" NPT 公（假设）</text><text x="1378" y="161" fill="#c0392b">待测</text>
+    <text x="928" y="161">G1</text><text x="962" y="161">变压器泄压口 → 弯头b(14)</text><text x="1150" y="161">1/4" NPT 母座(本体)·图纸确认</text><text x="1378" y="161">确认</text>
     <text x="928" y="185">G2</text><text x="962" y="185">弯头b ↔ 气管(12)</text><text x="1150" y="185">3/8" OD 推入式</text><text x="1378" y="185" fill="#c0392b">待测</text>
     <text x="928" y="209">G3</text><text x="962" y="209">气管 → 弯头b → 穿壁接头(7)</text><text x="1150" y="209">1/2"-14 NPS 外螺纹·内 1/4" NPT 母</text><text x="1378" y="209" fill="#c0392b">待测</text>
     <text x="928" y="233">G4</text><text x="962" y="233">穿壁接头(7) → 歧管(10)</text><text x="1150" y="233">1/4" NPT</text><text x="1378" y="233">设计</text>
@@ -186,7 +186,7 @@
   </g>
   <g class="row">
     <rect x="920" y="291" width="500" height="150" fill="#fff6dd"/>
-    <text x="928" y="311">L1</text><text x="962" y="311">排油阀侧取样口 → 弯头a(13)</text><text x="1150" y="311">螺纹待测（常见 1/2" NPT 母）</text><text x="1378" y="311" fill="#c0392b">待测</text>
+    <text x="928" y="311">L1</text><text x="962" y="311">排油阀侧取样口 → 弯头a(13)</text><text x="1150" y="311">3/8" 取样口·螺纹类型待测</text><text x="1378" y="311" fill="#c0392b">待测</text>
     <text x="928" y="335">L2</text><text x="962" y="335">弯头a ↔ 油软管(11)</text><text x="1150" y="335">JIC-6 · 9/16"-18 UNF 37°</text><text x="1378" y="335" fill="#c0392b">待测</text>
     <text x="928" y="359">L3</text><text x="962" y="359">油软管(11) 全长</text><text x="1150" y="359">3/8" ID · PTFE+304 编织 · 1.8 m</text><text x="1378" y="359" fill="#c0392b">待测</text>
     <text x="928" y="383">L4</text><text x="962" y="383">弯头a → 穿壁接头(8)</text><text x="1150" y="383">SAE-6 ORB 9/16"-18 UNF-2B</text><text x="1378" y="383" fill="#c0392b">待测</text>
