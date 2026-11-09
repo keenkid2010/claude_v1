@@ -178,7 +178,7 @@
   <g class="row">
     <rect x="920" y="141" width="500" height="150" fill="#eef5fb"/>
     <text x="928" y="161">G1</text><text x="962" y="161">变压器泄压口 → 弯头b(14)</text><text x="1150" y="161">1/4" NPT 母座(本体)·图纸确认</text><text x="1378" y="161">确认</text>
-    <text x="928" y="185">G2</text><text x="962" y="185">弯头b ↔ 气管(12)</text><text x="1150" y="185">3/8" OD 推入式</text><text x="1378" y="185" fill="#c0392b">待测</text>
+    <text x="928" y="185">G2</text><text x="962" y="185">弯头b ↔ 气管(12)</text><text x="1150" y="185">1/4" OD 推入式</text><text x="1378" y="185" fill="#c0392b">待测</text>
     <text x="928" y="209">G3</text><text x="962" y="209">气管 → 弯头b → 穿壁接头(7)</text><text x="1150" y="209">1/2"-14 NPS 外螺纹·内 1/4" NPT 母</text><text x="1378" y="209" fill="#c0392b">待测</text>
     <text x="928" y="233">G4</text><text x="962" y="233">穿壁接头(7) → 歧管(10)</text><text x="1150" y="233">1/4" NPT</text><text x="1378" y="233">设计</text>
     <text x="928" y="257">G5</text><text x="962" y="257">四通 → PRV(4)/表(3)/放气阀(5)</text><text x="1150" y="257">1/4" NPT；表轴向后接</text><text x="1378" y="257">设计</text>
