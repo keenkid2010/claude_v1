@@ -115,15 +115,16 @@
   <rect x="450" y="533" width="40" height="24" class="brass"/>
   <rect x="478" y="529" width="8" height="32" fill="#bbb" stroke="#555"/>
   <!-- line in box -->
-  <path d="M490,545 L580,545" class="oil"/>
+  <path d="M490,545 L600,545" class="oil"/>
   <!-- gate valve -->
-  <path d="M580,545 L620,527 L620,563 z M660,527 L660,563 L620,545 z" fill="#e6c15a" stroke="#8a6d12" stroke-width="1.8" transform="translate(0,0)"/>
+  <path d="M600,527 L640,545 L600,563 z M680,527 L640,545 L680,563 z" fill="#e6c15a" stroke="#8a6d12" stroke-width="1.8"/><circle cx="640" cy="545" r="6" fill="#8a6d12"/>
   <path d="M640,536 L640,500" stroke="#8a6d12" stroke-width="5"/>
   <circle cx="640" cy="490" r="17" fill="none" stroke="#8a6d12" stroke-width="4"/>
   <line x1="623" y1="490" x2="657" y2="490" stroke="#8a6d12" stroke-width="3"/>
   <line x1="640" y1="473" x2="640" y2="507" stroke="#8a6d12" stroke-width="3"/>
-  <path d="M660,545 L740,545" class="oil"/>
+  <path d="M680,545 L740,545" class="oil"/>
   <path d="M740,545 L740,590" class="oil" marker-end="url(#arr)"/>
+  <path d="M596,582 L690,582" stroke="#555" stroke-width="2" marker-end="url(#arr)"/><text x="643" y="600" text-anchor="middle" class="ts" font-size="10.5">阀体箭头：穿壁接头→出口</text>
   <!-- sample bottle -->
   <path d="M716,596 h48 v30 q0,12 -12,12 h-24 q-12,0 -12,-12 z" fill="#ffe3a3" stroke="#555" stroke-width="1.8"/>
   <rect x="728" y="586" width="24" height="12" fill="#ddd" stroke="#555"/>
@@ -179,19 +180,19 @@
     <rect x="920" y="141" width="500" height="150" fill="#eef5fb"/>
     <text x="928" y="161">G1</text><text x="962" y="161">变压器泄压口 → 弯头b(14)</text><text x="1150" y="161">1/4" NPT 母座(本体)·图纸确认</text><text x="1378" y="161">确认</text>
     <text x="928" y="185">G2</text><text x="962" y="185">弯头b ↔ 气管(12)</text><text x="1150" y="185">1/4" OD 推入式</text><text x="1378" y="185" fill="#c0392b">待测</text>
-    <text x="928" y="209">G3</text><text x="962" y="209">气管 → 弯头b → 穿壁接头(7)</text><text x="1150" y="209">1/2"-14 NPS 外螺纹·内 1/4" NPT 母</text><text x="1378" y="209" fill="#c0392b">待测</text>
-    <text x="928" y="233">G4</text><text x="962" y="233">穿壁接头(7) → 歧管(10)</text><text x="1150" y="233">1/4" NPT</text><text x="1378" y="233">设计</text>
+    <text x="928" y="209">G3</text><text x="962" y="209">气管 → 弯头b(箱端) → 穿壁接头(7)</text><text x="1150" y="209">G1/4 ↔ 内丝(待测)</text><text x="1378" y="209" fill="#c0392b">待测</text>
+    <text x="928" y="233">G4</text><text x="962" y="233">穿壁接头(7) → 对丝+转接 → 四通</text><text x="1150" y="233">G ↔ NPT 转换</text><text x="1378" y="233">设计</text>
     <text x="928" y="257">G5</text><text x="962" y="257">四通 → PRV(4)/表(3)/放气阀(5)</text><text x="1150" y="257">1/4" NPT；表轴向后接</text><text x="1378" y="257">设计</text>
-    <text x="928" y="281">G6</text><text x="962" y="281">放气阀出口 → 氮气管</text><text x="1150" y="281">1/4" 宝塔(倒刺)</text><text x="1378" y="281">设计</text>
+    <text x="928" y="281">G6</text><text x="962" y="281">放气阀出口 → 氮气管</text><text x="1150" y="281">NPT1/4 × 8mm 宝塔</text><text x="1378" y="281">设计</text>
   </g>
   <g class="row">
     <rect x="920" y="291" width="500" height="150" fill="#fff6dd"/>
     <text x="928" y="311">L1</text><text x="962" y="311">排油阀侧取样口 → 弯头a(13)</text><text x="1150" y="311">3/8" 取样口·螺纹类型待测</text><text x="1378" y="311" fill="#c0392b">待测</text>
     <text x="928" y="335">L2</text><text x="962" y="335">弯头a ↔ 油软管(11)</text><text x="1150" y="335">JIC-6 · 9/16"-18 UNF 37°</text><text x="1378" y="335" fill="#c0392b">待测</text>
-    <text x="928" y="359">L3</text><text x="962" y="359">油软管(11) 全长</text><text x="1150" y="359">3/8" ID · PTFE+304 编织 · 1.8 m</text><text x="1378" y="359" fill="#c0392b">待测</text>
-    <text x="928" y="383">L4</text><text x="962" y="383">弯头a → 穿壁接头(8)</text><text x="1150" y="383">SAE-6 ORB 9/16"-18 UNF-2B</text><text x="1378" y="383" fill="#c0392b">待测</text>
-    <text x="928" y="407">L5</text><text x="962" y="407">穿壁接头(8) 箱内 → 闸阀(6)</text><text x="1150" y="407">1/2" NPT 母</text><text x="1378" y="407">设计</text>
-    <text x="928" y="431">L6</text><text x="962" y="431">闸阀出口 → 取样瓶/接头</text><text x="1150" y="431">1/2" NPT 母 (+螺塞)</text><text x="1378" y="431">设计</text>
+    <text x="928" y="359">L3</text><text x="962" y="359">油软管(11) 全长</text><text x="1150" y="359">3/8" ID · PTFE+304 · 1.2 m</text><text x="1378" y="359" fill="#c0392b">待测</text>
+    <text x="928" y="383">L4</text><text x="962" y="383">弯头a → 穿壁接头(8)</text><text x="1150" y="383">ZG3/8 ↔ 3分内丝(待测)</text><text x="1378" y="383" fill="#c0392b">待测</text>
+    <text x="928" y="407">L5</text><text x="962" y="407">穿壁接头(8) → 对丝 → 取样阀(6)</text><text x="1150" y="407">Rc 1/2(分制)</text><text x="1378" y="407">设计</text>
+    <text x="928" y="431">L6</text><text x="962" y="431">取样阀出口 → 补芯 → 堵头/取样瓶</text><text x="1150" y="431">4分×2分 / NPT1/4</text><text x="1378" y="431">设计</text>
   </g>
 
   <!-- legend / notes -->
@@ -202,7 +203,7 @@
 
   <text x="920" y="590" class="tb">要点</text>
   <text x="920" y="612" class="t">① 气路：变压器泄压口压力 → 舱外压力真空表，PRV 保护，放气阀充氮至 3 psi</text>
-  <text x="920" y="634" class="t">② 油路：排油阀侧取样口 → 舱外闸阀，免进高压舱取油样</text>
+  <text x="920" y="634" class="t">② 油路：排油阀侧取样口 → 舱外取样阀，免进高压舱取油样</text>
   <text x="920" y="656" class="t">③ 原变压器泄压阀被拆下，由箱内 PRV 取代其泄压功能</text>
   <text x="920" y="678" class="t">④ 箱体背面两个穿壁接头：上=气路(小号)，下=油路(大号)</text>
 
